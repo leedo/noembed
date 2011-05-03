@@ -9,10 +9,11 @@ sub new {
   my ($class, %args) = @_;
 
   my $self = {
+    pattern => qr{http://[^\.]+\.wikipedia\.org/wiki/.*}i,
     scraper => scraper {
       process "#firstHeading", title => 'TEXT';
       process "#bodyContent p:first-child", summary => 'HTML';
-    }
+    },
   };
 
   bless $self, $class;
@@ -31,10 +32,9 @@ sub filter {
   return encode_json $res;
 }
 
-sub patterns {
-  return (
-    qr{http://[^\.]+\.wikipedia\.org/wiki/.*}i
-  );
+sub matches {
+  my ($self, $url) = @_;
+  return $url =~ $self->{pattern};
 }
 
 1;

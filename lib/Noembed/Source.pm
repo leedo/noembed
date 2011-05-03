@@ -16,23 +16,16 @@ sub filter {
   return @_;
 }
 
-sub patterns {
-  die "must override patterns method";
-}
-
 sub matches {
-  my ($self, $url) = @_;
-  for my $pattern ($self->patterns) {
-    return 1 if $url =~ $pattern;
-  }
-
-  return 0;
+  die "must override matches method";
 }
 
 sub download {
   my ($self, $url, $cb) = @_;
 
-  http_request "get", $url, sub {
+  my $service = $self->request_url($url);
+
+  http_request "get", $service, sub {
     my ($body, $headers) = @_;
 
     if ($headers->{Status} == 200) {
