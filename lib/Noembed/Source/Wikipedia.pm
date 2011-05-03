@@ -1,11 +1,8 @@
 package Noembed::Source::Wikipedia;
 
-use Web::Scrapper;
+use Web::Scraper;
 
 use parent 'Noembed::Source';
-
-sub new {
-}
 
 sub request_url {
   my ($self, $url) = @_;
@@ -13,12 +10,13 @@ sub request_url {
 }
 
 sub filter {
-  # extract content here
+  my ($self, $body) = @_;
+  return $body;
 }
 
 sub patterns {
   return (
-    qr{http://www\.wikipedia\.org/.*}i
+    qr{http://[^\.]+\.wikipedia\.org/wiki/.*}i
   );
 }
 
