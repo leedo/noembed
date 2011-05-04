@@ -6,6 +6,7 @@ use JSON;
 
 use parent 'Plack::Component';
 
+our $VERSION = "0.01";
 our $DEFAULT = [ qw/GitHub YouTube Wikipedia oEmbed/ ];
 
 sub prepare_app {
