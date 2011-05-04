@@ -10,7 +10,8 @@ sub matches {
 }
 
 sub request_url {
-  my ($self, $url) = @_;
+  my ($self, $req) = @_;
+  my $url = $req->parameters->{url};
   return "$url.pibb";
 }
 

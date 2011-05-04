@@ -23,18 +23,18 @@ sub call {
   my ($self, $env) = @_;
 
   my $req = Plack::Request->new($env);
-  my $url = $req->parameters->{url};
-
-  return error("url parameter required") unless $url;
-  return $self->handle_url($url);
+  return error("url parameter is required") unless $req->parameters->{url};
+  return $self->handle_url($req);
 }
 
 sub handle_url {
-  my ($self, $url) = @_;
+  my ($self, $req) = @_;
+
+  my $url = $req->parameters->{url};
 
   for my $provider (@{$self->{providers}}) {
     if ($provider->matches($url)) {
-      return _handle_match($provider, $url);
+      return _handle_match($provider, $req);
       last;
     }
   }
@@ -43,12 +43,12 @@ sub handle_url {
 }
 
 sub _handle_match {
-  my ($provider, $url) = @_;
+  my ($provider, $req) = @_;
 
   return sub {
     my $respond = shift;
 
-    $provider->download($url, sub {
+    $provider->download($req, sub {
       my ($body, $error) = shift;
       $respond->($error ? error($error) : json_res($body));
     });

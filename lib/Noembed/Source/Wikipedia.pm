@@ -16,12 +16,6 @@ sub prepare_source {
   };
 }
 
-sub request_url {
-  my ($self, $url) = @_;
-
-  return $url;
-}
-
 sub filter {
   my ($self, $body) = @_;
 

@@ -44,12 +44,13 @@ sub filter {
 
 sub matches {
   my ($self, $url) = @_;
+  warn "$self matches $url\n";
   !!$self->{oembed}->provider_for($url);
 }
 
 sub request_url {
-  my ($self, $url) = @_;
-  my $service = $self->{oembed}->request_url($url);
+  my ($self, $req) = @_;
+  my $service = $self->{oembed}->request_url($req->parameters->{url});
   return $service;
 }
 

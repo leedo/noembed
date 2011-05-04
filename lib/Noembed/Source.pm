@@ -5,7 +5,7 @@ use AnyEvent::HTTP;
 
 sub new {
   my ($class, %args) = @_;
-  my $self = bless {}, $class;
+  my $self = bless {%args}, $class;
 
   $self->prepare_source if $self->can('prepare_source');
 
@@ -13,7 +13,8 @@ sub new {
 }
 
 sub request_url {
-  die "must override request_url method";
+  my ($self, $req) = @_;
+  return $req->parameters->{url};
 }
 
 sub filter {
@@ -26,9 +27,11 @@ sub matches {
 }
 
 sub download {
-  my ($self, $url, $cb) = @_;
+  my ($self, $req, $cb) = @_;
 
-  my $service = $self->request_url($url);
+  my $service = $self->request_url($req);
+  my $nb = $req->env->{'psgi.nonblocking'};
+  my $cv = AE::cv;
 
   http_request "get", $service, sub {
     my ($body, $headers) = @_;
@@ -39,13 +42,17 @@ sub download {
         $data->{type} = "rich";
         $data->{url} = $url;
         $cb->( encode_json($data), "" );
+        $cv->send unless $nb;
       };
       return unless $@;
       warn "Error after http request: $@";
+      $cv->send unless $nb;
     }
 
     $cb->("", $headers->{Reason});
   };
+
+  $cv->recv unless $nb;
 }
 
 1;

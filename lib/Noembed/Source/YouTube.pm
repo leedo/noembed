@@ -19,7 +19,8 @@ sub prepare_source {
 }
 
 sub request_url {
-  my ($self, $url) = @_;
+  my ($self, $req) = @_;
+  my $url = $req->parameters->{url};
   my ($id) = $url =~ $re;
   return "http://www.youtube.com/embed/$id";
 }
