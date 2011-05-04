@@ -12,7 +12,18 @@ sub prepare_source {
 
   $self->{scraper} = scraper {
     process "#firstHeading", title => 'TEXT';
-    process "#bodyContent p:first-child", html => 'HTML';
+    process "#bodyContent", html => sub {
+      my $el = shift;
+      my $output;
+      my @children = $el->content_list;
+      for my $child (@children) {
+        last if $child->attr("id") eq "toc";
+        if ($child->tag eq "p") {
+          $output .= $child->as_HTML;
+        }
+      }
+      return $output;
+    };
   };
 }
 
