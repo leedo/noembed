@@ -5,5 +5,5 @@ use Noembed;
 
 builder {
   enable JSONP;
-  mount "/" => Noembed->new->to_app;
+  mount "/embed" => Noembed->new->to_app;
 };

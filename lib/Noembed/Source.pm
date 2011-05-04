@@ -29,6 +29,7 @@ sub matches {
 sub download {
   my ($self, $req, $cb) = @_;
 
+  my $url = $req->parameters->{url};
   my $service = $self->request_url($req);
   my $nb = $req->env->{'psgi.nonblocking'};
   my $cv = AE::cv;
