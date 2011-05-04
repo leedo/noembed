@@ -15,6 +15,8 @@ sub request_url {
   return "$url.pibb";
 }
 
+sub provider_name { "GitHub" }
+
 sub filter {
   my ($self, $body) = @_;
   return +{

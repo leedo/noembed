@@ -45,6 +45,7 @@ sub download {
           my $data = $self->filter($body);
           $data->{type} = "rich";
           $data->{url} = $url;
+          $data->{provider_name} ||= $self->provider_name;
           $cb->( encode_json($data), "" );
         };
         warn "Error after http request: $@" if $@;

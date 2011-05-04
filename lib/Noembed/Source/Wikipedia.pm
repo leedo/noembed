@@ -16,6 +16,8 @@ sub prepare_source {
   };
 }
 
+sub provider_name { "Wikipedia" }
+
 sub filter {
   my ($self, $body) = @_;
 

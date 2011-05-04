@@ -16,6 +16,8 @@ sub matches {
   return $url =~ $re;
 }
 
+sub provider_name { "YouTube" }
+
 sub filter {
   my ($self, $body) = @_;
   my $data = decode_json $body;
@@ -28,3 +30,5 @@ sub filter {
                 . " src='http://www.youtube.com/embed/$id' frameborder=0></iframe>";
   return $data;
 }
+
+1;
