@@ -33,24 +33,27 @@ sub download {
   my $nb = $req->env->{'psgi.nonblocking'};
   my $cv = AE::cv;
 
-  http_request "get", $service, sub {
-    my ($body, $headers) = @_;
+  http_request "get", $service, {
+      persistent => 0,
+      keepalive  => 0,
+    },
+    sub {
+      my ($body, $headers) = @_;
 
-    if ($headers->{Status} == 200) {
-      eval {
-        my $data = $self->filter($body);
-        $data->{type} = "rich";
-        $data->{url} = $url;
-        $cb->( encode_json($data), "" );
+      if ($headers->{Status} == 200) {
+        eval {
+          my $data = $self->filter($body);
+          $data->{type} = "rich";
+          $data->{url} = $url;
+          $cb->( encode_json($data), "" );
+        };
+        warn "Error after http request: $@" if $@;
         $cv->send unless $nb;
-      };
-      return unless $@;
-      warn "Error after http request: $@";
-      $cv->send unless $nb;
-    }
-
-    $cb->("", $headers->{Reason});
-  };
+      }
+      else {
+        $cb->("", $headers->{Reason});
+      }
+    };
 
   $cv->recv unless $nb;
 }
