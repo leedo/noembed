@@ -44,7 +44,6 @@ sub filter {
 
 sub matches {
   my ($self, $url) = @_;
-  warn "$self matches $url\n";
   !!$self->{oembed}->provider_for($url);
 }
 

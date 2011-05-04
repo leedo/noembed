@@ -10,7 +10,7 @@ my $re = qr{http://[^\.]+\.wikipedia\.org/wiki/.*}i;
 sub prepare_source {
   my $self = shift;
 
-  my $self->{scraper} = scraper {
+  $self->{scraper} = scraper {
     process "#firstHeading", title => 'TEXT';
     process "#bodyContent p:first-child", html => 'HTML';
   };
@@ -25,7 +25,7 @@ sub filter {
 
 sub matches {
   my ($self, $url) = @_;
-  return $url =~ $self->{pattern};
+  return $url =~ $re;
 }
 
 1;
