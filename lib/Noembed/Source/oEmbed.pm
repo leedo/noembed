@@ -1,6 +1,7 @@
 package Noembed::Source::oEmbed;
 
 use Web::oEmbed;
+use JSON;
 use parent 'Noembed::Source';
 
 our $DEFAULT = [
@@ -12,11 +13,11 @@ our $DEFAULT = [
   ['http://www.vimeo.com/*', 'http://www.vimeo.com/api/oembed.{format}'],
 ];
 
-sub new {
-  my ($class, %args) = @_;
+sub prepare_source {
+  my $self = shift;
 
   my $oembed = Web::oEmbed->new;
-  my $sources = $args{sources} || $DEFAULT;
+  my $sources = $DEFAULT;
 
   for my $source (@$sources) {
     $oembed->register_provider({
@@ -25,7 +26,20 @@ sub new {
     });
   }
 
-  bless {oembed => $oembed}, $class;
+  $self->{oembed} = $oembed;
+}
+
+sub filter {
+  my ($self, $body) = @_;
+  my $data = decode_json $body;
+
+  if (!$data->{html}) {
+      $data->{html} = "<a href='$data->{url}'>"
+                    . ($data->{title} || $data->{url})
+                    . "</a>";
+  }
+
+  return $data;
 }
 
 sub matches {

@@ -1,10 +1,15 @@
 package Noembed::Source;
 
+use JSON;
 use AnyEvent::HTTP;
 
 sub new {
   my ($class, %args) = @_;
-  bless {}, $class;
+  my $self = bless {}, $class;
+
+  $self->prepare_source if $self->can('prepare_source');
+
+  return $self;
 }
 
 sub request_url {
@@ -30,7 +35,10 @@ sub download {
 
     if ($headers->{Status} == 200) {
       eval {
-        $cb->( $self->filter($body, "") );
+        my $data = $self->filter($body);
+        $data->{type} = "rich";
+        $data->{url} = $url;
+        $cb->( encode_json($data), "" );
       };
       return unless $@;
       warn "Error after http request: $@";

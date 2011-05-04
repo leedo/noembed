@@ -5,18 +5,15 @@ use JSON;
 
 use parent 'Noembed::Source';
 
-sub new {
-  my ($class, %args) = @_;
+my $re = qr{http://[^\.]+\.wikipedia\.org/wiki/.*}i;
 
-  my $self = {
-    pattern => qr{http://[^\.]+\.wikipedia\.org/wiki/.*}i,
-    scraper => scraper {
-      process "#firstHeading", title => 'TEXT';
-      process "#bodyContent p:first-child", summary => 'HTML';
-    },
+sub prepare_source {
+  my $self = shift;
+
+  my $self->{scraper} = scraper {
+    process "#firstHeading", title => 'TEXT';
+    process "#bodyContent p:first-child", html => 'HTML';
   };
-
-  bless $self, $class;
 }
 
 sub request_url {
@@ -29,7 +26,7 @@ sub filter {
   my ($self, $body) = @_;
 
   my $res = $self->{scraper}->scrape($body);
-  return encode_json $res;
+  return $res;
 }
 
 sub matches {

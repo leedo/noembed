@@ -6,7 +6,7 @@ use JSON;
 
 use parent 'Plack::Component';
 
-our $DEFAULT = [ qw/oEmbed Wikipedia/ ];
+our $DEFAULT = [ qw/GitHub YouTube Wikipedia oEmbed/ ];
 
 sub prepare_app {
   my $self = shift;
@@ -73,6 +73,13 @@ sub error {
   json_res $body;
 }
 
+sub _source_opts {
+  my $self = shift;
+  return map {$_ => $self->{$_}}
+        grep {defined $self->{$_}}
+             qw/maxwidth maxheight/;
+}
+
 sub register_provider {
   my ($self, $class) = @_;
 
@@ -82,7 +89,7 @@ sub register_provider {
 
   my ($loaded, $error) = try_load_class($class);
   if ($loaded) {
-    my $provider = $class->new;
+    my $provider = $class->new($self->_source_opts);
     push @{ $self->{providers} }, $provider;
   }
   else {
