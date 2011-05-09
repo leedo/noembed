@@ -13,8 +13,8 @@ sub new {
 }
 
 sub request_url {
-  my ($self, $req) = @_;
-  return $req->parameters->{url};
+  my ($self, $url, $params) = @_;
+  return $url;
 }
 
 sub filter {
@@ -29,8 +29,10 @@ sub matches {
 sub download {
   my ($self, $req, $cb) = @_;
 
-  my $url = $req->parameters->{url};
-  my $service = $self->request_url($req);
+  my $params = $req->parameters;
+  my $url = $params->{url};
+
+  my $service = $self->request_url($url, $params);
   my $nb = $req->env->{'psgi.nonblocking'};
   my $cv = AE::cv;
 

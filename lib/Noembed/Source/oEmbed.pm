@@ -48,9 +48,8 @@ sub matches {
 }
 
 sub request_url {
-  my ($self, $req) = @_;
-  my $service = $self->{oembed}->request_url($req->parameters->{url});
-  return $service;
+  my ($self, $url, $params) = @_;
+  $self->{oembed}->request_url($url);
 }
 
 1;

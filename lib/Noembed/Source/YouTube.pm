@@ -6,8 +6,7 @@ use parent 'Noembed::Source';
 my $re = qr{^http://[^\.]+\.youtube\.com/watch\?v=(.+)}i;
 
 sub request_url {
-  my ($self, $req) = @_;
-  my $url = $req->parameters->{url};
+  my ($self, $url, $params) = @_;
   return "http://www.youtube.com/oembed/?url=$url";
 }
 
