@@ -16,7 +16,7 @@
 
           new Ajax.Request("embed", {
             method: "get",
-            parameters: { url: url },
+            parameters: { url: url.trim() },
             onSuccess: function(transport) {
               var data = transport.responseText.evalJSON();
               if (data.html) {
@@ -44,7 +44,7 @@
     </script>
     <style type="text/css">
       body {
-        font-family: sans-serif;
+        font-family: Helvetica, Arial, sans-serif;
         margin: 0;
         padding: 0;
       }
@@ -57,15 +57,29 @@
         width: 50%;
         padding: 10px;
       }
+      table#container>tbody>tr>td>h1 {
+        font-size: 1.6em;
+      }
+      table#container>tbody>tr>td>h1>a {
+        color: #000;
+        text-decoration: none;
+      }
       table#container>tbody>tr>td:first-child {
         background: #eee;
         border-right: 2px solid #ccc;
+      }
+      table#container>tbody>tr>td>.instructions {
+        color: #999;
+        font-size: 14px;
       }
       table#container>tbody>tr>td span.status {
         color: #666;
         text-align: center;
         display: block;
         margin-top: 50%;
+      }
+      form#request label {
+        font-size: 14px;
       }
       form#request label, textarea, input {
         display: block;
@@ -80,9 +94,6 @@
         outline: none;
         resize: none;
       }
-      form#request input[type=submit] {
-        font-size: 1em;
-      }
     </style>
   </head>
   <body>
@@ -90,11 +101,22 @@
       <tbody>
         <tr>
           <td>
+            <h1><a href="/">Noembed</a></h1>
             <form action="/embed" method="get" id="request">
               <label for="url">Paste a URL to embed:</label>
               <textarea name="url" id="url"></textarea>
               <input type="submit" value="Embed it">
             </form>
+            <p class="instructions">
+              Example URLs to try:
+            </p>
+            <ul class="instructions">
+              <li>http://twitter.com/#!/leed0/status/65058247593299968</li>
+              <li>https://gist.github.com/796300</li>
+              <li>http://www.youtube.com/watch?v=9yc71idSics</li>
+              <li>http://www.flickr.com/photos/onement/1239189689/</li>
+              <li>http://en.wikipedia.org/wiki/Bardo_Pond</li>
+            </ul>
           </td>
           <td>
             <div id="embed"></div>

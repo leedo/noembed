@@ -34,9 +34,15 @@ sub filter {
   my $data = decode_json $body;
 
   if (!$data->{html}) {
-      $data->{html} = "<a href='$data->{url}'>"
-                    . ($data->{title} || $data->{url})
-                    . "</a>";
+    $data->{html} = "<a href='$data->{url}'>";
+
+    if ($data->{type} eq "photo") {
+      $data->{html} .= "<img src='$data->{url}'>";
+    }
+    else {
+      $data->{html} .= ($data->{title} || $data->{url});
+    }
+    $data->{html} .= "</a>";
   }
 
   return $data;

@@ -31,7 +31,7 @@ sub handle_url {
   my ($self, $req) = @_;
 
   my $url = $req->parameters->{url};
-
+  
   for my $provider (@{$self->{providers}}) {
     if ($provider->matches($url)) {
       return _handle_match($provider, $req);
