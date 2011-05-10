@@ -1,9 +1,11 @@
-use lib 'lib';
+use lib '../lib';
 
+use Plack::App::File;
 use Plack::Builder;
 use Noembed;
 
 builder {
   enable JSONP;
-  mount "/" => Noembed->new->to_app;
+  mount "/demo" => Plack::App::File->new(file => "demo.html");
+  mount "/embed" => Noembed->new->to_app;
 };
