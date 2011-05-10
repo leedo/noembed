@@ -5,21 +5,20 @@ use Text::MicroTemplate qw(:all);
 
 use parent 'Noembed::Source';
 
-my $re = qr{https?://(?:www\.)?twitter\.com/[^/]+/status(?:es)?/(\d+)};
-
 sub matches {
   my ($self, $url) = @_;
-  return $url =~ $re;
+  return $url =~ $self->{re};
 }
 
 sub prepare_source {
   my $self = shift;
   $self->{template} = get_template();
+  $self->{re} = qr{https?://(?:www\.)?twitter\.com/(?:#!/)?[^/]+/status(?:es)?/(\d+)};
 }
 
 sub request_url {
   my ($self, $url, $params) = @_;
-  if ($url =~ $re) {
+  if ($url =~ $self->{re}) {
     my $id = $1;
     return "http://api.twitter.com/1/statuses/show/$id.json";
   }
@@ -61,3 +60,4 @@ sub get_template {
   return build_mt($template_string);
 }
 
+1;

@@ -2,11 +2,14 @@ package Noembed::Source::GitHub;
 
 use parent 'Noembed::Source';
 
-my $re = qr{https?://gist\.github\.com/[0-9a-fA-f]+$}i;
+sub prepare_source {
+  my $self = shift;
+  $self->{re} = qr{https?://gist\.github\.com/[0-9a-fA-f]+$}i;
+}
 
 sub matches {
   my ($self, $url) = @_;
-  return $url =~ $re;
+  return $url =~ $self->{re};
 }
 
 sub request_url {
@@ -22,3 +25,5 @@ sub filter {
     html => $body,
   };
 }
+
+1;

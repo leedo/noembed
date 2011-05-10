@@ -3,7 +3,10 @@ package Noembed::Source::YouTube;
 use JSON;
 use parent 'Noembed::Source';
 
-my $re = qr{^http://[^\.]+\.youtube\.com/watch\?v=(.+)}i;
+sub prepare_source {
+  my $self = shift;
+  $self->{re} = qr{^http://[^\.]+\.youtube\.com/watch\?v=(.+)}i;
+}
 
 sub request_url {
   my ($self, $url, $params) = @_;
@@ -12,7 +15,7 @@ sub request_url {
 
 sub matches {
   my ($self, $url) = @_;
-  return $url =~ $re;
+  return $url =~ $self->{re};
 }
 
 sub provider_name { "YouTube" }

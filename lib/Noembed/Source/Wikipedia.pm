@@ -5,11 +5,10 @@ use JSON;
 
 use parent 'Noembed::Source';
 
-my $re = qr{http://[^\.]+\.wikipedia\.org/wiki/.*}i;
-
 sub prepare_source {
   my $self = shift;
 
+  $self->{re} = qr{http://[^\.]+\.wikipedia\.org/wiki/.*}i;
   $self->{scraper} = scraper {
     process "#firstHeading", title => 'TEXT';
     process "#bodyContent", html => sub {
@@ -38,7 +37,7 @@ sub filter {
 
 sub matches {
   my ($self, $url) = @_;
-  return $url =~ $re;
+  return $url =~ $self->{re};
 }
 
 1;
