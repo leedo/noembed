@@ -12,19 +12,26 @@
             return;
           }
 
+          var query = { url : url.trim() };
+          window.history.pushState({}, "", "/demo.html?"+Object.toQueryString(query));
+
           $('embed').update("<span class='status'>embeding "+url+"&hellip;</span>");
 
           new Ajax.Request("embed", {
             method: "get",
-            parameters: { url: url.trim() },
+            parameters: query,
             onSuccess: function(transport) {
               var data = transport.responseText.evalJSON();
               if (data.html) {
                 $('embed').update(data.html);
               }
               else {
-                alert(data.error || "Unknown error.");
+                var error = "<span class='status error'>"+(data.error || "Unknown error. :-(")+"</span>";
+                $('embed').update(error);
               }
+            },
+            onFailure: function() {
+              $('embed').update('Error connecting to noembed server. :-(');
             }
           });
         }
@@ -34,12 +41,28 @@
           embed();
         });
 
-        var query = window.location.search.toQueryParams();
+        $('url').observe('keydown', function(e) {
+          if (e.keyIdentifier == "Enter") {
+            e.stop();
+            embed();
+          }
+        });
 
-        if (query.url) {
-          $('url').setValue(query.url);
+        $('examples').on('click', 'li a', function(e, a) {
+          e.stop();
+          $('url').setValue(a.href);
           embed();
-        }
+        });
+
+        window.onpopstate = function(e) {
+          e.stop();
+          var query = window.location.search.toQueryParams();
+
+          if (query.url) {
+            $('url').setValue(query.url);
+            embed();
+          }
+        };
       });
     </script>
     <style type="text/css">
@@ -68,7 +91,7 @@
         background: #eee;
         border-right: 2px solid #ccc;
       }
-      table#container>tbody>tr>td>.instructions {
+      table#container>tbody>tr>td>#instructions {
         color: #999;
         font-size: 14px;
       }
@@ -107,15 +130,15 @@
               <textarea name="url" id="url"></textarea>
               <input type="submit" value="Embed it">
             </form>
-            <p class="instructions">
+            <p id="instructions">
               Example URLs to try:
             </p>
-            <ul class="instructions">
-              <li>http://twitter.com/#!/leed0/status/65058247593299968</li>
-              <li>https://gist.github.com/796300</li>
-              <li>http://www.youtube.com/watch?v=9yc71idSics</li>
-              <li>http://www.flickr.com/photos/onement/1239189689/</li>
-              <li>http://en.wikipedia.org/wiki/Bardo_Pond</li>
+            <ul id="examples">
+              <li><a href="https://gist.github.com/796300">https://gist.github.com/796300</li>
+              <li><a href="http://www.youtube.com/watch?v=9yc71idSics">http://www.youtube.com/watch?v=9yc71idSics</a></li>
+              <li><a href="http://www.flickr.com/photos/onement/1239189689/">http://www.flickr.com/photos/onement/1239189689/</a></li>
+              <li><a href="http://en.wikipedia.org/wiki/Bardo_Pond">http://en.wikipedia.org/wiki/Bardo_Pond</a></li>
+              <li><a href="http://twitter.com/#!/leed0/status/65058247593299968">http://twitter.com/#!/leed0/status/65058247593299968</a></li>
             </ul>
           </td>
           <td>
