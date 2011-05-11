@@ -18,6 +18,10 @@ sub prepare_source {
       for my $child (@children) {
         last if $child->attr("id") eq "toc";
         if ($child->tag eq "p") {
+          for my $a ($child->find("a")) {
+            my $href = $a->attr("href");
+            $a->attr("href", "http://www.wikipedia.org/$href");
+          }
           $output .= $child->as_HTML;
         }
       }
