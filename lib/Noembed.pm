@@ -7,7 +7,7 @@ use JSON;
 use parent 'Plack::Component';
 
 our $VERSION = "0.01";
-our $DEFAULT = [ qw/Twitter GitHub YouTube Wikipedia oEmbed/ ];
+our $DEFAULT = [ qw/Twitter GiantBomb GitHub YouTube Wikipedia oEmbed/ ];
 
 sub prepare_app {
   my $self = shift;
