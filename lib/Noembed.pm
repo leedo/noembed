@@ -61,7 +61,7 @@ sub json_res {
   [
     200,
     [
-      'Content-Type', 'application/json',
+      'Content-Type', 'application/json;charset=utf-8',
       'Content-Length', length $body
     ],
     [$body]

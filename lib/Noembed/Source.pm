@@ -48,6 +48,7 @@ sub download {
           my $data = $self->filter($body);
           $data->{type} = "rich";
           $data->{url} = $url;
+          $data->{title} ||= $url;
           $data->{provider_name} ||= $self->provider_name;
           $cb->( encode_json($data), "" );
         };

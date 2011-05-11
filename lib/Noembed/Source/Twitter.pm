@@ -33,7 +33,7 @@ sub filter {
   $data->{source} = encoded_string $data->{source};
   my $html = $self->{template}->($data)->as_string; 
   +{
-    title => "Tweet from $data->{user}{screen_name}",
+    title => "Tweet by $data->{user}{name}",
     html => $html,
   };
 }
@@ -48,7 +48,7 @@ sub get_template {
   #tweet-<?= $id ?> {
     background-color: #fafafa;
     color: #333;
-    max-width: 400px;
+    max-width: 500px;
     border-radius: 5px;
     -webkit-box-shadow: 0px 2px 2px rgba(0,0,0,0.5);
     padding: 10px 15px;
@@ -67,6 +67,7 @@ sub get_template {
   #tweet-<?= $id ?> div.tweet_text {
     clear: both;
     padding: 8px 0;
+    font-size: 16px;
   }
   #tweet-<?= $id ?> div.tweet_screen_name {
     font-weight: bold;

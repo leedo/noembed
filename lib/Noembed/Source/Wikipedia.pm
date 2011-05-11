@@ -25,7 +25,7 @@ sub prepare_source {
           $output .= $child->as_HTML;
         }
       }
-      return $output;
+      return css()."<div class='wikipedia-embed'>$output</div>";
     };
   };
 }
@@ -42,6 +42,19 @@ sub filter {
 sub matches {
   my ($self, $url) = @_;
   return $url =~ $self->{re};
+}
+
+sub css {
+  q{
+<style type="text/css">
+  div.wikipedia-embed {
+    background: #fff;
+    border: 1px solid #ccc;
+    font-size: 12px;
+    padding: 5px;
+  }  
+</style>
+  };
 }
 
 1;
