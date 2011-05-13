@@ -48,8 +48,8 @@ sub get_template {
   #tweet-<?= $id ?> {
     background-color: #fafafa;
     color: #333;
-    max-width: 500px;
     border-radius: 5px;
+    max-width: 500px;
     -webkit-box-shadow: 0px 2px 2px rgba(0,0,0,0.5);
     padding: 10px 15px;
   }
@@ -67,16 +67,18 @@ sub get_template {
   #tweet-<?= $id ?> div.tweet_text {
     clear: both;
     padding: 8px 0;
-    font-size: 16px;
   }
   #tweet-<?= $id ?> div.tweet_screen_name {
     font-weight: bold;
-    font-size: 16px;
     margin: 2px 0;
   }
   #tweet-<?= $id ?> div.tweet_info,
   #tweet-<?= $id ?> div.tweet_name {
-    font-size: 12px;
+    color: #999;
+  }
+  #tweet-<?= $id ?> div.tweet_info a,
+  #tweet-<?= $id ?> div.tweet_info {
+    font-size: 10px;
     color: #999;
   }
 </style>
@@ -84,7 +86,7 @@ sub get_template {
   <div class="tweet_user">
     <div class="tweet_image">
       <a href="http://www.twitter.com/<?= $user->{screen_name} ?>">
-        <img src="<?= $user->{profile_image_url} ?>">
+        <img height="32" src="<?= $user->{profile_image_url} ?>">
       </a>
     </div>
     <div class="tweet_screen_name">
@@ -105,13 +107,15 @@ sub get_template {
   var elem = document.getElementById("tweet-<?= $id ?>").down(".tweet_created_at");
   var date = new Date(elem.innerHTML);
 
-  var hours = date.getHours() + 1;
-  if (hours.length < 2) hours = "0"+hours;
-  var minutes = date.getMinutes();
-  if (minutes.length < 2) minutes = "0"+minutes;
+  if (date) {
+    var hours = date.getHours() + 1;
+    if (hours.length < 2) hours = "0"+hours;
+    var minutes = date.getMinutes();
+    if (minutes.length < 2) minutes = "0"+minutes;
 
-  elem.innerHTML =  hours + ":" + minutes+ " " + months[date.getMonth()]
-                 + " " + date.getDate() + ", " + date.getFullYear();
+    elem.innerHTML =  hours + ":" + minutes+ " " + (months[date.getMonth()])
+                   + " " + date.getDate() + ", " + date.getFullYear();
+  }
 </script>
   };
 

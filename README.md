@@ -1,25 +1,30 @@
 # Noembed - oEmbed everything.
 
-<a href="http://www.oembed.com/">oEmbed</a> is nice. Unfortunately, not everything supports oEmbed. Worse,
-the sites that <em>do</em> have support don't provide a consistent
-interface. Noembed provides a single <a href="/embed">endpoint</a> to get content
-from a large list of sites, even sites without oEmbed support!
+<a href="http://www.oembed.com/">oEmbed</a> is nice. Unfortunately, not
+everything supports oEmbed. Worse, the sites that <em>do</em> support
+it don't provide a consistent interface. Noembed provides a single <a
+href="/embed">url</a> to get embeddable content from a large list of
+sites, even sites without oEmbed support!
 
 Additionally, Noembed guarantees that all responses will have
 <code>html</code>, <code>title</code>, <code>url</code>,  and
-<code>provider_name</code> fields. This means fewer special
-cases dealing with missing information.
+<code>provider_name</code> fields. This means fewer special cases dealing
+with missing information.
+
+A simple demo is <a href="demo.html">available here</a>.
 
 ##Usage
 
-Treat Noembed like a regular oEmbed provider, but use any of the supported sites
+Treat Noembed like a regular oEmbed provider, but use any of the <a href="#supported-sites">supported sites</a>
 for the <code>url</code> parameter. Noembed also supports a <code>callback</code>
 parameter for JSONP.
     
 An example request might look like this:
+
 <pre>http://www.noembed.com/embed?url=http%3A//www.youtube.com/watch%3Fv%3DbDOYN-6gdRE&amp;callback=my_embed_function</pre>
 
 And the response will look like:
+
 
 <pre>
 my_embed_function(
@@ -42,7 +47,9 @@ my_embed_function(
 ) 
 </pre>
 
-## Embed sites
+## Supported sites
+
+### Existing oEmbed
 
  * Flickr
  * Viddler
@@ -50,11 +57,17 @@ my_embed_function(
  * Hulu
  * Vimeo
 
-## Non-oEmbed sites
+### Improved oEmbed
 
- * <a href="http://www.youtube.com">YouTube</a> Uses <code>&lt;iframe&gt;</code> so HTML5 video works.
- * <a href="http://www.wikipedia.org">Wikipedia</a> Includes all paragraphs leading up the the TOC. Includes formatting and links.
- * <a href="http://gist.github.com">Gist</a>
+ * Flickr - Photo links are put into an <code>&lt;img&gt;</code> tag.
+ * GitHub Gist - Includes the full gist instead of only the first 3 lines.
+ * YouTube - Uses an <code>&lt;iframe&gt;</code> so HTML5 video works.
+
+### Other
+ * Twitter - Renders tweet along with metadata information.
+ * Wikipedia - Includes all paragraphs leading up the the TOC. Includes formatting and links.
+ * Giant Bomb - Links to videos will return a <code>&lt;video&gt;</code> tag.
+
 
 ## Development
 
@@ -74,8 +87,8 @@ was its lack of guaranteed <code>html</code> field. Also, it is popular so it
 regularly goes over its usage limits.
 
 <a href="http://embed.ly/">embed.ly</a>. I have not tried this service, but it
-claims to support hundreds of sites. Unfortunatly, you can not add your own services
-since the source is not available.
+lists support for hundreds of sites. Unfortunatly, you can not add your own providers,
+so you are limited to what they support.
 
 &copy; 2012 Lee Aylward
 
