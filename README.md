@@ -90,5 +90,5 @@ regularly goes over its usage limits.
 lists support for hundreds of sites. Unfortunatly, you can not add your own providers,
 so you are limited to what they support.
 
-&copy; 2012 Lee Aylward
+&copy; 2011 Lee Aylward
 
