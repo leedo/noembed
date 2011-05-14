@@ -1,18 +1,18 @@
 package Noembed;
 
-use Class::Load qw/try_load_class/;
+use Module::Find ();
+use Class::Load;
 use Plack::Request;
 use JSON;
 
 use parent 'Plack::Component';
 
 our $VERSION = "0.01";
-our $DEFAULT = [ qw/Twitter GiantBomb GitHub YouTube Wikipedia oEmbed/ ];
 
 sub prepare_app {
   my $self = shift;
 
-  $self->{sources} ||= $DEFAULT;
+  $self->{sources} ||= [ Module::Find::findsubmod("Noembed::Source") ];
   $self->{providers} = [];
 
   $self->register_provider($_) for @{$self->{sources}};
@@ -84,11 +84,11 @@ sub _source_opts {
 sub register_provider {
   my ($self, $class) = @_;
 
-  if ($class !~ s/^\+//) {
+  if ($class !~ /^Noembed::Source::/ and $class !~ s/^\+//) {
     $class = "Noembed::Source::$class";
   }
 
-  my ($loaded, $error) = try_load_class($class);
+  my ($loaded, $error) = Class::Load::try_load_class($class);
   if ($loaded) {
     my $provider = $class->new($self->_source_opts);
     push @{ $self->{providers} }, $provider;
