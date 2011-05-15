@@ -75,8 +75,6 @@ sub _css {
   q{
 <style type="text/css">
   div.wikipedia-embed {
-    color: #000;
-    background: #fff;
     border: 1px solid #ccc;
     font-size: 12px;
     padding: 5px;
