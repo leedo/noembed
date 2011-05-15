@@ -23,7 +23,7 @@ sub _extract_content {
   if ($image) {
     my ($img) = $image->find("img");
     if ($img) {
-      return '<a href="'.$img->attr("src").'">'.$img->as_HTML.'</a>';
+      return '<a href="'.$img->attr("src").'" target="_blank">'.$img->as_HTML.'</a>';
     }
   }
 
@@ -47,6 +47,7 @@ sub _extract_text_content {
       # fix the links
       for my $a ($child->find("a")) {
         my $href = $a->attr("href");
+        $a->attr("target", "_blank");
         $a->attr("href", "http://www.wikipedia.org/$href");
       }
 
