@@ -12,6 +12,7 @@ requires 'Web::Scraper' => '0';
 requires 'Web::oEmbed' => '0';
 requires 'Class::Load' => '0';
 requires 'Module::Find' => '0';
+requires 'List::MoreUtils' => '0';
 test_requires 'Test::More' => '0.86';
 
 WriteAll;
