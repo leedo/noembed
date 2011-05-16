@@ -6,6 +6,7 @@ use Noembed;
 
 builder {
   enable JSONP;
-  mount "/demo.html" => Plack::App::File->new(file => "demo.html");
+  mount "/"      => Plack::App::File->new(file => "index.html");
+  mount "/demo"  => Plack::App::File->new(file => "demo.html");
   mount "/embed" => Noembed->new->to_app;
 };

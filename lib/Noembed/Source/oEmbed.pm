@@ -10,7 +10,6 @@ our $DEFAULT = [
   ['http://*viddler.com/*', 'http://lab.viddler.com/services/oembed/'],
   ['http://qik.com/video/*', 'http://qik.com/api/oembed.{format}'],
   ['http://www.hulu.com/watch/*', 'http://www.hulu.com/api/oembed.{format}'],
-  ['http://www.vimeo.com/*', 'http://www.vimeo.com/api/oembed.{format}'],
 ];
 
 sub prepare_source {
