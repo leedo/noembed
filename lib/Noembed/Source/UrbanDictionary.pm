@@ -22,10 +22,16 @@ sub filter {
 
   my $data = $self->{scraper}->scrape($body);
 
+  my $html = _css() . '<div class="urban-dictionary-def">'
+           . $data->{definitions}->[0] . '</div>';
+
+  my $title = $data->{words}->[0];
+  $title =~ s/^\s//ms;
+  $title =~ s/\s+$//ms;
+
   return +{
-    title => $data->{words}->[0],
-    html  => _css() . '<div class="urban-dictionary-def">'
-           . $data->{definitions}->[0] . '</div>',
+    title => $title,
+    html  => $html,
   }
 }
 
