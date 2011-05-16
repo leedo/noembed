@@ -67,6 +67,7 @@ my_embed_function(
  * Wikipedia - Includes all paragraphs leading up the the TOC. Includes formatting and links.
  * Giant Bomb - Links to videos will return a <code>&lt;video&gt;</code> tag.
  * Twitpic
+ * UrbanDictionary
 
 
 ## Development
