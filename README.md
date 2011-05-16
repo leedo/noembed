@@ -51,22 +51,22 @@ my_embed_function(
 
 ### Existing oEmbed
 
- * Flickr
  * Viddler
  * Qik
  * Hulu
- * Vimeo
 
 ### Improved oEmbed
 
  * Flickr - Photo links are put into an <code>&lt;img&gt;</code> tag.
  * GitHub Gist - Includes the full gist instead of only the first 3 lines.
  * YouTube - Uses an <code>&lt;iframe&gt;</code> so HTML5 video works.
+ * Vimeo - Sets <code>&lt;iframe&gt;</code> width to 640 instead of native video width, which can get huge.
 
 ### Other
  * Twitter - Renders tweet along with metadata information.
  * Wikipedia - Includes all paragraphs leading up the the TOC. Includes formatting and links.
  * Giant Bomb - Links to videos will return a <code>&lt;video&gt;</code> tag.
+ * Twitpic
 
 
 ## Development
