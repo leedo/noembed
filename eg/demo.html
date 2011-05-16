@@ -14,7 +14,7 @@
           }
 
           var query = { url : url.trim() };
-          window.history.pushState({}, "", "/demo.html?"+Object.toQueryString(query));
+          window.history.pushState({}, "", "/demo?"+Object.toQueryString(query));
 
           $('embed').update("<span class='status'>embeding "+url+"&hellip;</span>");
 
