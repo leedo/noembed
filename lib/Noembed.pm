@@ -99,9 +99,9 @@ sub add_lock {
 }
 
 sub end_lock {
-  my ($self, $url, $response) = @_;
-  $_->($response) for @{$self->{locks}{$url}};
-  delete $self->{locks}{$url};
+  my ($self, $url, $res) = @_;
+  my $locks = delete $self->{locks}{$url};
+  $_->([@$res]) for @$locks;
 }
 
 sub has_lock {
