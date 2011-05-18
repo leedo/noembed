@@ -14,6 +14,7 @@ sub prepare_app {
 
   $self->{sources} ||= [ Module::Find::findsubmod("Noembed::Source") ];
   $self->{providers} = [];
+  $self->{locks} = {};
 
   $self->register_provider($_) for @{$self->{sources}};
   delete $self->{sources};
@@ -30,29 +31,24 @@ sub call {
 sub handle_url {
   my ($self, $req) = @_;
 
-  my $url = $req->parameters->{url};
-  
-  for my $provider (@{$self->{providers}}) {
-    if ($provider->matches($url)) {
-      return _handle_match($provider, $req);
-      last;
-    }
-  }
-
-  error("no matching providers found for $url");
-}
-
-sub _handle_match {
-  my ($provider, $req) = @_;
-
   return sub {
     my $respond = shift;
+    my $url = $req->parameters->{url};
 
-    $provider->download($req, sub {
-      my ($body, $error) = shift;
-      $respond->($error ? error($error) : json_res($body));
-    });
-  };
+    $self->add_lock($url, $respond);
+  
+    for my $provider (@{$self->{providers}}) {
+      if ($provider->matches($url)) {
+        $provider->download($req, sub {
+          my ($body, $error) = shift;
+          $self->end_lock($url, $error ? error($error) : json_res($body));
+        });
+        return;
+      }
+    }
+
+    $self->end_lock(error("no matching providers found for $url"));
+  }
 }
 
 sub json_res {
@@ -89,6 +85,24 @@ sub register_provider {
   else {
     warn "Could not load provider $class: $error";
   }
+}
+
+sub add_lock {
+  my ($self, $url, $respond) = @_;
+
+  $self->{locks}{$url} ||= [];
+  push @{$self->{locks}{$url}}, $respond;
+}
+
+sub end_lock {
+  my ($self, $url, $response) = @_;
+  $_->($response) for @{$self->{locks}{$url}};
+  delete $self->{locks}{$url};
+}
+
+sub has_lock {
+  my ($self, $url) = @_;
+  exists $self->{locks}{$url} and @{$self->{locks}{$url}};
 }
 
 1;
