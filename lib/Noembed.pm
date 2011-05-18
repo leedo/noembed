@@ -33,9 +33,13 @@ sub handle_url {
 
   return sub {
     my $respond = shift;
+
     my $url = $req->parameters->{url};
+    my $working = $self->has_lock($url);
 
     $self->add_lock($url, $respond);
+
+    return if $working;
   
     for my $provider (@{$self->{providers}}) {
       if ($provider->matches($url)) {
