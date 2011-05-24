@@ -5,7 +5,6 @@ use JSON;
 use parent 'Noembed::Source';
 
 our $DEFAULT = [
-  ['http://*.youtube.com/*', 'http://www.youtube.com/oembed/'],
   ['http://*.flickr.com/*', 'http://www.flickr.com/services/oembed/'],
   ['http://*viddler.com/*', 'http://lab.viddler.com/services/oembed/'],
   ['http://qik.com/video/*', 'http://qik.com/api/oembed.{format}'],
