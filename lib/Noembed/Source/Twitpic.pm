@@ -20,7 +20,11 @@ sub matches {
 
 sub filter {
   my ($self, $body) = @_;
+
   my $data = $self->{scraper}->scrape($body);
+
+  $data->{caption} =~ s/^\s+//ms;
+  $data->{caption} =~ s/\s+$//ms;
 
   return +{
     html => '<a href="'.$data->{image}.'"><img src="'.$data->{image}.'"></a>',
