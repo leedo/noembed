@@ -87,7 +87,7 @@
     <p>
       An example request might look like this:
     </p>
-    <pre>http://www.noembed.com/embed?url=http%3A//www.youtube.com/watch%3Fv%3DbDOYN-6gdRE&amp;callback=my_embed_function</pre>
+    <pre>http://noembed.com/embed?url=http%3A//www.youtube.com/watch%3Fv%3DbDOYN-6gdRE&amp;callback=my_embed_function</pre>
     </p>
       And the response will look like:
     </p>
@@ -111,6 +111,10 @@ my_embed_function(
   }
 ) 
 </pre>
+    <p>
+    <em>Note:</em> <a href="http://code.google.com/p/chromium/issues/detail?id=81637">Chrome now blocks insecure scripts from loading on secure sites</a>.
+    So, when using Noembed with JSONP on an <code>https</code> site be sure to use <code>https://noembed.com/embed</code>.
+    </p>
 
     <a name="supported-sites"></a>
     <h2>Supported sites</h2>
@@ -142,7 +146,7 @@ my_embed_function(
           Includes all paragraphs leading up the the TOC. Includes formatting and links.</li>
       <li>Giant Bomb - Links to videos will return a <code>&lt;video&gt;</code> tag</li>
       <li>Twitpic</li>
-      <li>UrbanDictionary</li>
+      <li>Urban Dictionary</li>
     </ul>
 
     <h2>Development</h2>
