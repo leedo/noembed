@@ -103,7 +103,7 @@ sub get_template {
   </div>
 <div>
 <script type="text/javascript">
-  var months = ['Jan','Feb','Mar','Apr','June','July','Aug','Sept','Oct','Nov','Dec'];
+  var months = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'];
   var elem = document.getElementById("tweet-<?= $id ?>").down(".tweet_created_at");
   var date = new Date(elem.innerHTML);
 
