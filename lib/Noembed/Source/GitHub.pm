@@ -1,5 +1,6 @@
 package Noembed::Source::GitHub;
 
+use Encode;
 use parent 'Noembed::Source';
 
 sub prepare_source {
@@ -22,7 +23,7 @@ sub provider_name { "GitHub" }
 sub filter {
   my ($self, $body) = @_;
   return +{
-    html => $body,
+    html => decode("utf8", $body),
   };
 }
 
