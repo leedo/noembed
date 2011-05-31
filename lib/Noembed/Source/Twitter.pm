@@ -30,7 +30,8 @@ sub filter {
   my ($self, $body) = @_;
 
   my $data = decode_json $body;
-  $data->{source} = encoded_string $data->{source};
+  $data->{$_} = encoded_string $data->{$_} for qw/source text/;
+
   my $html = $self->{template}->($data)->as_string; 
   +{
     title => "Tweet by $data->{user}{name}",
