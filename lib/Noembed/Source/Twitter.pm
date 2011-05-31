@@ -85,12 +85,12 @@ sub get_template {
 <div class="tweet" id="tweet-<?= $id ?>">
   <div class="tweet_user">
     <div class="tweet_image">
-      <a href="http://www.twitter.com/<?= $user->{screen_name} ?>">
+      <a href="http://www.twitter.com/<?= $user->{screen_name} ?>" target="_blank">
         <img height="32" src="<?= $user->{profile_image_url} ?>">
       </a>
     </div>
     <div class="tweet_screen_name">
-      <a href="http://www.twitter.com/<?= $user->{screen_name} ?>">
+      <a href="http://www.twitter.com/<?= $user->{screen_name} ?>" target="_blank">
         @<?= $user->{screen_name} ?>
       </a>
     </div>
@@ -98,7 +98,7 @@ sub get_template {
   </div>
   <div class="tweet_text"><?= $data->{text} ?></div>
   <div class="tweet_info">
-    <a href="http://www.twitter.com/<?= $user->{screen_name}?>/status/<?= $id ?>"><span class="tweet_created_at"><?= $data->{created_at} ?></span></a>
+    <a target="_blank" href="http://www.twitter.com/<?= $user->{screen_name}?>/status/<?= $id ?>"><span class="tweet_created_at"><?= $data->{created_at} ?></span></a>
     via <?= $data->{source} ?>
   </div>
 <div>
@@ -109,9 +109,8 @@ sub get_template {
 
   if (date) {
     var hours = date.getHours() + 1;
-    if (hours.length < 2) hours = "0"+hours;
     var minutes = date.getMinutes();
-    if (minutes.length < 2) minutes = "0"+minutes;
+    if (minutes < 10) minutes = "0"+minutes.toString();
 
     elem.innerHTML =  hours + ":" + minutes+ " " + (months[date.getMonth()])
                    + " " + date.getDate() + ", " + date.getFullYear();
