@@ -51,7 +51,7 @@ sub handle_url {
       }
     }
 
-    $self->end_lock(error("no matching providers found for $url"));
+    $self->end_lock($url, error("no matching providers found for $url"));
   }
 }
 
