@@ -49,13 +49,12 @@ sub filter {
   my $data = $self->{scraper}->scrape($body);
   +{
     title => $data->{title},
-    html => _css().'<div class="beer-advocate-embed">'.$data->{html}.'</div>',
+    html => "<div class=\"beer-advocate-embed\">$data->{html}</div>",
   };
 }
 
-sub _css {
-'<style type="text/css">
-  div.beer-advocate-embed {
+sub style {
+'div.beer-advocate-embed {
     border: 1px solid #ccc;
     padding: 5px;
     max-width: 475px;
@@ -69,8 +68,7 @@ sub _css {
     font-size: 22px;
     color: #c00;
     font-weight: bold;
-  }
-</style>';
+  }';
 }
 
 1;

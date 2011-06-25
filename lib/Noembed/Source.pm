@@ -46,6 +46,9 @@ sub download {
       if ($headers->{Status} == 200) {
         eval {
           my $data = $self->filter($body);
+          if ($self->can("style")) {
+            $data->{html} .= '<style type="text/css">'.$self->style.'</style>';
+          }
           $data->{type} = "rich";
           $data->{url} = $url;
           $data->{title} ||= $url;

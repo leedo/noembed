@@ -23,14 +23,13 @@ sub filter {
   my ($self, $body) = @_;
   my $data = $self->{scraper}->scrape($body);
   return +{
-    html => _css().'<div class="ascii-fart-embed">'.$data->{html}.'</div>',
+    html => "<div class=\"ascii-fart-embed\">'$data->{html}</div>",
     title => $data->{title},
   };
 }
 
-sub _css {
-'<style type="text/css">
-  div.ascii-fart-embed {
+sub style {
+'div.ascii-fart-embed {
     width: 100%;
     overflow: hidden;
   }
@@ -42,8 +41,7 @@ sub _css {
     color: #fff;
     font-weight: bold;  
     margin: 0;
-  }
-</style>'
+  }';
 }
 
 1;

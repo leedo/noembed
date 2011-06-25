@@ -55,7 +55,7 @@ sub _extract_text_content {
     }
   }
 
-  return _css()."<div class='wikipedia-embed'>$output</div>";
+  return "<div class='wikipedia-embed'>$output</div>";
 }
 
 sub provider_name { "Wikipedia" }
@@ -72,16 +72,12 @@ sub matches {
   return $url =~ $self->{re};
 }
 
-sub _css {
-  q{
-<style type="text/css">
-  div.wikipedia-embed {
+sub style {
+  'div.wikipedia-embed {
     border: 1px solid #ccc;
     font-size: 12px;
     padding: 5px;
-  }  
-</style>
-  };
+  }';
 }
 
 1;
