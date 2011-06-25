@@ -17,15 +17,33 @@ sub matches {
   return $url =~ $self->{re};
 }
 
-sub provider_name { "Ascii Art Farts" }
+sub provider_name { "ASCII Art Farts" }
 
 sub filter {
   my ($self, $body) = @_;
   my $data = $self->{scraper}->scrape($body);
   return +{
-    html => '<div class="ascii-fart-embed">'.$data->{html}.'</div>',
+    html => _css().'<div class="ascii-fart-embed">'.$data->{html}.'</div>',
     title => $data->{title},
   };
+}
+
+sub _css {
+'<style type="text/css">
+  div.ascii-fart-embed {
+    width: 100%;
+    overflow: hidden;
+  }
+  div.ascii-fart-embed pre {
+    padding: 5px 10px;
+    display: block;
+    float: left;
+    background: #000;
+    color: #fff;
+    font-weight: bold;  
+    margin: 0;
+  }
+</style>'
 }
 
 1;
