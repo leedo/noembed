@@ -23,7 +23,7 @@ sub filter {
   my ($self, $body) = @_;
   my $data = $self->{scraper}->scrape($body);
   return +{
-    html => "<div class=\"ascii-fart-embed\">'$data->{html}</div>",
+    html => "<div class=\"ascii-fart-embed\">$data->{html}</div>",
     title => $data->{title},
   };
 }
