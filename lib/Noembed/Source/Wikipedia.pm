@@ -23,7 +23,8 @@ sub _extract_content {
   if ($image) {
     my ($img) = $image->find("img");
     if ($img) {
-      return '<a href="'.$img->attr("src").'" target="_blank">'.$img->as_HTML.'</a>';
+      my $src = $img->attr("src");
+      return "<a href=\"$src\" target=\"_blank\"><img src=\"$src\"></a>";
     }
   }
 
