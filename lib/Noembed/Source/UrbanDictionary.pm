@@ -37,11 +37,17 @@ sub filter {
 sub provider_name { "Urban Dictionary" }
 
 sub style {
-  '.urban-dictionary-def {
-    border: 1px solid #ccc;
-    font-size: 12px;
-    padding: 5px;
-  }';
+  $self->{style} ||= do {
+    local $/;
+    <DATA>;
+  };
 }
 
 1;
+
+__DATA__
+.urban-dictionary-def {
+  border: 1px solid #ccc;
+  font-size: 12px;
+  padding: 5px;
+}

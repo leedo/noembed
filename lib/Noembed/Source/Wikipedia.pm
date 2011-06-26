@@ -73,11 +73,17 @@ sub matches {
 }
 
 sub style {
-  'div.wikipedia-embed {
-    border: 1px solid #ccc;
-    font-size: 12px;
-    padding: 5px;
-  }';
+  $self->{style} ||= do {
+    local $/;
+    <DATA>
+  };
 }
 
 1;
+
+__DATA__
+div.wikipedia-embed {
+  border: 1px solid #ccc;
+  font-size: 12px;
+  padding: 5px;
+}

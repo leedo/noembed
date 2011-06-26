@@ -54,21 +54,27 @@ sub filter {
 }
 
 sub style {
-'div.beer-advocate-embed {
-    border: 1px solid #ccc;
-    padding: 5px;
-    max-width: 475px;
-    background: #fff;
-    color: #000;
-  }
-  div.beer-advocate-embed table td {
-    font-size: 11px;
-  }
-  div.beer-advocate-embed span.BAscore_big {
-    font-size: 22px;
-    color: #c00;
-    font-weight: bold;
-  }';
+  $self->{style} ||= do {
+    local $/;
+    <DATA>;
+  };
 }
 
 1;
+
+__DATA__
+div.beer-advocate-embed {
+  border: 1px solid #ccc;
+  padding: 5px;
+  max-width: 475px;
+  background: #fff;
+  color: #000;
+}
+div.beer-advocate-embed table td {
+  font-size: 11px;
+}
+div.beer-advocate-embed span.BAscore_big {
+  font-size: 22px;
+  color: #c00;
+  font-weight: bold;
+}

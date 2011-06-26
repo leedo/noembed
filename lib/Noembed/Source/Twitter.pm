@@ -12,7 +12,7 @@ sub matches {
 
 sub prepare_source {
   my $self = shift;
-  $self->{template} = get_template();
+  $self->{template} = do { local $/; build_mt <DATA> };
   $self->{re} = qr{https?://(?:www\.)?twitter\.com/(?:#!/)?[^/]+/status(?:es)?/(\d+)};
 }
 
@@ -39,12 +39,13 @@ sub filter {
   };
 }
 
-sub get_template {
+1;
 
-  my $template_string = q{
+__DATA__
 ? my $data = $_[0];
 ? my $id = $data->{id};
 ? my $user = $data->{user};
+
 <style type="text/css">
   #tweet-<?= $id ?> {
     background-color: #fafafa;
@@ -83,6 +84,7 @@ sub get_template {
     color: #999;
   }
 </style>
+
 <div class="tweet" id="tweet-<?= $id ?>">
   <div class="tweet_user">
     <div class="tweet_image">
@@ -103,6 +105,7 @@ sub get_template {
     via <?= $data->{source} ?>
   </div>
 <div>
+
 <script type="text/javascript">
   var months = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'];
   var elem = document.getElementById("tweet-<?= $id ?>").down(".tweet_created_at");
@@ -117,9 +120,3 @@ sub get_template {
                    + " " + date.getDate() + ", " + date.getFullYear();
   }
 </script>
-  };
-
-  return build_mt($template_string);
-}
-
-1;
