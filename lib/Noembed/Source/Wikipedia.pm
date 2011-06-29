@@ -2,7 +2,6 @@ package Noembed::Source::Wikipedia;
 
 use Web::Scraper;
 use List::MoreUtils qw/any/;
-use JSON;
 
 use parent 'Noembed::Source';
 

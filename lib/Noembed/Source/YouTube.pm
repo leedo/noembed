@@ -29,7 +29,7 @@ sub filter {
   my $height = $data->{height} || 385;
 
   $data->{html} = "<iframe type='text/html' width='$width' height='$height'"
-                . " src='http://www.youtube.com/embed/$id' frameborder=0></iframe>";
+                . " src='https://www.youtube.com/embed/$id' frameborder=0></iframe>";
   return $data;
 }
 
