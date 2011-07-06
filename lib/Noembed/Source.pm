@@ -1,5 +1,6 @@
 package Noembed::Source;
 
+use Encode;
 use JSON;
 use AnyEvent::HTTP;
 
@@ -42,6 +43,8 @@ sub download {
     },
     sub {
       my ($body, $headers) = @_;
+
+      $body = decode("utf8", $body);
 
       if ($headers->{Status} == 200) {
         eval {
