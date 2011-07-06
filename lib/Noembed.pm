@@ -44,7 +44,7 @@ sub handle_url {
     for my $provider (@{$self->{providers}}) {
       if ($provider->matches($url)) {
         $provider->download($req, sub {
-          my ($body, $error) = shift;
+          my ($body, $error) = @_;
           $self->end_lock($url, $error ? error($error) : json_res($body));
         });
         return;
