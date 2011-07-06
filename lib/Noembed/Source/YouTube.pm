@@ -10,6 +10,8 @@ sub prepare_source {
 
 sub request_url {
   my ($self, $url, $params) = @_;
+  my ($id) = $url =~ $self->{re};
+  $url = "http://www.youtube.com/watch?v=$id";
   return "http://www.youtube.com/oembed/?url=$url";
 }
 
