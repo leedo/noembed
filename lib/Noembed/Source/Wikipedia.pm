@@ -2,6 +2,7 @@ package Noembed::Source::Wikipedia;
 
 use Web::Scraper;
 use List::MoreUtils qw/any/;
+use Encode;
 
 use parent 'Noembed::Source';
 
@@ -63,7 +64,7 @@ sub provider_name { "Wikipedia" }
 sub filter {
   my ($self, $body) = @_;
 
-  my $res = $self->{scraper}->scrape($body);
+  my $res = $self->{scraper}->scrape(decode("utf8", $body));
   return $res;
 }
 
