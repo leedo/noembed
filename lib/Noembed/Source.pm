@@ -59,11 +59,12 @@ sub download {
           $cb->( encode_json($data), "" );
         };
         warn "Error after http request: $@" if $@;
-        $cv->send unless $nb;
       }
       else {
         $cb->("", $headers->{Reason});
       }
+
+      $cv->send unless $nb;
     };
 
   $cv->recv unless $nb;
