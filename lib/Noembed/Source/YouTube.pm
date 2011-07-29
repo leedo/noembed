@@ -5,7 +5,7 @@ use parent 'Noembed::Source';
 
 sub prepare_source {
   my $self = shift;
-  $self->{re} = qr{^https?://[^\.]+\.youtube\.com/watch/?\?v=(.+)}i;
+  $self->{re} = qr{^https?://[^\.]+\.youtube\.com/watch/?\?(?:.+&)?v=(.+)}i;
 }
 
 sub request_url {
