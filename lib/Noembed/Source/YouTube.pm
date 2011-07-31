@@ -33,7 +33,7 @@ sub filter {
   my $height = $data->{height} || 385;
 
   # tack on start parameter if timecode was in original URL
-  if (my @t = $url =~ /#t=(?:(\d+)m)?(\d+)s/) {
+  if (my @t = $url =~ /#a?t=(?:(\d+)m)?(\d+)s/) {
     my $seconds = pop @t;
     if (@t) {
       $seconds += $t[0] * 60;
