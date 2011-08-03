@@ -66,6 +66,7 @@ my_embed_function(
  * Twitter - Renders tweet along with metadata information.
  * Wikipedia - Includes all paragraphs leading up the the TOC. Includes formatting and links.
  * Giant Bomb - Links to videos will return a <code>&lt;video&gt;</code> tag.
+ * Spotify - Renders metadata as spotify: URI (opens in Spotify app).
  * Twitpic
  * UrbanDictionary
 
