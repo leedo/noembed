@@ -54,6 +54,8 @@ div.spotify-embed {
   background: #373737;
   color: #999;
   overflow: hidden;
+  font-size: 1.2em;
+  padding: 10px;
 }
 
 div.spotify-embed a {
@@ -62,7 +64,7 @@ div.spotify-embed a {
 }
 
 div.spotify-embed span.spotify-title {
-  font-size: 2em;
+  font-size: 1.5em;
   display: block;
 }
 div.spotify-embed span.spotify-title a {
