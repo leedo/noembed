@@ -33,7 +33,7 @@ sub filter {
   return +{
     title => $data->{title},
     html  => '<div class="spotify-embed">'
-           .  '<img class="spotify-image" src="'.$data->{coverart}.'"/>'
+           .  '<img class="spotify-image" width="180" height="180" src="'.$data->{coverart}.'"/>'
            .  '<span class="spotify-title">'.$data->{track}.'</span>'
            .  '<span class="spotify-artist">'.$data->{artist}.'</span> from '
            .  '<span class="spotify-album">'.$data->{album}.'</span>'
