@@ -62,9 +62,7 @@ sub provider_name { "Wikipedia" }
 
 sub filter {
   my ($self, $body) = @_;
-
-  my $res = $self->{scraper}->scrape($body);
-  return $res;
+  $self->{scraper}->scrape($body);
 }
 
 sub matches {
@@ -72,18 +70,4 @@ sub matches {
   return $url =~ $self->{re};
 }
 
-sub style {
-  $self->{style} ||= do {
-    local $/;
-    <DATA>
-  };
-}
-
 1;
-
-__DATA__
-div.wikipedia-embed {
-  border: 1px solid #ccc;
-  font-size: 12px;
-  padding: 5px;
-}

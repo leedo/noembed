@@ -28,26 +28,4 @@ sub filter {
   };
 }
 
-sub style {
-  $self->{style} ||= do {
-    local $/;
-    <DATA>;
-  };
-}
-
 1;
-
-__DATA__
-div.ascii-fart-embed {
-  width: 100%;
-  overflow: hidden;
-}
-div.ascii-fart-embed pre {
-  padding: 5px 10px;
-  display: block;
-  float: left;
-  background: #000;
-  color: #fff;
-  font-weight: bold;  
-  margin: 0;
-}

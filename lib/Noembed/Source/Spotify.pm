@@ -2,6 +2,7 @@ package Noembed::Source::Spotify;
 
 use HTML::Entities;
 use Web::Scraper;
+use Text::MicroTemplate qw/encoded_string/;
 use parent 'Noembed::Source';
 
 sub prepare_source {
@@ -28,52 +29,13 @@ sub filter {
   my ($self, $body) = @_;
 
   my $data = $self->{scraper}->scrape($body);
+  $data->{$_} = encoded_string $data->{$_} for qw/track artist album/;
   $data->{title} =~ s/ on Spotify//;
 
   return +{
     title => $data->{title},
-    html  => '<div class="spotify-embed">'
-           .  '<img class="spotify-image" width="180" height="180" src="'.$data->{coverart}.'"/>'
-           .  '<span class="spotify-title">'.$data->{track}.'</span>'
-           .  '<span class="spotify-artist">'.$data->{artist}.'</span> from '
-           .  '<span class="spotify-album">'.$data->{album}.'</span>'
-           . '</div>'
-  }
-}
-
-sub style {
-  $self->{style} ||= do {
-    local $/;
-    <DATA>;
+    html  => $self->render($data),
   };
 }
 
 1;
-
-__DATA__
-div.spotify-embed {
-  background: #373737;
-  color: #999;
-  overflow: hidden;
-  font-size: 1.2em;
-  padding: 10px;
-}
-
-div.spotify-embed a {
-  color: #B3B3B3;
-  text-decoration: underline;
-}
-
-div.spotify-embed span.spotify-title {
-  font-size: 1.5em;
-  display: block;
-}
-div.spotify-embed span.spotify-title a {
-  color: #fff;
-  text-decoration: none;
-}
-
-div.spotify-embed img {
-  float: left;
-  margin-right: 10px;
-}

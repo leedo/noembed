@@ -6,11 +6,38 @@ use AnyEvent::HTTP;
 
 sub new {
   my ($class, %args) = @_;
+
   my $self = bless {%args}, $class;
+  die "render is required" unless defined $self->{render};
 
   $self->prepare_source if $self->can('prepare_source');
 
   return $self;
+}
+
+sub render {
+  my $self = shift;
+  $self->{render}->($self->filename("html"), @_);
+}
+
+sub style {
+  my $self = shift;
+  
+  # cache it
+  $self->{style} ||= do {
+    my $file = Noembed::style_dir() . "/" . $self->filename("css");
+    if (-e $file) {
+      open my $fh, "<", $file;
+      local $/;
+      <$fh>;
+    }
+  };
+}
+
+sub filename {
+  my ($self, $ext) = @_;
+  my ($name) = ref($self) =~ /:([^:]+)$/;
+  return "$name.$ext";
 }
 
 sub request_url {
@@ -49,9 +76,7 @@ sub download {
       if ($headers->{Status} == 200) {
         eval {
           my $data = $self->filter($body, $url);
-          if ($self->can("style")) {
-            $data->{html} .= '<style type="text/css">'.$self->style.'</style>';
-          }
+          $data->{html} .= '<style type="text/css">'.$self->style.'</style>';
           $data->{type} = "rich";
           $data->{url} = $url;
           $data->{title} ||= $url;
@@ -68,6 +93,15 @@ sub download {
     };
 
   $cv->recv unless $nb;
+}
+
+# default just keeps the downloaded content.
+# should be overridden.
+sub filter {
+  my ($self, $body) = @_;
+  return +{
+    html => $body
+  };
 }
 
 1;

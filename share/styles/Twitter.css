@@ -1,0 +1,36 @@
+.tweet-embed {
+  background-color: #fafafa;
+  color: #333;
+  border-radius: 5px;
+  max-width: 500px;
+  -webkit-box-shadow: 0px 2px 2px rgba(0,0,0,0.5);
+  padding: 10px 15px;
+}
+.tweet-embed a {
+  text-decoration: none;
+}
+.tweet-embed a:hover {
+  text-decoration: underline;
+}
+.tweet-embed div.tweet_image {
+  float: left;
+  margin-right: 5px;
+}
+.tweet-embed div.tweet_text {
+  clear: both;
+  padding: 8px 0;
+}
+.tweet-embed div.tweet_screen_name {
+  font-weight: bold;
+  margin: 2px 0;
+}
+.tweet-embed div.tweet_info,
+.tweet-embed div.tweet_name {
+  color: #999;
+}
+.tweet-embed div.tweet_info a,
+.tweet-embed div.tweet_info {
+  font-size: 10px;
+  color: #999;
+}
+

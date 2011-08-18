@@ -27,7 +27,7 @@ sub filter {
   $data->{caption} =~ s/\s+$//ms;
 
   return +{
-    html => '<a href="'.$data->{image}.'"><img src="'.$data->{image}.'"></a>',
+    html  => $self->render($data),
     title => $data->{caption},
   };
 }

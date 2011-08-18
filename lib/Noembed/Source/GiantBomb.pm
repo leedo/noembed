@@ -19,7 +19,7 @@ sub matches {
 }
 
 sub filter {
-  my ($self, $body ) = @_;
+  my ($self, $body) = @_;
   my ($title) = $body =~ $self->{title_re};
   my ($attr) = $body =~ $self->{attr_re};
   $attr = decode_entities $attr;

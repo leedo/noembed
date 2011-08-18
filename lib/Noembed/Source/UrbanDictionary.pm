@@ -22,32 +22,16 @@ sub filter {
 
   my $data = $self->{scraper}->scrape($body);
 
-  my $html = "<div class=\"urban-dictionary-def\">$data->{definitions}->[0]</div>";
-
   my $title = $data->{words}->[0];
   $title =~ s/^\s//ms;
   $title =~ s/\s+$//ms;
 
   return +{
     title => $title,
-    html  => $html,
+    html  => $self->render($data),
   }
 }
 
 sub provider_name { "Urban Dictionary" }
 
-sub style {
-  $self->{style} ||= do {
-    local $/;
-    <DATA>;
-  };
-}
-
 1;
-
-__DATA__
-.urban-dictionary-def {
-  border: 1px solid #ccc;
-  font-size: 12px;
-  padding: 5px;
-}

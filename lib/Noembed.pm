@@ -3,6 +3,8 @@ package Noembed;
 use Module::Find ();
 use Class::Load;
 use Plack::Request;
+use Text::MicroTemplate::File;
+use File::ShareDir qw/dist_dir/;
 use JSON;
 
 use parent 'Plack::Component';
@@ -12,12 +14,17 @@ our $VERSION = "0.01";
 sub prepare_app {
   my $self = shift;
 
-  $self->{sources} ||= [ Module::Find::findsubmod("Noembed::Source") ];
+  my $template = Text::MicroTemplate::File->new(
+    include_path => [template_dir()],
+    use_cache    => 2
+  );
+
+  warn template_dir();
+  $self->{render} = sub { $template->render_file(shift, @_) };
   $self->{providers} = [];
   $self->{locks} = {};
 
-  $self->register_provider($_) for @{$self->{sources}};
-  delete $self->{sources};
+  $self->register_provider($_) for Module::Find::findsubmod("Noembed::Source");
 }
 
 sub call {
@@ -26,6 +33,23 @@ sub call {
   my $req = Plack::Request->new($env);
   return error("url parameter is required") unless $req->parameters->{url};
   return $self->handle_url($req);
+}
+
+sub template_dir {
+  return share_dir() . "/templates";
+}
+
+sub style_dir {
+  return share_dir() . "/styles";
+}
+
+# yuck.
+sub share_dir {
+  my @try = ("share", "../share");
+  for (@try) {
+    return $_ if -e "$_/templates/Twitter.html";
+  }
+  dist_dir "Noembed";
 }
 
 sub handle_url {
@@ -83,7 +107,7 @@ sub register_provider {
 
   my ($loaded, $error) = Class::Load::try_load_class($class);
   if ($loaded) {
-    my $provider = $class->new;
+    my $provider = $class->new(render => $self->{render});
     push @{ $self->{providers} }, $provider;
   }
   else {

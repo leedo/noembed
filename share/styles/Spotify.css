@@ -1,0 +1,26 @@
+div.spotify-embed {
+  background: #373737;
+  color: #999;
+  overflow: hidden;
+  font-size: 1.2em;
+  padding: 10px;
+}
+
+div.spotify-embed a {
+  color: #B3B3B3;
+  text-decoration: underline;
+}
+
+div.spotify-embed span.spotify-title {
+  font-size: 1.5em;
+  display: block;
+}
+div.spotify-embed span.spotify-title a {
+  color: #fff;
+  text-decoration: none;
+}
+
+div.spotify-embed img {
+  float: left;
+  margin-right: 10px;
+}
