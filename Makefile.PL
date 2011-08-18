@@ -6,6 +6,7 @@ license 'perl';
 all_from 'lib/Noembed.pm';
 requires 'Plack' => '0';
 requires 'JSON' => 0;
+requires 'File::ShareDir' => 0;
 requires 'Text::MicroTemplate' => '0';
 requires 'AnyEvent::HTTP' => '0';
 requires 'Web::Scraper' => '0';
@@ -16,4 +17,6 @@ requires 'List::MoreUtils' => '0';
 requires 'HTML::Entities' => 0;
 test_requires 'Test::More' => '0.86';
 
+no_index directory => "eg";
+install_share;
 WriteAll;
