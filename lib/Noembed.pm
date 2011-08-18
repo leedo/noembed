@@ -19,7 +19,6 @@ sub prepare_app {
     use_cache    => 2
   );
 
-  warn template_dir();
   $self->{render} = sub { $template->render_file(shift, @_) };
   $self->{providers} = [];
   $self->{locks} = {};
