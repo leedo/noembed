@@ -19,7 +19,7 @@ sub prepare_app {
     use_cache    => 2
   );
 
-  $self->{render} = sub { $template->render_file(shift, @_) };
+  $self->{render} = sub { $template->render_file(@_) };
   $self->{providers} = [];
   $self->{locks} = {};
 
