@@ -4,7 +4,7 @@ use Module::Find ();
 use Class::Load;
 use Plack::Request;
 use Text::MicroTemplate::File;
-use File::ShareDir qw/dist_dir/;
+use File::ShareDir;
 use JSON;
 
 use parent 'Plack::Component';
@@ -48,7 +48,7 @@ sub share_dir {
   for (@try) {
     return $_ if -e "$_/templates/Twitter.html";
   }
-  dist_dir "Noembed";
+  File::ShareDir::dist_dir "Noembed";
 }
 
 sub handle_url {
