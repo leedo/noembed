@@ -1,5 +1,8 @@
 package Noembed;
 
+use strict;
+use warnings;
+
 use Module::Find ();
 use Class::Load;
 use Plack::Request;

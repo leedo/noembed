@@ -10,9 +10,16 @@ sub new {
   my $self = bless {%args}, $class;
   die "render is required" unless defined $self->{render};
 
-  $self->prepare_source if $self->can('prepare_source');
-
+  $self->prepare_source;
   return $self;
+}
+
+sub prepare_source { }
+
+sub filename {
+  my ($self, $ext) = @_;
+  my ($name) = ref($self) =~ /:([^:]+)$/;
+  return "$name.$ext";
 }
 
 sub render {
@@ -34,20 +41,16 @@ sub style {
   };
 }
 
-sub filename {
-  my ($self, $ext) = @_;
-  my ($name) = ref($self) =~ /:([^:]+)$/;
-  return "$name.$ext";
-}
-
 sub request_url {
   my ($self, $url, $params) = @_;
   return $url;
 }
 
+# default just keeps the downloaded content.
+# should be overridden.
 sub filter {
-  my $self = shift;
-  return @_;
+  my ($self, $body) = @_;
+  return +{ html => $body };
 }
 
 sub matches {
@@ -93,15 +96,6 @@ sub download {
     };
 
   $cv->recv unless $nb;
-}
-
-# default just keeps the downloaded content.
-# should be overridden.
-sub filter {
-  my ($self, $body) = @_;
-  return +{
-    html => $body
-  };
 }
 
 1;
