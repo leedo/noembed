@@ -8,7 +8,7 @@ sub new {
   my ($class, %args) = @_;
 
   my $self = bless {%args}, $class;
-  die "render is required" unless defined $self->{render};
+  croak "render is required" unless defined $self->{render};
 
   $self->prepare_source;
   return $self;
@@ -33,7 +33,7 @@ sub style {
   # cache it
   $self->{style} ||= do {
     my $file = Noembed::style_dir() . "/" . $self->filename("css");
-    if (-e $file) {
+    if (-r $file) {
       open my $fh, "<", $file;
       local $/;
       <$fh>;
@@ -54,7 +54,7 @@ sub filter {
 }
 
 sub matches {
-  die "must override matches method";
+  croak "must override matches method";
 }
 
 sub download {
@@ -86,7 +86,7 @@ sub download {
           $data->{provider_name} ||= $self->provider_name;
           $cb->( encode_json($data), "" );
         };
-        warn "Error after http request: $@" if $@;
+        carp "Error after http request: $@" if $@;
       }
       else {
         $cb->("", $headers->{Reason});
