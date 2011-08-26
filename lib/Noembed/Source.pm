@@ -1,5 +1,6 @@
 package Noembed::Source;
 
+use Carp;
 use Encode;
 use JSON;
 use AnyEvent::HTTP;
