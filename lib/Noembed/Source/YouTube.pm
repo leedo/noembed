@@ -1,6 +1,8 @@
 package Noembed::Source::YouTube;
 
 use JSON;
+use URI;
+use URI::QueryParam;
 use parent 'Noembed::Source';
 
 sub prepare_source {
@@ -10,10 +12,20 @@ sub prepare_source {
 
 sub request_url {
   my ($self, $req) = @_;
-  my ($id) = $req->url =~ $self->{re};
-  my $url = "http://www.youtube.com/watch?v=$id";
+  my $uri = URI->new("http://www.youtube.com/oembed/");
 
-  return "http://www.youtube.com/oembed/?url=$url";
+  my ($id) = $req->url =~ $self->{re};
+  $uri->query_param("url", "http://www.youtube.com/watch?v=$id");
+
+  if ($req->maxwidth) {
+    $uri->query_param("maxwidth", $req->maxwidth);
+  }
+
+  if ($req->maxheight) {
+    $uri->query_param("maxheight", $req->maxheight);
+  }
+
+  return $uri->as_string;
 }
 
 sub matches {
@@ -29,9 +41,6 @@ sub filter {
   my $data = decode_json $body;
   my ($id) = $data->{html} =~ m{/v/([^\?]+)?};
 
-  my $width  = $req->width($data->{width} || 640);
-  my $height = $req->height($data->{height} || 385);
-
   # tack on start parameter if timecode was in original URL
   if (my @t = $req->url =~ /#a?t=(?:(\d+)m)?(\d+)s/) {
     my $seconds = pop @t;
@@ -41,7 +50,7 @@ sub filter {
     $id .= "?start=$seconds";
   }
 
-  $data->{html} = "<iframe type='text/html' width='$width' height='$height'"
+  $data->{html} = "<iframe type='text/html' width='$data->{width}' height='$data->{height}'"
                 . " src='https://www.youtube.com/embed/$id' frameborder=0></iframe>";
   return $data;
 }
