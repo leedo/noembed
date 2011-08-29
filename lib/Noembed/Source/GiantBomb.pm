@@ -1,14 +1,23 @@
 package Noembed::Source::GiantBomb;
 
+use JSON;
 use HTML::Entities;
+use Web::Scraper;
 use parent 'Noembed::Source';
 
 sub prepare_source {
   my $self = shift;
   $self->{url_re} = qr{https?://www\.giantbomb\.com/([^/]+)/\d+-\d+}i;
-  $self->{attr_re} = qr{data-video="([^"]+)"};
-  $self->{video_re} = qr{"progressive_high":[^"]*"([^"]+)"};
-  $self->{title_re} = qr{<title>(.*?) - Giant Bomb};
+  $self->{scraper} = scraper {
+    process "div.player", video => sub {
+      my $el = shift;
+      my $data = decode_json decode_entities $el->attr("data-video");
+      return {
+        src => $data->{urls}{progressive_high},
+        title => $data->{video_name},
+      };
+    };
+  };
 }
 
 sub provider_name { "GiantBomb" }
@@ -20,14 +29,10 @@ sub matches {
 
 sub filter {
   my ($self, $body) = @_;
-  my ($title) = $body =~ $self->{title_re};
-  my ($attr) = $body =~ $self->{attr_re};
-  $attr = decode_entities $attr;
-  my ($video) = $attr =~ $self->{video_re};
-
+  my $data = $self->{scraper}->scrape($body);
   return +{
-    title => $title,
-    html  => "<video preload=\"none\" controls width=\"640\" height=\"360\" src=\"$video\">$title</video>",
+    title => $data->{video}{title},
+    html  => $self->render($data->{video}),
   }
 }
 

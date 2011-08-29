@@ -25,7 +25,7 @@ sub filename {
 
 sub render {
   my $self = shift;
-  $self->{render}->($self->filename("html"), @_);
+  $self->{render}->($self->filename("html"), @_)->as_string;
 }
 
 sub style {
@@ -75,7 +75,9 @@ sub download {
       if ($headers->{Status} == 200) {
         eval {
           my $data = $self->filter($body, $req);
-          $data->{html} .= '<style type="text/css">'.$self->style.'</style>';
+          if ($self->style) {
+            $data->{html} .= '<style type="text/css">'.$self->style.'</style>';
+          }
           $data->{type} = "rich";
           $data->{url} = $req->url;
           $data->{title} ||= $req->url;
