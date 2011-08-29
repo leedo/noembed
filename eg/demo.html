@@ -14,6 +14,14 @@
           }
 
           var query = { url : url.trim() };
+
+          if ($('maxwidth').value) {
+            query['maxwidth'] = $('maxwidth').value;
+          }
+          if ($('maxheight').value) {
+            query['maxheight'] = $('maxheight').value;
+          }
+
           window.history.pushState({}, "", "/demo?"+Object.toQueryString(query));
 
           $('embed').update("<span class='status'>embeding "+url+"&hellip;</span>");
@@ -122,6 +130,18 @@
         outline: none;
         resize: none;
       }
+      div#limits {
+        float: right;
+      }
+      div#limits label, div#limits input {
+        display: inline;
+      }
+      div#limits input {
+        width: 4em;
+      }
+      div#limits label {
+        margin-left: 10px;
+      }
     </style>
   </head>
   <body>
@@ -133,6 +153,13 @@
             <form action="/embed" method="get" id="request">
               <label for="url">Paste a URL to embed:</label>
               <textarea name="url" id="url"></textarea>
+              <div id="limits">
+                <label for="maxwidth">Max width</label>
+                <input type="text" id="maxwidth">
+
+                <label for="maxheight">Max height</label>
+                <input type="text" id="maxheight">
+              </div>
               <input type="submit" value="Embed it">
             </form>
             <p id="instructions">
