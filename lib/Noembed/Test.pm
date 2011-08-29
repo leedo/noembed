@@ -24,7 +24,7 @@ sub test_embed {
       my $content = $res->content;
       chomp($content);
       chomp($output);
-      is $content, $output;
+      is $content, $output, $url;
     };
 }
 

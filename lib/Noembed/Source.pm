@@ -43,15 +43,13 @@ sub style {
 }
 
 sub request_url {
-  my ($self, $url, $params) = @_;
-  return $url;
+  my ($self, $req) = @_;
+  return $req->url;
 }
 
-# default just keeps the downloaded content.
-# should be overridden.
 sub filter {
   my ($self, $body) = @_;
-  return +{ html => $body };
+  croak "must override filter method";
 }
 
 sub matches {
@@ -61,10 +59,7 @@ sub matches {
 sub download {
   my ($self, $req, $cb) = @_;
 
-  my $params = $req->parameters;
-  my $url = $params->{url};
-
-  my $service = $self->request_url($url, $params);
+  my $service = $self->request_url($req);
   my $nb = $req->env->{'psgi.nonblocking'};
   my $cv = AE::cv;
 
@@ -79,11 +74,11 @@ sub download {
 
       if ($headers->{Status} == 200) {
         eval {
-          my $data = $self->filter($body, $url);
+          my $data = $self->filter($body, $req);
           $data->{html} .= '<style type="text/css">'.$self->style.'</style>';
           $data->{type} = "rich";
-          $data->{url} = $url;
-          $data->{title} ||= $url;
+          $data->{url} = $req->url;
+          $data->{title} ||= $req->url;
           $data->{provider_name} ||= $self->provider_name;
           $cb->( encode_json($data), "" );
         };

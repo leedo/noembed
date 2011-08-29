@@ -16,8 +16,8 @@ sub prepare_source {
 }
 
 sub request_url {
-  my ($self, $url, $params) = @_;
-  if ($url =~ $self->{re}) {
+  my ($self, $req) = @_;
+  if ($req->url =~ $self->{re}) {
     my $id = $1;
     return "http://api.twitter.com/1/statuses/show/$id.json";
   }

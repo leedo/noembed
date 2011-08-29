@@ -14,8 +14,8 @@ sub matches {
 }
 
 sub request_url {
-  my ($self, $url, $params) = @_;
-  "http://www.vimeo.com/api/oembed.json?url=$url";
+  my ($self, $req) = @_;
+  "http://www.vimeo.com/api/oembed.json?url=".$req->url;
 }
 
 sub filter {

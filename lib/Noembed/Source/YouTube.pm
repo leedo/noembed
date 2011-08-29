@@ -9,9 +9,9 @@ sub prepare_source {
 }
 
 sub request_url {
-  my ($self, $url, $params) = @_;
-  my ($id) = $url =~ $self->{re};
-  $url = "http://www.youtube.com/watch?v=$id";
+  my ($self, $req) = @_;
+  my ($id) = $req->url =~ $self->{re};
+  my $url = "http://www.youtube.com/watch?v=$id";
 
   return "http://www.youtube.com/oembed/?url=$url";
 }
@@ -24,7 +24,7 @@ sub matches {
 sub provider_name { "YouTube" }
 
 sub filter {
-  my ($self, $body, $url) = @_;
+  my ($self, $body, $req) = @_;
 
   my $data = decode_json $body;
   my ($id) = $data->{html} =~ m{/v/([^\?]+)?};
@@ -33,7 +33,7 @@ sub filter {
   my $height = $data->{height} || 385;
 
   # tack on start parameter if timecode was in original URL
-  if (my @t = $url =~ /#a?t=(?:(\d+)m)?(\d+)s/) {
+  if (my @t = $req->url =~ /#a?t=(?:(\d+)m)?(\d+)s/) {
     my $seconds = pop @t;
     if (@t) {
       $seconds += $t[0] * 60;

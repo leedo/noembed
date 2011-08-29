@@ -10,6 +10,8 @@ use Text::MicroTemplate::File;
 use File::ShareDir;
 use JSON;
 
+use Noembed::Request;
+
 use parent 'Plack::Component';
 
 our $VERSION = "0.01";
@@ -32,8 +34,8 @@ sub prepare_app {
 sub call {
   my ($self, $env) = @_;
 
-  my $req = Plack::Request->new($env);
-  return error("url parameter is required") unless $req->parameters->{url};
+  my $req = Noembed::Request->new($env);
+  return error("url parameter is required") unless $req->url;
   return $self->handle_url($req);
 }
 
@@ -60,11 +62,9 @@ sub handle_url {
   return sub {
     my $respond = shift;
 
-    my $url = $req->parameters->{url};
+    my $url = $req->url;
     my $working = $self->has_lock($url);
-
     $self->add_lock($url, $respond);
-
     return if $working;
   
     for my $provider (@{$self->{providers}}) {

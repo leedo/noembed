@@ -13,8 +13,15 @@ sub matches {
 }
 
 sub request_url {
-  my ($self, $url, $params) = @_;
-  return "$url.pibb";
+  my ($self, $req) = @_;
+  return $req->url.".pibb";
+}
+
+sub filter {
+  my ($self, $body) = @_;
+  return +{
+    html => $body,
+  };
 }
 
 sub provider_name { "GitHub" }

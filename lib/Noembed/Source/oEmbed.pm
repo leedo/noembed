@@ -52,8 +52,8 @@ sub matches {
 }
 
 sub request_url {
-  my ($self, $url, $params) = @_;
-  $self->{oembed}->request_url($url);
+  my ($self, $req) = @_;
+  $self->{oembed}->request_url($req->url);
 }
 
 1;
