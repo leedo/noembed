@@ -29,8 +29,8 @@ sub filter {
   my $data = decode_json $body;
   my ($id) = $data->{html} =~ m{/v/([^\?]+)?};
 
-  my $width = $data->{width} || 640;
-  my $height = $data->{height} || 385;
+  my $width  = $req->width($data->{width} || 640);
+  my $height = $req->height($data->{height} || 385);
 
   # tack on start parameter if timecode was in original URL
   if (my @t = $req->url =~ /#a?t=(?:(\d+)m)?(\d+)s/) {

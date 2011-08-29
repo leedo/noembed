@@ -19,10 +19,12 @@ sub request_url {
 }
 
 sub filter {
-  my ($self, $body) = @_;
+  my ($self, $body, $req) = @_;
   my $data = decode_json $body;
-  $data->{html} =~ s/width="\d+"/width="640"/;
-  $data->{html} =~ s/height="\d+"/height="360"/;
+  $data->{width}  = $req->width($data->{width} || 640);
+  $data->{height} = $req->height($data->{height} || 360);
+  $data->{html} =~ s/width="\d+"/width="$data->{width}"/;
+  $data->{html} =~ s/height="\d+"/height="$data->{height}"/;
   $data;
 }
 

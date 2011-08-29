@@ -53,7 +53,11 @@ sub matches {
 
 sub request_url {
   my ($self, $req) = @_;
-  $self->{oembed}->request_url($req->url);
+  $self->{oembed}->request_url($req->url, {
+    maxwidth  => $req->maxwidth,
+    maxheight => $req->maxheight,
+    format    => "json",
+  });
 }
 
 1;
