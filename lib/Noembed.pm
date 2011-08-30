@@ -3,11 +3,14 @@ package Noembed;
 use strict;
 use warnings;
 
+use Carp;
 use Module::Find ();
 use Class::Load;
 use Plack::Request;
 use Text::MicroTemplate::File;
 use File::ShareDir;
+use AnyEvent::HTTP;
+use Encode;
 use JSON;
 
 use Noembed::Request;
@@ -69,11 +72,7 @@ sub handle_url {
   
     for my $provider (@{$self->{providers}}) {
       if ($provider->matches($url)) {
-        $provider->download($req, sub {
-          my ($body, $error) = @_;
-          $self->end_lock($url, $error ? error($error) : json_res($body));
-        });
-        return;
+        return $self->download($provider, $req);
       }
     }
 
@@ -82,7 +81,7 @@ sub handle_url {
 }
 
 sub json_res {
-  my $body = shift;
+  my $body = encode_json shift;
 
   [
     200,
@@ -96,7 +95,7 @@ sub json_res {
 
 sub error {
   my $message = shift;
-  my $body = encode_json {error => ($message || "unknown error")};
+  my $body = {error => ($message || "unknown error")};
   json_res $body;
 }
 
@@ -115,6 +114,38 @@ sub register_provider {
   else {
     warn "Could not load provider $class: $error";
   }
+}
+
+sub download {
+  my ($self, $provider, $req) = @_;
+
+  my $service = $provider->request_url($req);
+  my $nb = $req->env->{'psgi.nonblocking'};
+  my $cv = AE::cv;
+
+  http_request "get", $service, {
+      persistent => 0,
+      keepalive  => 0,
+    },
+    sub {
+      my ($body, $headers) = @_;
+
+      if ($headers->{Status} == 200) {
+        eval {
+          $body = decode("utf8", $body);
+          my $data = $provider->prepare($body, $req);
+          $self->end_lock($req->url, json_res $data);
+        };
+        carp "Error after http request: $@" if $@;
+      }
+      else {
+        $self->end_lock($req->url, error($headers->{Reason}));
+      }
+
+      $cv->send unless $nb;
+    };
+
+  $cv->recv unless $nb;
 }
 
 sub add_lock {

@@ -1,9 +1,6 @@
 package Noembed::Source;
 
 use Carp;
-use Encode;
-use JSON;
-use AnyEvent::HTTP;
 
 sub new {
   my ($class, %args) = @_;
@@ -56,44 +53,20 @@ sub matches {
   croak "must override matches method";
 }
 
-sub download {
-  my ($self, $req, $cb) = @_;
+sub prepare {
+  my ($self, $body, $req) = @_;
+  my $data = $self->filter($body, $req);
 
-  my $service = $self->request_url($req);
-  my $nb = $req->env->{'psgi.nonblocking'};
-  my $cv = AE::cv;
+  if ($self->style) {
+    $data->{html} .= '<style type="text/css">'.$self->style.'</style>';
+  }
 
-  http_request "get", $service, {
-      persistent => 0,
-      keepalive  => 0,
-    },
-    sub {
-      my ($body, $headers) = @_;
+  $data->{type} = "rich";
+  $data->{url} = $req->url;
+  $data->{title} ||= $req->url;
+  $data->{provider_name} ||= $self->provider_name;
 
-      $body = decode("utf8", $body);
-
-      if ($headers->{Status} == 200) {
-        eval {
-          my $data = $self->filter($body, $req);
-          if ($self->style) {
-            $data->{html} .= '<style type="text/css">'.$self->style.'</style>';
-          }
-          $data->{type} = "rich";
-          $data->{url} = $req->url;
-          $data->{title} ||= $req->url;
-          $data->{provider_name} ||= $self->provider_name;
-          $cb->( encode_json($data), "" );
-        };
-        carp "Error after http request: $@" if $@;
-      }
-      else {
-        $cb->("", $headers->{Reason});
-      }
-
-      $cv->send unless $nb;
-    };
-
-  $cv->recv unless $nb;
+  return $data;
 }
 
 1;
