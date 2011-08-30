@@ -1,6 +1,5 @@
 package Noembed::Source::Spotify;
 
-use HTML::Entities;
 use Web::Scraper;
 use Text::MicroTemplate qw/encoded_string/;
 use parent 'Noembed::Source';
