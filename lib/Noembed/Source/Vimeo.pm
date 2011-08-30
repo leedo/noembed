@@ -10,6 +10,8 @@ sub prepare_source {
   $self->{re} = qr{http://(?:www\.)?vimeo\.com/.+}i;
 }
 
+sub provider_name { "Vimeo" }
+
 sub matches {
   my ($self, $url) = @_;
   $url =~ $self->{re};

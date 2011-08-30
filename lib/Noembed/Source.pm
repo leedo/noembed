@@ -34,7 +34,7 @@ sub style {
     if (-r $file) {
       open my $fh, "<", $file;
       local $/;
-      <$fh>;
+      '<style type="text/css">'.<$fh>.'</style>';
     }
   };
 }
@@ -55,17 +55,17 @@ sub matches {
 
 sub prepare {
   my ($self, $body, $req) = @_;
-  my $data = $self->filter($body, $req);
 
-  if ($self->style) {
-    $data->{html} .= '<style type="text/css">'.$self->style.'</style>';
-  }
+  my $data = {
+    title => $req->url,
+    provider_name => $self->provider_name,
+    # overrides the above properties
+    %{ $self->filter($body, $req) },
+    type  => "rich",
+    url   => $req->url,
+  };
 
-  $data->{type} = "rich";
-  $data->{url} = $req->url;
-  $data->{title} ||= $req->url;
-  $data->{provider_name} ||= $self->provider_name;
-
+  $data->{html} .= $self->style;
   return $data;
 }
 

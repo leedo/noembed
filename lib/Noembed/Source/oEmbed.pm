@@ -51,6 +51,8 @@ sub matches {
   !!$self->{oembed}->provider_for($url);
 }
 
+sub provider_name { "oEmbed" }
+
 sub request_url {
   my ($self, $req) = @_;
   $self->{oembed}->request_url($req->url, {

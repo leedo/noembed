@@ -93,9 +93,7 @@ sub json_res {
 }
 
 sub error {
-  my $message = shift;
-  my $body = {error => ($message || "unknown error")};
-  json_res $body;
+  json_res {error => ($_[0] || "unknown error")};
 }
 
 sub register_provider {

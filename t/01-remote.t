@@ -1,6 +1,7 @@
 use Test::More;
 use Noembed::Test;
 use Noembed;
+use JSON;
 
 my $app = Noembed->new;
 
@@ -10,7 +11,7 @@ for (glob 't/data/*.t') {
   test_embed 
     app => $app,
     url => $url,
-    output => join "", @body
+    output => decode_json(join "", @body),
 }
 
 done_testing;
