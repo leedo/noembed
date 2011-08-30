@@ -29,14 +29,21 @@ sub style {
   my $self = shift;
   
   # cache it
-  $self->{style} ||= do {
-    my $file = Noembed::style_dir() . "/" . $self->filename("css");
-    if (-r $file) {
-      open my $fh, "<", $file;
-      local $/;
-      '<style type="text/css">'.<$fh>.'</style>';
-    }
-  };
+  unless (defined $self->{style}) {
+    $self->{style} = do {
+      my $file = Noembed::style_dir() . "/" . $self->filename("css");
+      if (-r $file) {
+        open my $fh, "<", $file;
+        local $/;
+        '<style type="text/css">'.<$fh>.'</style>';
+      }
+      else {
+        "";
+      }
+    };
+  }
+
+  return $self->{style};
 }
 
 sub request_url {
