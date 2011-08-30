@@ -19,6 +19,11 @@ sub request_url {
 
 sub filter {
   my ($self, $body) = @_;
+
+  # strip off leading style tag.
+  # it is setting a font-size on body
+  $body =~ s/<style.+?<\/style>//;
+
   return +{
     html => $body,
   };
