@@ -6,7 +6,6 @@ use warnings;
 use Carp;
 use Module::Find ();
 use Class::Load;
-use Plack::Request;
 use Text::MicroTemplate::File;
 use File::ShareDir;
 use AnyEvent::HTTP;
