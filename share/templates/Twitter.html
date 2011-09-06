@@ -29,7 +29,7 @@
   var date = new Date(elem.innerHTML);
 
   if (date) {
-    var hours = date.getHours() + 1;
+    var hours = date.getHours();
     var minutes = date.getMinutes();
     if (minutes < 10) minutes = "0"+minutes.toString();
 
