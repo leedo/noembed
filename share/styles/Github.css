@@ -1,0 +1,34 @@
+.github-file {
+  background: #eee;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  -webkit-box-shadow: 0px 2px 2px rgba(0,0,0,0.5);
+}
+
+.github-file .github-file-info {
+  margin-bottom: 5px;
+}
+
+.github-file .github-file-info a {
+  text-decoration: none;
+}
+
+.github-file pre {
+  color: #E6E1DC;
+  background: #111111;
+  padding: 5px;
+  margin: 0;
+}
+
+.github-file .synComment    { color: #BC9458 }
+.github-file .synConstant   { color: #6D9CDE }
+.github-file .synIdentifier { color: #6D9CBE }
+.github-file .synStatement  { color: #CC7833 }
+.github-file .synPreProc    { color: #E6E1DC }
+.github-file .synType       { color: #d75f5f }
+.github-file .synSpecial    { color: #DA4939 }
+.github-file .synUnderlined { color: #000000 ; text-decoration: underline }
+.github-file .synError      { color: #FFC66D ; background: #990000 none }
+.github-file .synTodo       { color: #0000FF ; background: #FFFF00 none }

@@ -1,0 +1,12 @@
+? my $commit = shift;
+
+? for my $file (@{$commit->{files}}) {
+<div class="github-file">
+  <div class="github-file-info">
+    <a href="<?= $file->{blob_url} ?>"><?= $file->{filename} ?></a>
+  </div>
+  <pre>
+?= $file->{patch}
+  </pre>
+</div>
+? }

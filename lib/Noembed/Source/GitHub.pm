@@ -1,10 +1,15 @@
-package Noembed::Source::GitHub;
+package Noembed::Source::Github;
 
-use parent 'Noembed::Source';
+use Text::MicroTemplate qw/encoded_string/;
+use Text::VimColor;
+use JSON;
+
+use parent "Noembed::Source";
 
 sub prepare_source {
   my $self = shift;
-  $self->{re} = qr{https?://gist\.github\.com/[0-9a-fA-f]+$}i;
+  $self->{re} = qr{https?://github.com/([^/]+)/([^/]+)/commit/(.+)}i;
+  $self->{vim} = Text::VimColor->new(filetype => "diff");
 }
 
 sub matches {
@@ -14,21 +19,25 @@ sub matches {
 
 sub request_url {
   my ($self, $req) = @_;
-  return $req->url.".pibb";
+  my ($user, $repo, $hash) = $req->url =~ $self->{re};
+  return "https://api.github.com/repos/$user/$repo/commits/$hash";
 }
+
+sub provider_name { "Github Commit" }
 
 sub filter {
   my ($self, $body) = @_;
+  my $data = decode_json $body;
 
-  # strip off leading style tag.
-  # it is setting a font-size on body
-  $body =~ s/<style.+?<\/style>//;
+  # syntax highlight the patches
+  for my $file (@{$data->{files}}) {
+    $file->{patch} = encoded_string $self->{vim}->syntax_mark_string(\($file->{patch}))->html;
+  }
 
   return +{
-    html => $body,
+    html => $self->render($data),
+    title => "$data->{commit}{message} by $data->{commit}{author}{name}",
   };
 }
-
-sub provider_name { "GitHub" }
 
 1;
