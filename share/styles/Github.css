@@ -1,25 +1,41 @@
-.github-file {
-  background: #eee;
-  border: 1px solid #ccc;
-  padding: 5px;
+.github-commit {
   border-radius: 5px;
   font-size: 12px;
   -webkit-box-shadow: 0px 2px 2px rgba(0,0,0,0.5);
+  border: 1px solid #ccc;
+  background: #fff;
 }
 
-.github-file .github-file-info {
-  margin-bottom: 5px;
+.github-file {
+  border-top: 1px solid #ddd;
+  background: #eee;
 }
 
-.github-file .github-file-info a {
+.github-commit-message {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0;
+  padding: 5px;
+  color: #111;
+}
+
+.github-file a {
+  color: #111;
   text-decoration: none;
+  display: block;
+  padding: 3px 5px;
+}
+
+.github-file a:hover {
+  background: #fff;
 }
 
 .github-file pre {
+  display: none;
   color: #E6E1DC;
   background: #111111;
   padding: 5px;
-  margin: 0;
+  margin: 0 5px;
 }
 
 .github-file .synComment    { color: #BC9458 }

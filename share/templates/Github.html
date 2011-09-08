@@ -1,12 +1,26 @@
 ? my $commit = shift;
 
+<div class="github-commit" id="commit-<?= $commit->{sha} ?>">
+  <h2 class="github-commit-message"><?= $commit->{commit}{message} ?></h2>
 ? for my $file (@{$commit->{files}}) {
-<div class="github-file">
-  <div class="github-file-info">
-    <a href="<?= $file->{blob_url} ?>"><?= $file->{filename} ?></a>
+  <div class="github-file">
+    <a href="<?= $file->{blob_url} ?>"><?= $file->{filename} ?></a><pre><?= $file->{patch} ?></pre>
   </div>
-  <pre>
-?= $file->{patch}
-  </pre>
-</div>
 ? }
+</div>
+
+<script type="text/javascript">
+  var commit = document.getElementById("commit-<?= $commit->{sha} ?>");
+  commit.addEventListener("click", function(e) {
+    if (e.target.nodeName == "A") {
+      e.preventDefault();
+      var pre = e.target.nextSibling;
+      if (pre.style.display != "block") {
+        pre.style.display = "block";
+      }
+      else {
+        pre.style.display = "none";
+      }
+    }
+  }, false);
+</script>
