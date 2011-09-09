@@ -6,13 +6,9 @@
     <a href="<?= $commit->{commit}{url} ?>"><?= $commit->{commit}{message} ?></a>
   </h2>
 ? for my $file (@{$commit->{files}}) {
-? my $id = "github-file-$file->{sha}";
-? my $js = "var f = document.getElementById('$id'); f.style.display = (f.style.display != 'block' ? 'block' : 'none'); return false;";
+? my $js = "var f = this.nextSibling; f.style.display = (f.style.display != 'block' ? 'block' : 'none'); return false;";
   <div class="github-file">
-    <a href="<?= $file->{blob_url} ?>" onclick="<?= $js ?>" class="github-file-link">
-      <?= $file->{filename} ?>
-    </a>
-    <pre id="<?= $id ?>"><?= $file->{patch} ?></pre>
+    <a href="<?= $file->{blob_url} ?>" onclick="<?= $js ?>"><?= $file->{filename} ?></a><pre><?= $file->{patch} ?></pre>
   </div>
 ? }
 </div>
