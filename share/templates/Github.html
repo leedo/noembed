@@ -6,24 +6,13 @@
     <a href="<?= $commit->{commit}{url} ?>"><?= $commit->{commit}{message} ?></a>
   </h2>
 ? for my $file (@{$commit->{files}}) {
+? my $id = "github-file-$file->{sha}";
+? my $js = "var f = document.getElementById('$id'); f.style.display = (f.style.display != 'block' ? 'block' : 'none'); return false;";
   <div class="github-file">
-    <a href="<?= $file->{blob_url} ?>" class="github-file-link"><?= $file->{filename} ?></a><pre><?= $file->{patch} ?></pre>
+    <a href="<?= $file->{blob_url} ?>" onclick="<?= $js ?>" class="github-file-link">
+      <?= $file->{filename} ?>
+    </a>
+    <pre id="<?= $id ?>"><?= $file->{patch} ?></pre>
   </div>
 ? }
 </div>
-
-<script type="text/javascript">
-  var commit = document.getElementById("commit-<?= $commit->{sha} ?>");
-  commit.addEventListener("click", function(e) {
-    if (e.target.className == "github-file-link") {
-      e.preventDefault();
-      var pre = e.target.nextSibling;
-      if (pre.style.display != "block") {
-        pre.style.display = "block";
-      }
-      else {
-        pre.style.display = "none";
-      }
-    }
-  }, false);
-</script>
