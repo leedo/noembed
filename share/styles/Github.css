@@ -19,9 +19,12 @@
   color: #111;
 }
 
-.github-file a {
+.github-commit a {
   color: #111;
   text-decoration: none;
+}
+
+.github-file a {
   display: block;
   padding: 3px 5px;
 }
@@ -30,12 +33,23 @@
   background: #fff;
 }
 
+.github-commit-message a:hover {
+  text-decoration: underline;
+}
+
 .github-file pre {
   display: none;
   color: #E6E1DC;
   background: #111111;
   padding: 5px;
   margin: 0 5px;
+}
+
+.github-commit-author {
+  float: right;
+  font-size: 0.8em;
+  line-height: 1.6em;
+  font-weight: normal;
 }
 
 .github-file .synComment    { color: #BC9458 }
