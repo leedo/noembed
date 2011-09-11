@@ -1,30 +1,21 @@
 package Noembed::Source::oEmbed;
 
-use Web::oEmbed;
+use URI;
+use URI::QueryParam;
 use JSON;
 use parent 'Noembed::Source';
 
 our $DEFAULT = [
-  ['http://*.flickr.com/*', 'http://www.flickr.com/services/oembed/'],
-  ['http://*viddler.com/*', 'http://lab.viddler.com/services/oembed/'],
-  ['http://qik.com/video/*', 'http://qik.com/api/oembed.{format}'],
-  ['http://www.hulu.com/watch/*', 'http://www.hulu.com/api/oembed.{format}'],
+  {pattern => 'http://.*\.flickr.com/.*',     service => 'http://www.flickr.com/services/oembed/'},
+  {pattern => 'http://.*\.viddler.com/.*',    service => 'http://lab.viddler.com/services/oembed/'},
+  {pattern => 'http://qik.com/video/.*',      service => 'http://qik.com/api/oembed.json'},
+  {pattern => 'http://www.hulu.com/watch/.*', service => 'http://www.hulu.com/api/oembed.json'},
 ];
 
 sub prepare_source {
   my $self = shift;
-
-  my $oembed = Web::oEmbed->new;
-  my $sources = $DEFAULT;
-
-  for my $source (@$sources) {
-    $oembed->register_provider({
-      url => $source->[0],
-      api => $source->[1],
-    });
-  }
-
-  $self->{oembed} = $oembed;
+  $self->{sites} = $DEFAULT;
+  $_->{re} = qr{$_->{pattern}} for @{$self->{sites}};
 }
 
 sub filter {
@@ -46,20 +37,31 @@ sub filter {
   return $data;
 }
 
-sub url_matches {
-  my ($self, $url) = @_;
-  !!$self->{oembed}->provider_for($url);
+sub patterns {
+  my $self = shift;
+  return map {$_->{pattern}} @{$self->{sites}};
 }
-
 sub provider_name { "oEmbed" }
 
 sub request_url {
   my ($self, $req) = @_;
-  $self->{oembed}->request_url($req->url, {
-    maxwidth  => $req->maxwidth,
-    maxheight => $req->maxheight,
-    format    => "json",
-  });
+  for my $site (@{$self->{sites}}) {
+    if ($req->url =~ $site->{re}) {
+      my $uri = URI->new($site->{service});
+
+      $uri->query_param("url", $req->url);
+      $uri->query_param("format", "json");
+
+      if ($req->maxwidth) {
+        $uri->query_param("maxwidth", $req->maxwidth);
+      }
+      if ($req->maxheight) {
+        $uri->query_param("maxheight", $req->maxheight);
+      }
+
+      return $uri->as_string;
+    }
+  }
 }
 
 1;

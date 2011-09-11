@@ -13,7 +13,7 @@ sub prepare_source {
   };
 }
 
-sub pattern { 'https?://instagr\.am/p/.+' }
+sub patterns { 'https?://instagr\.am/p/.+' }
 sub provider_name { "Instagram" }
 
 sub filter {

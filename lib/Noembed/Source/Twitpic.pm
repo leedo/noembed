@@ -12,7 +12,7 @@ sub prepare_source {
   };
 }
 
-sub pattern { 'http://(www\.)?twitpic\.com/.+' }
+sub patterns { 'http://(www\.)?twitpic\.com/.+' }
 sub provider_name { "Twitpic" }
 
 sub filter {

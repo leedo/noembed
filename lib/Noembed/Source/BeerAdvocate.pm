@@ -37,7 +37,7 @@ sub prepare_source {
 }
 
 sub provider_name { "Beer Advocate" }
-sub pattern { 'http://(?:www\.)?beeradvocate\.com/beer/profile/\d+/\d+' }
+sub patterns { 'http://(?:www\.)?beeradvocate\.com/beer/profile/\d+/\d+' }
 
 sub filter {
   my ($self, $body) = @_;

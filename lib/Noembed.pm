@@ -145,6 +145,18 @@ sub download {
   $cv->recv unless $nb;
 }
 
+sub providers_response {
+  my ($self, $env) = @_;
+  my $providers = [ map {
+    +{
+      name     => $_->provider_name,
+      patterns => [$_->patterns],
+    }
+  } @{$self->{providers}} ];
+
+  return json_res $providers; 
+}
+
 sub add_lock {
   my ($self, $url, $respond) = @_;
 

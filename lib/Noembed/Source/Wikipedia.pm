@@ -14,7 +14,7 @@ sub prepare_source {
   };
 }
 
-sub pattern { 'http://[^\.]+\.wikipedia\.org/wiki/.*' }
+sub patterns { 'http://[^\.]+\.wikipedia\.org/wiki/.*' }
 sub provider_name { "Wikipedia" }
 
 sub filter {

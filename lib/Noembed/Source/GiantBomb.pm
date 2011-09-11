@@ -20,7 +20,7 @@ sub prepare_source {
 }
 
 sub provider_name { "GiantBomb" }
-sub pattern { 'https?://www\.giantbomb\.com/([^/]+)/\d+-\d+/?' }
+sub patterns { 'https?://www\.giantbomb\.com/([^/]+)/\d+-\d+/?' }
 
 sub filter {
   my ($self, $body) = @_;

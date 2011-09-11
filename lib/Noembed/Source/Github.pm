@@ -11,7 +11,7 @@ sub prepare_source {
   $self->{vim} = Text::VimColor->new(filetype => "diff");
 }
 
-sub pattern { 'https?://github.com/([^/]+)/([^/]+)/commit/(.+)' }
+sub patterns { 'https?://github.com/([^/]+)/([^/]+)/commit/(.+)' }
 sub provider_name { "Github Commit" }
 
 sub request_url {

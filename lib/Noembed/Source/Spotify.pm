@@ -16,7 +16,7 @@ sub prepare_source {
   };
 }
 
-sub pattern { 'https?://open\.spotify\.com/track/(\w{22})' }
+sub patterns { 'https?://open\.spotify\.com/track/(\w{22})' }
 sub provider_name { "Spotify" }
 
 sub filter {

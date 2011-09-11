@@ -11,7 +11,7 @@ sub prepare_source {
   };
 }
 
-sub pattern { 'http://www\.asciiartfarts\.com/[0-9]+\.html' }
+sub patterns { 'http://www\.asciiartfarts\.com/[0-9]+\.html' }
 sub provider_name { "ASCII Art Farts" }
 
 sub filter {

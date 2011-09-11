@@ -6,7 +6,7 @@ use URI::QueryParam;
 
 use parent 'Noembed::Source';
 
-sub pattern { 'https?://[^\.]+\.youtube\.com/watch/?\?(?:.+&)?v=(.+)' }
+sub patterns { 'https?://[^\.]+\.youtube\.com/watch/?\?(?:.+&)?v=(.+)' }
 sub provider_name { "YouTube" }
 
 sub request_url {

@@ -3,7 +3,7 @@ package Noembed::Source::Gist;
 use parent 'Noembed::Source';
 
 sub provider_name { "Gist" }
-sub pattern { 'https?://gist\.github\.com/[0-9a-fA-f]+' }
+sub patterns { 'https?://gist\.github\.com/[0-9a-fA-f]+' }
 
 sub request_url {
   my ($self, $req) = @_;

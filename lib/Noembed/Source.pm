@@ -82,16 +82,17 @@ sub serialize {
 sub _build_matcher {
   my $self = shift;
 
-  if ($self->can("pattern")) {
+  if ($self->can("patterns")) {
 
-    my $pattern = $self->pattern;
-    my $re = qr{^$pattern}i;
+    my @re = map {qr{^$_}i} $self->patterns;
 
     return sub {
       my $req = shift;
-      if (my (@caps) = $req->url =~ $re) {
-        $req->captures(@caps);
-        return 1;
+      for my $re (@re) {
+        if (my (@caps) = $req->url =~ $re) {
+          $req->captures(@caps);
+          return 1;
+        }
       }
       return 0;
     };
