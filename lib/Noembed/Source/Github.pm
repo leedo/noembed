@@ -1,14 +1,22 @@
 package Noembed::Source::Github;
 
 use Text::MicroTemplate qw/encoded_string/;
-use Text::VimColor;
+use Noembed::Pygmentize;
+use File::Which qw/which/;
 use JSON;
 
 use parent "Noembed::Source";
 
 sub prepare_source {
   my $self = shift;
-  $self->{vim} = Text::VimColor->new(filetype => "diff");
+
+  my $pygmentize = which "pygmentize";
+  die "couldn't find pygmentize program" unless $pygmentize;
+
+  $self->{pyg} = Noembed::Pygmentize->new(
+    bin => $pygmentize,
+    lexer => "diff",
+  );
 }
 
 sub patterns { 'https?://github.com/([^/]+)/([^/]+)/commit/(.+)' }
@@ -28,7 +36,7 @@ sub filter {
 
   # syntax highlight the patches
   for my $file (@{$data->{files}}) {
-    $file->{patch} = encoded_string $self->{vim}->syntax_mark_string(\($file->{patch}))->html;
+    $file->{patch} = encoded_string $self->{pyg}->colorize($file->{patch});
   }
 
   return +{

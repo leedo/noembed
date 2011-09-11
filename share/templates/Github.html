@@ -8,7 +8,7 @@
 ? for my $file (@{$commit->{files}}) {
 ? my $js = "var f = this.nextSibling; f.style.display = (f.style.display != 'block' ? 'block' : 'none'); return false;";
   <div class="github-file">
-    <a href="<?= $file->{blob_url} ?>" onclick="<?= $js ?>"><?= $file->{filename} ?></a><pre><?= $file->{patch} ?></pre>
+    <a href="<?= $file->{blob_url} ?>" onclick="<?= $js ?>"><?= $file->{filename} ?></a><?= $file->{patch} ?>
   </div>
 ? }
 </div>
