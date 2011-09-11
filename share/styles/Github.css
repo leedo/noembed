@@ -24,12 +24,12 @@
   text-decoration: none;
 }
 
-.github-file a {
+.github-file > a {
   display: block;
   padding: 3px 5px;
 }
 
-.github-file a:hover {
+.github-file > a:hover {
   background: #fff;
 }
 

@@ -35,10 +35,11 @@
         font-size: 1.4em;
         margin: 1em 0;
       }
-      h2, h3 {
+      h2 {
         font-weight: normal;
       }
       h3 {
+        font-weight: bold;;
         font-size: 1em;
       }
       p#footer {
@@ -72,7 +73,7 @@
       Additionally, Noembed guarantees that all responses will have
       <code>html</code>, <code>title</code>, <code>url</code>,  and
       <code>provider_name</code> fields. This means fewer special
-      cases dealing with missing information.
+      cases spent building up your own HTML.
     </p>
     <p>
       A simple demo is <a href="demo">available here</a>.
@@ -153,14 +154,22 @@ my_embed_function(
       <li>Spotify</li> 
     </ul>
 
+    <h3>The <code>/providers</code> endpoint</h3>
+    <p>
+      Noembed provides <a href="https://noembed.com/providers">an endpoint</a> that returns the
+      current list of supported sites. The response is a
+      JSON list with the site name and URL patterns. This can be used to automate testing if a URL is
+      supported by Noembed without making an HTTP request.
+    </p>
+
     <h2>Development</h2>
     <p>
       All the source code for Noembed is <a href="http://www.github.com/leedo/noembed">
       on github</a>. Patches are accepted to add new services. To
       write a new provider, inherit from the <code>Noembed::Source</code>
-      and define <code>provider_name</code>, <code>matches</code>,
+      and define <code>provider_name</code>, <code>patterns</code>,
       <code>filter</code>, and <code>request_url</code> methods. Take a
-      look at an <a href="https://github.com/leedo/noembed/blob/master/lib/Noembed/Source/GitHub.pm">existing
+      look at an <a href="https://github.com/leedo/noembed/blob/master/lib/Noembed/Source/Gist.pm">existing
         source</a> for an example.
     </p>
 
