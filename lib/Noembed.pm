@@ -70,7 +70,7 @@ sub handle_url {
     return if $working;
   
     for my $provider (@{$self->{providers}}) {
-      if ($provider->req_matches($req)) {
+      if ($provider->matches($req)) {
         return $self->download($provider, $req);
       }
     }

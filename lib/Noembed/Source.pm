@@ -9,7 +9,7 @@ sub new {
   croak "render is required" unless defined $self->{render};
 
   $self->prepare_source;
-  $self->{_matcher} = $self->_build_matcher;
+  $self->{patterns} = [ map {qr{^$_}i} $self->patterns ];
 
   return $self;
 }
@@ -54,13 +54,24 @@ sub request_url {
 }
 
 sub filter {
-  my ($self, $body) = @_;
   croak "must override filter method";
 }
 
-sub req_matches {
+sub patterns {
+  croak "must override patterns method";
+}
+
+sub matches {
   my ($self, $req) = @_;
-  return $self->{_matcher}->($req);
+
+  for my $re (@{$self->{patterns}}) {
+    if (my (@caps) = $req->url =~ $re) {
+      $req->captures(@caps);
+      return 1;
+    }
+  }
+
+  return 0;
 }
 
 sub serialize {
@@ -77,32 +88,6 @@ sub serialize {
 
   $data->{html} .= $self->style;
   return $data;
-}
-
-sub _build_matcher {
-  my $self = shift;
-
-  if ($self->can("patterns")) {
-
-    my @re = map {qr{^$_}i} $self->patterns;
-
-    return sub {
-      my $req = shift;
-      for my $re (@re) {
-        if (my (@caps) = $req->url =~ $re) {
-          $req->captures(@caps);
-          return 1;
-        }
-      }
-      return 0;
-    };
-  }
-
-  elsif ($self->can("url_matches")) {
-    return sub {$self->url_matches($_[0]->url)};
-  }
-
-  croak "sources must define 'url_matches' or 'pattern' methods";
 }
 
 1;
