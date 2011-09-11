@@ -46,7 +46,7 @@ sub filter {
   return $data;
 }
 
-sub matches {
+sub url_matches {
   my ($self, $url) = @_;
   !!$self->{oembed}->provider_for($url);
 }

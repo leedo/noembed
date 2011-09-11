@@ -3,18 +3,17 @@ package Noembed::Source::YouTube;
 use JSON;
 use URI;
 use URI::QueryParam;
+
 use parent 'Noembed::Source';
 
-sub prepare_source {
-  my $self = shift;
-  $self->{re} = qr{^https?://[^\.]+\.youtube\.com/watch/?\?(?:.+&)?v=(.+)}i;
-}
+sub pattern { 'https?://[^\.]+\.youtube\.com/watch/?\?(?:.+&)?v=(.+)' }
+sub provider_name { "YouTube" }
 
 sub request_url {
   my ($self, $req) = @_;
   my $uri = URI->new("http://www.youtube.com/oembed/");
 
-  my ($id) = $req->url =~ $self->{re};
+  my ($id) = $req->captures;
   $uri->query_param("url", "http://www.youtube.com/watch?v=$id");
 
   if ($req->maxwidth) {
@@ -27,13 +26,6 @@ sub request_url {
 
   return $uri->as_string;
 }
-
-sub matches {
-  my ($self, $url) = @_;
-  return $url =~ $self->{re};
-}
-
-sub provider_name { "YouTube" }
 
 sub filter {
   my ($self, $body, $req) = @_;

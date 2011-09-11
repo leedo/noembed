@@ -70,7 +70,7 @@ sub handle_url {
     return if $working;
   
     for my $provider (@{$self->{providers}}) {
-      if ($provider->matches($url)) {
+      if ($provider->req_matches($req)) {
         return $self->download($provider, $req);
       }
     }
@@ -130,7 +130,7 @@ sub download {
       if ($headers->{Status} == 200) {
         eval {
           $body = decode("utf8", $body);
-          my $data = $provider->prepare($body, $req);
+          my $data = $provider->serialize($body, $req);
           $self->end_lock($req->url, json_res $data);
         };
         carp "Error after http request: $@" if $@;

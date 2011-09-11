@@ -2,15 +2,8 @@ package Noembed::Source::Gist;
 
 use parent 'Noembed::Source';
 
-sub prepare_source {
-  my $self = shift;
-  $self->{re} = qr{https?://gist\.github\.com/[0-9a-fA-f]+$}i;
-}
-
-sub matches {
-  my ($self, $url) = @_;
-  return $url =~ $self->{re};
-}
+sub provider_name { "Gist" }
+sub pattern { 'https?://gist\.github\.com/[0-9a-fA-f]+' }
 
 sub request_url {
   my ($self, $req) = @_;
@@ -28,7 +21,5 @@ sub filter {
     html => $body,
   };
 }
-
-sub provider_name { "Gist" }
 
 1;

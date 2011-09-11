@@ -7,18 +7,13 @@ use parent 'Noembed::Source';
 sub prepare_source {
   my $self = shift;
 
-  $self->{re} = qr{https?://instagr\.am/p/.+};
   $self->{scraper} = scraper {
     process 'meta[property="og:title"]', title => '@content';
     process 'meta[property="og:image"]', url => '@content';
   };
 }
 
-sub matches {
-  my ($self, $url) = @_;
-  return $url =~ $self->{re};
-}
-
+sub pattern { 'https?://instagr\.am/p/.+' }
 sub provider_name { "Instagram" }
 
 sub filter {

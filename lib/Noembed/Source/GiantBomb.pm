@@ -7,7 +7,6 @@ use parent 'Noembed::Source';
 
 sub prepare_source {
   my $self = shift;
-  $self->{url_re} = qr{https?://www\.giantbomb\.com/([^/]+)/\d+-\d+}i;
   $self->{scraper} = scraper {
     process "div.player", video => sub {
       my $el = shift;
@@ -21,11 +20,7 @@ sub prepare_source {
 }
 
 sub provider_name { "GiantBomb" }
-
-sub matches {
-  my ($self, $url) = @_;
-  $url =~ $self->{url_re};
-}
+sub pattern { 'https?://www\.giantbomb\.com/([^/]+)/\d+-\d+/?' }
 
 sub filter {
   my ($self, $body) = @_;

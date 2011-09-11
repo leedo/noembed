@@ -8,7 +8,6 @@ sub prepare_source {
 
   my $base = "http://beeradvocate.com";
 
-  $self->{re} = qr{http://(?:www\.)?beeradvocate\.com/beer/profile/\d+/\d+}i;
   $self->{scraper} = scraper {
     process "td#mainContent > h1", title => 'TEXT';
     process "//table[id('mainContent')]//table[1]", html => sub {
@@ -38,11 +37,7 @@ sub prepare_source {
 }
 
 sub provider_name { "Beer Advocate" }
-
-sub matches {
-  my ($self, $url) = @_;
-  $url =~ $self->{re};
-}
+sub pattern { 'http://(?:www\.)?beeradvocate\.com/beer/profile/\d+/\d+' }
 
 sub filter {
   my ($self, $body) = @_;

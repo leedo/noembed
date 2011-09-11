@@ -8,22 +8,17 @@ use parent "Noembed::Source";
 
 sub prepare_source {
   my $self = shift;
-  $self->{re} = qr{https?://github.com/([^/]+)/([^/]+)/commit/(.+)}i;
   $self->{vim} = Text::VimColor->new(filetype => "diff");
 }
 
-sub matches {
-  my ($self, $url) = @_;
-  return $url =~ $self->{re};
-}
+sub pattern { 'https?://github.com/([^/]+)/([^/]+)/commit/(.+)' }
+sub provider_name { "Github Commit" }
 
 sub request_url {
   my ($self, $req) = @_;
-  my ($user, $repo, $hash) = $req->url =~ $self->{re};
+  my ($user, $repo, $hash) = $req->url_captures;
   return "https://api.github.com/repos/$user/$repo/commits/$hash";
 }
-
-sub provider_name { "Github Commit" }
 
 sub filter {
   my ($self, $body) = @_;

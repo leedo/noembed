@@ -8,11 +8,18 @@ use parent 'Noembed::Source';
 sub prepare_source {
   my $self = shift;
 
-  $self->{re} = qr{http://[^\.]+\.wikipedia\.org/wiki/.*}i;
   $self->{scraper} = scraper {
     process "#firstHeading", title => 'TEXT';
     process "#bodyContent", html => \&_extract_content;
   };
+}
+
+sub pattern { 'http://[^\.]+\.wikipedia\.org/wiki/.*' }
+sub provider_name { "Wikipedia" }
+
+sub filter {
+  my ($self, $body) = @_;
+  $self->{scraper}->scrape($body);
 }
 
 sub _extract_content {
@@ -56,18 +63,6 @@ sub _extract_text_content {
   }
 
   return "<div class='wikipedia-embed'>$output</div>";
-}
-
-sub provider_name { "Wikipedia" }
-
-sub filter {
-  my ($self, $body) = @_;
-  $self->{scraper}->scrape($body);
-}
-
-sub matches {
-  my ($self, $url) = @_;
-  return $url =~ $self->{re};
 }
 
 1;

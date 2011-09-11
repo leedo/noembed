@@ -7,6 +7,21 @@ sub url {
   $self->parameters->{url};
 }
 
+sub captures {
+  my ($self, @captures) = @_;
+
+  if (@captures) {
+    $self->{_captures} = \@captures;
+    return @captures;
+  }
+
+  elsif ($self->{_captures}) {
+    return @{ $self->{_captures} };
+  }
+
+  return ();
+}
+
 sub maxwidth {
   my $self = shift;
   $self->parameters->{maxwidth};

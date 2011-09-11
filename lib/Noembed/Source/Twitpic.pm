@@ -6,17 +6,14 @@ use parent 'Noembed::Source';
 sub prepare_source {
   my $self = shift;
 
-  $self->{re} = qr{http://(www\.)?twitpic\.com/.+}i;
   $self->{scraper} = scraper {
     process "#photo-display", image => '@src';
     process "#view-photo-caption", caption => 'TEXT';
   };
 }
 
-sub matches {
-  my ($self, $url) = @_;
-  $url =~ $self->{re};
-}
+sub pattern { 'http://(www\.)?twitpic\.com/.+' }
+sub provider_name { "Twitpic" }
 
 sub filter {
   my ($self, $body) = @_;
@@ -31,7 +28,5 @@ sub filter {
     title => $data->{caption},
   };
 }
-
-sub provider_name { "Twitpic" }
 
 1;

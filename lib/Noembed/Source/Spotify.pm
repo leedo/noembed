@@ -7,7 +7,6 @@ use parent 'Noembed::Source';
 sub prepare_source {
   my $self = shift;
 
-  $self->{re} = qr{https?://open\.spotify\.com/track/(\w{22})}i;
   $self->{scraper} = scraper {
     process 'title', title => 'TEXT';
     process '#title', track => 'RAW';
@@ -17,12 +16,8 @@ sub prepare_source {
   };
 }
 
+sub pattern { 'https?://open\.spotify\.com/track/(\w{22})' }
 sub provider_name { "Spotify" }
-
-sub matches {
-  my ($self, $url) = @_;
-  $url =~ $self->{re};
-}
 
 sub filter {
   my ($self, $body) = @_;
