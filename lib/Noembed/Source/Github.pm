@@ -24,6 +24,8 @@ sub filter {
   my ($self, $body) = @_;
   my $data = decode_json $body;
 
+  my $message = (split "\n", $data->{commit}{message})[0];
+
   # syntax highlight the patches
   for my $file (@{$data->{files}}) {
     $file->{patch} = encoded_string $self->{vim}->syntax_mark_string(\($file->{patch}))->html;
@@ -31,7 +33,7 @@ sub filter {
 
   return +{
     html => $self->render($data),
-    title => "$data->{commit}{message} by $data->{commit}{author}{name}",
+    title => "$message by $data->{commit}{author}{name}",
   };
 }
 
