@@ -1,0 +1,9 @@
+? $data = shift;
+
+<a href="<?= $data->{url} ?>">
+? if ($data->{type} eq "photo") {
+  <img src="<?= $data->{url} ?>">
+? } else {
+?=  $data->{title} or $data->{url}
+? }
+</a>
