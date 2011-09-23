@@ -91,3 +91,59 @@ sub serialize {
 }
 
 1;
+
+=pod
+
+=head1 NAME
+
+Noembed::Source - a base class for embeddable Noembed sources
+
+=head1 DESCRIPTION
+
+This is a base class that is meant to be extended to create Noembed sources.
+There are a few methods that need to be overridden for it to be usable.
+
+=head1 OPTIONAL METHODS
+
+=over 4
+
+=item prepare_source
+
+This is a convenience method called when noembed starts. Use it to set up your
+source (e.g. build a Web::Scraper object.)
+
+=back
+
+=head1 REQUIRED METHODS
+
+=over 4
+
+=item patterns
+
+Must return a list of strings that can be compiled into valid
+regular expressions. e.g. "http://www\.google\.com/.+"
+
+=item provider_name
+
+Needs to return the name of the provider. e.g. "Google"
+
+=item filter ($body)
+
+Accepts the downloaded content and must return a hash reference.
+The hash reference should contain an 'html' and 'title' key. It can
+optionally include a 'provider_name' key which will override the
+provider_name method.
+
+=back
+
+=head1 HTML TEMPLATES AND STYLESHEETS
+
+This class also provides a render method. This method will search for a
+template in ./share/templates/ that matches the name of the class
+(e.g. Google.pm -> Google.html). The render method will pass arguments
+onto the template. See L<Text::MicroTemplate> for template basics.
+
+If you create a similarly named stylesheet (Google.pm -> Google.css) in
+./share/styles/, it will automatically be concatenated into the html.
+
+=cut
