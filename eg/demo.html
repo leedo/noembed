@@ -26,6 +26,7 @@
 
           $('embed').update("<span class='status'>embeding "+url+"&hellip;</span>");
 
+          // cancel any existing request
           if (request && request.transport) request.transport.abort();
 
           request = new Ajax.Request("embed", {
