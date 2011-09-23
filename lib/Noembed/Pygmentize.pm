@@ -30,9 +30,8 @@ sub colorize {
   my $err = <$err>;
   my $out = <$rdr>;
 
-  croak $err if $err;
+  carp $err if $err;
   $out =~ s{</pre></div>\Z}{</pre>\n</div>};
-  warn $out;
   return $out;
 }
 
