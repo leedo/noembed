@@ -176,3 +176,37 @@ sub has_lock {
 }
 
 1;
+
+=pod
+
+=head1 NAME
+
+Noembed - oembed gateway
+
+=head1 SYNOPSIS
+
+    use Plack::Builder;
+    use Noembed;
+
+    builder {
+      mount "/oembed" => builder {
+        enable JSONP;
+        $noembed->to_app;
+      };
+    };
+
+=head1 DESCRIPTION
+
+Noembed is an oEmbed gateway. It lets you fetch information about external URLs,
+which you can then use to embed into HTML pages. Noembed can fetch information
+about a large list of URLs, and it is very easy to define new types of URLs.
+
+To add a new set of URLs to Noembed you create a new class that inherits from
+L<Noembed::Source> and override a few methods.
+
+=head1 EXAMPLES
+
+To see an example of how to use Noembed from the client side, take a look at the
+demo in the eg/ directory. It accepts a URL and attempts to embed it in the page.
+
+=cut
