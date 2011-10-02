@@ -1,28 +1,25 @@
 package Noembed::Source::Imgur;
 
-use Web::Scraper;
+use JSON;
 
 use parent 'Noembed::Source';
 
-sub prepare_source {
-  my $self = shift;
-
-  $self->{scraper} = scraper {
-    process 'h2', title => 'TEXT';
-    process 'link[rel="image_src"]', url => '@href';
-  };
-}
-
-sub patterns { 'http://imgur\.com/[\w\d]+' }
+sub patterns { 'http://imgur\.com/([\w\d]+)' }
 sub provider_name { "Imgur" }
+
+sub request_url {
+  my ($self, $req) = @_;
+  my ($hash) = $req->captures;
+  "http://api.imgur.com/2/image/$hash.json";
+}
 
 sub filter {
   my ($self, $body) = @_;
-  my $data = $self->{scraper}->scrape($body);
+  my $data = decode_json($body);
 
   return +{
-    title => $data->{title},
-    html  => "<img src=\"$data->{url}\">",
+    html => "<img src=\"$data->{image}{links}{original}\">",
+    title => $data->{image}{image}{title} || "No title",
   }
 }
 
