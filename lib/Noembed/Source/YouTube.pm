@@ -8,7 +8,7 @@ use parent 'Noembed::Source';
 
 sub patterns {
   'https?://(?:[^\.]+\.)?youtube\.com/watch/?\?(?:.+&)?v=(.+)',
-  'https?://youtu.be/([a-zA-Z0-9_]+)'
+  'https?://youtu\.be/([a-zA-Z0-9_]+)'
 }
 sub provider_name { "YouTube" }
 
