@@ -6,7 +6,10 @@ use URI::QueryParam;
 
 use parent 'Noembed::Source';
 
-sub patterns { 'https?://(?:[^\.]+\.)?youtube\.com/watch/?\?(?:.+&)?v=(.+)' }
+sub patterns {
+  'https?://(?:[^\.]+\.)?youtube\.com/watch/?\?(?:.+&)?v=(.+)',
+  'https?://youtu.be/([a-zA-Z0-9_]+)'
+}
 sub provider_name { "YouTube" }
 
 sub request_url {
@@ -34,7 +37,7 @@ sub filter {
   my ($id) = $data->{html} =~ m{/v/([^\?]+)?};
 
   # tack on start parameter if timecode was in original URL
-  if (my @t = $req->url =~ /#a?t=(?:(\d+)m)?(\d+)s/) {
+  if (my @t = $req->url =~ /[#\?]a?t=(?:(\d+)m)?(\d+)s/) {
     my $seconds = pop @t;
     if (@t) {
       $seconds += $t[0] * 60;
