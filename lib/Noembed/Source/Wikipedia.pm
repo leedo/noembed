@@ -40,7 +40,8 @@ sub _extract_content {
 sub _extract_text_content {
   my $el = shift;
   my $output;
-  my @children = $el->content_list;
+  my ($content) = $el->look_down(class => 'mw-content-ltr');
+  my @children = $content->content_list;
 
   for my $child (@children) {
     my $tag = $child->tag;
