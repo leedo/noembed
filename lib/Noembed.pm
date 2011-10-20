@@ -30,6 +30,11 @@ sub prepare_app {
   $self->{providers} = [];
   $self->{locks} = {};
 
+  if ($self->{sources} and ref $self->{sources} eq 'ARRAY') {
+    $self->register_provider($_) for @{$self->{sources}};
+    delete $self->{sources};
+  }
+
   $self->register_provider($_) for Module::Find::findsubmod("Noembed::Source");
 }
 
@@ -191,7 +196,7 @@ Noembed - oembed gateway
     builder {
       mount "/oembed" => builder {
         enable JSONP;
-        $noembed->to_app;
+        Noembed->new->to_app;
       };
     };
 
