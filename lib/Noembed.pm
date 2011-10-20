@@ -30,7 +30,13 @@ sub prepare_app {
   $self->{providers} = [];
   $self->{locks} = {};
 
-  $self->register_provider($_) for Module::Find::findsubmod("Noembed::Source");
+  if ($self->{sources} and ref $self->{sources} eq 'ARRAY') {
+    $self->register_provider($_) for @{$self->{sources}};
+    delete $self->{sources};
+  }
+  else {
+    $self->register_provider($_) for Module::Find::findsubmod("Noembed::Source");
+  }
 }
 
 sub call {
@@ -191,22 +197,48 @@ Noembed - oembed gateway
     builder {
       mount "/oembed" => builder {
         enable JSONP;
-        $noembed->to_app;
+        Noembed->new->to_app;
       };
     };
 
 =head1 DESCRIPTION
 
-Noembed is an oEmbed gateway. It lets you fetch information about external URLs,
-which you can then use to embed into HTML pages. Noembed can fetch information
-about a large list of URLs, and it is very easy to define new types of URLs.
+Noembed is an oEmbed gateway. It lets you fetch information about
+external URLs, which you can then use to embed into HTML pages.
+Noembed can fetch information about a large list of URLs, and it
+is very easy to define new types of URLs.
 
-To add a new set of URLs to Noembed you create a new class that inherits from
-L<Noembed::Source> and override a few methods.
+To add a new set of URLs to Noembed you create a new class that
+inherits from L<Noembed::Source> and override a few methods.
+
+=head1 CUSTOM SOURCES
+
+Use the C<sources> option to load a custom list of source classes.
+All classes are assumed to be under the Noembed::Source namespace
+unless prefixed with C<+>.
+
+    # only load YouTube and a custom source
+    my $noembed = Noembed->new(
+      sources => [qw/ YouTube +My::Custom::Source /]
+    );
+
+    builder {
+      mount "/oembed" => $noembed->to_app;
+    };
 
 =head1 EXAMPLES
 
-To see an example of how to use Noembed from the client side, take a look at the
-demo in the eg/ directory. It accepts a URL and attempts to embed it in the page.
+To see an example of how to use Noembed from the client side, take
+a look at the demo in the eg/ directory. It accepts a URL and
+attempts to embed it in the page.
+
+=head1 AUTHOR
+
+Lee Aylward
+
+=head1 LICENSE
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
 
 =cut
