@@ -34,8 +34,9 @@ sub prepare_app {
     $self->register_provider($_) for @{$self->{sources}};
     delete $self->{sources};
   }
-
-  $self->register_provider($_) for Module::Find::findsubmod("Noembed::Source");
+  else {
+    $self->register_provider($_) for Module::Find::findsubmod("Noembed::Source");
+  }
 }
 
 sub call {
@@ -208,6 +209,20 @@ about a large list of URLs, and it is very easy to define new types of URLs.
 
 To add a new set of URLs to Noembed you create a new class that inherits from
 L<Noembed::Source> and override a few methods.
+
+=head1 CUSTOM SOURCES
+
+Use the C<sources> option to load a custom list of source classes. All classes
+are assumed to be under the Noembed::Source namespace unless prefixed with C<+>.
+
+    # only load YouTube and a custom source
+    my $noembed = Noembed->new(
+      sources => [qw/ YouTube +My::Custom::Source /]
+    );
+
+    builder {
+      mount "/oembed" => $noembed->to_app;
+    };
 
 =head1 EXAMPLES
 
