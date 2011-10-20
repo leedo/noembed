@@ -13,6 +13,8 @@ requires 'Class::Load' => '0';
 requires 'Module::Find' => '0';
 requires 'List::MoreUtils' => '0';
 requires 'HTML::Entities' => 0;
+requires 'Web::Scraper' => 0;
+requires 'File::Which' => 0;
 test_requires 'Test::More' => '0.86';
 
 no_index directory => "eg";
