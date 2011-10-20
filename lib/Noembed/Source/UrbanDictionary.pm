@@ -11,7 +11,7 @@ sub prepare_source {
   };
 }
 
-sub patterns { 'http://(?:www\.)urbandictionary\.com/define\.php\?term=.+' }
+sub patterns { 'http://www\.urbandictionary\.com/define\.php\?term=.+' }
 sub provider_name { "Urban Dictionary" }
 
 sub filter {
