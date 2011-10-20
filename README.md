@@ -1,96 +1,55 @@
-# Noembed - oEmbed everything.
+# NAME
 
-<a href="http://www.oembed.com/">oEmbed</a> is nice. Unfortunately, not
-everything supports oEmbed. Worse, the sites that <em>do</em> support
-it don't provide a consistent interface. Noembed provides a single <a
-href="/embed">url</a> to get embeddable content from a large list of
-sites, even sites without oEmbed support!
+Noembed - oembed gateway
 
-Additionally, Noembed guarantees that all responses will have
-<code>html</code>, <code>title</code>, <code>url</code>,  and
-<code>provider_name</code> fields. This means fewer special cases dealing
-with missing information.
+# SYNOPSIS
 
-A simple demo is <a href="demo.html">available here</a>.
+    use Plack::Builder;
+    use Noembed;
 
-##Usage
+    builder {
+      mount "/oembed" => builder {
+        enable JSONP;
+        Noembed->new->to_app;
+      };
+    };
 
-Treat Noembed like a regular oEmbed provider, but use any of the <a href="#supported-sites">supported sites</a>
-for the <code>url</code> parameter. Noembed also supports a <code>callback</code>
-parameter for JSONP.
-    
-An example request might look like this:
+# DESCRIPTION
 
-<pre>http://www.noembed.com/embed?url=http%3A//www.youtube.com/watch%3Fv%3DbDOYN-6gdRE&amp;callback=my_embed_function</pre>
+Noembed is an oEmbed gateway. It lets you fetch information about
+external URLs, which you can then use to embed into HTML pages.
+Noembed can fetch information about a large list of URLs, and it
+is very easy to define new types of URLs.
 
-And the response will look like:
+To add a new set of URLs to Noembed you create a new class that
+inherits from [Noembed::Source](http://search.cpan.org/perldoc?Noembed::Source) and override a few methods.
 
+# CUSTOM SOURCES
 
-<pre>
-my_embed_function(
-  {
-    "width" : 425,
-    "author_name" : "schmoyoho",
-    "author_url" : "http://www.youtube.com/user/schmoyoho",
-    "version" : "1.0",
-    "provider_url" : "http://www.youtube.com/",
-    "provider_name" : "YouTube",
-    "thumbnail_width" : 480,
-    "thumbnail_url" : "http://i3.ytimg.com/vi/bDOYN-6gdRE/hqdefault.jpg",
-    "height" : 344,
-    "thumbnail_height" : 360,
-    "html" : "&lt;iframe type='text/html' width='425' height='344' src='http://www.youtube.com/embed/bDOYN-6gdRE' frameborder=0&gt;&lt;/iframe&gt;",
-    "url" : "http://www.youtube.com/watch?v=bDOYN-6gdRE",
-    "type" : "rich",
-    "title" : "Auto-Tune the News #8: dragons. geese. Michael Vick. (ft. T-Pain)"
-  }
-) 
-</pre>
+Use the `sources` option to load a custom list of source classes.
+All classes are assumed to be under the Noembed::Source namespace
+unless prefixed with `+`.
 
-## Supported sites
+    # only load YouTube and a custom source
+    my $noembed = Noembed->new(
+      sources => [qw/ YouTube +My::Custom::Source /]
+    );
 
-### Existing oEmbed
+    builder {
+      mount "/oembed" => $noembed->to_app;
+    };
 
- * Viddler
- * Qik
- * Hulu
+# EXAMPLES
 
-### Improved oEmbed
+To see an example of how to use Noembed from the client side, take
+a look at the demo in the eg/ directory. It accepts a URL and
+attempts to embed it in the page.
 
- * Flickr - Photo links are put into an <code>&lt;img&gt;</code> tag.
- * GitHub Gist - Includes the full gist instead of only the first 3 lines.
- * YouTube - Uses an <code>&lt;iframe&gt;</code> so HTML5 video works.
- * Vimeo - Sets <code>&lt;iframe&gt;</code> width to 640 instead of native video width, which can get huge.
+# AUTHOR
 
-### Other
- * Twitter - Renders tweet along with metadata information.
- * Wikipedia - Includes all paragraphs leading up the the TOC. Includes formatting and links.
- * Giant Bomb - Links to videos will return a <code>&lt;video&gt;</code> tag.
- * Spotify - Renders metadata as spotify: URI (opens in Spotify app).
- * Twitpic
- * UrbanDictionary
+Lee Aylward
 
+# LICENSE
 
-## Development
-
-All the source code for Noembed is <a href="http://www.github.com/leedo/noembed">
-on github</a>. Patches are accepted to add new services. To
-write a new class, inherit from the <code>Noembed::Source</code>
-class and define <code>provider_name</code>, <code>matches</code>,
-<code>filter</code>, and <code>request_url</code> methods. Take a
-look at an <a href="https://github.com/leedo/noembed/blob/master/lib/Noembed/Source/Wikipedia.pm">existing
-source</a> for an example.
-
-## Similar sites
-
-<a href="http://oohembed.com/">Oohembed</a> is a very similar service. It even
-acts as a gateway to non-oEmbed enabled sites. The main limitation that I encountered
-was its lack of guaranteed <code>html</code> field. Also, it is popular so it
-regularly goes over its usage limits.
-
-<a href="http://embed.ly/">embed.ly</a>. I have not tried this service, but it
-lists support for hundreds of sites. Unfortunatly, you can not add your own providers,
-so you are limited to what they support.
-
-&copy; 2011 Lee Aylward
-
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
