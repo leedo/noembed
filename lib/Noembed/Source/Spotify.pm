@@ -8,26 +8,26 @@ sub prepare_source {
   my $self = shift;
 
   $self->{scraper} = scraper {
-    process 'title', title => 'TEXT';
-    process '#title', track => 'RAW';
+    process 'meta[property="og:title"]', title => '@content';
+    process 'meta[property="og:audio"]', link => '@content';
     process '#artist .meta-info', artist => 'RAW';
     process '#album .meta-info', album => 'RAW';
-    process '#cover-art', coverart => '@src';
+    process '#cover-art', image => '@src';
   };
 }
 
-sub patterns { 'https?://open\.spotify\.com/track/(\w{22})' }
+sub patterns { 'https?://open\.spotify\.com/(track|album)/([0-9a-zA-Z]{22})' }
 sub provider_name { "Spotify" }
 
 sub filter {
-  my ($self, $body) = @_;
+  my ($self, $body, $req) = @_;
 
   my $data = $self->{scraper}->scrape($body);
-  $data->{$_} = encoded_string $data->{$_} for qw/track artist album/;
-  $data->{title} =~ s/ on Spotify//;
+  $data->{$_} = encoded_string $data->{$_} for qw/artist album/;
+  ($data->{type}) = $req->captures;
 
   return +{
-    title => $data->{title},
+    title => $data->{title} . " by " . $data->{artist},
     html  => $self->render($data),
   };
 }
