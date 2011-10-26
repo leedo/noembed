@@ -10,7 +10,7 @@ sub prepare_source {
 
   $self->{scraper} = scraper {
     process "td#mainContent > h1", title => 'TEXT';
-    process "//table[id('mainContent')]//table[1]", html => sub {
+    process "td#mainContent > table", html => sub {
       my $e = shift;
 
       for my $a ($e->look_down(_tag => "a", class => "twitter-share-button")) {

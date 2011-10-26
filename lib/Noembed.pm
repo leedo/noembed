@@ -11,6 +11,7 @@ use File::ShareDir;
 use AnyEvent::HTTP;
 use Encode;
 use JSON;
+use AnyEvent::Strict;
 
 use Noembed::Request;
 
