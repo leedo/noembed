@@ -191,7 +191,7 @@ sub providers_response {
   my $providers = [ map {
     +{
       name     => $_->provider_name,
-      patterns => [$_->patterns],
+      patterns => [$_->patterns, $_->shorturls],
     }
   } @{$self->{providers}} ];
 
