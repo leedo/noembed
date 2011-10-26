@@ -19,7 +19,7 @@ sub prepare_source {
   );
 }
 
-sub shorturls { 'http://git.io/[0-9a-zA-Z]' }
+sub shorturls { 'http://git.io/[_0-9a-zA-Z]' }
 sub patterns { 'https?://github.com/([^/]+)/([^/]+)/commit/(.+)' }
 sub provider_name { "Github Commit" }
 
