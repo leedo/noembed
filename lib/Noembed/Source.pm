@@ -61,12 +61,14 @@ sub patterns {
   croak "must override patterns method";
 }
 
+sub shorturls { }
+
 sub matches {
   my ($self, $req) = @_;
 
   for my $re (@{$self->{patterns}}) {
     if (my (@caps) = $req->url =~ $re) {
-      $req->captures(@caps);
+      $req->pattern($re);
       return 1;
     }
   }
