@@ -4,7 +4,7 @@ use JSON;
 
 use parent 'Noembed::Source';
 
-sub patterns { 'http://imgur\.com/([\w\d]+)' }
+sub patterns { 'http://imgur\.com/([0-9a-zA-Z]+)$' }
 sub provider_name { "Imgur" }
 
 sub request_url {
