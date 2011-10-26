@@ -10,7 +10,7 @@ sub provider_name { "Twitter" }
 
 sub request_url {
   my ($self, $req) = @_;
-  my ($id) = $req->captures;
+  my $id = $req->captures->[0];
   return "http://api.twitter.com/1/statuses/show/$id.json";
 }
 

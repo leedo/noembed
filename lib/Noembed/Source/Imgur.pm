@@ -9,7 +9,7 @@ sub provider_name { "Imgur" }
 
 sub request_url {
   my ($self, $req) = @_;
-  my ($hash) = $req->captures;
+  my $hash = $req->captures->[0];
   "http://api.imgur.com/2/image/$hash.json";
 }
 

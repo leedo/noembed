@@ -24,7 +24,7 @@ sub filter {
 
   my $data = $self->{scraper}->scrape($body);
   $data->{$_} = encoded_string $data->{$_} for qw/artist album/;
-  ($data->{type}) = $req->captures;
+  $data->{type} = $req->captures->[0];
 
   return +{
     title => $data->{title} . " by " . $data->{artist},

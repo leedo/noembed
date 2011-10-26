@@ -16,7 +16,7 @@ sub request_url {
   my ($self, $req) = @_;
   my $uri = URI->new("http://www.youtube.com/oembed/");
 
-  my ($id) = $req->captures;
+  my $id = $req->captures->[0];
   $uri->query_param("url", "http://www.youtube.com/watch?v=$id");
 
   if ($req->maxwidth) {

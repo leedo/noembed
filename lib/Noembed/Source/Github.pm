@@ -25,7 +25,7 @@ sub provider_name { "Github Commit" }
 
 sub request_url {
   my ($self, $req) = @_;
-  my ($user, $repo, $hash) = $req->captures;
+  my ($user, $repo, $hash) = @{$req->captures};
   return "https://api.github.com/repos/$user/$repo/commits/$hash";
 }
 

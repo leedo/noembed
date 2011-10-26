@@ -24,12 +24,13 @@ sub url {
 
 sub captures {
   my $self = shift;
+  my @captures;
 
   if ($self->{pattern}) {
-    return ($self->url =~ $self->{pattern});
+    @captures = ($self->url =~ $self->{pattern});
   }
 
-  return ();
+  return \@captures;
 }
 
 sub pattern {
