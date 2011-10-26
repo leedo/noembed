@@ -28,6 +28,9 @@ sub prepare_app {
 
   $self->{render} = sub { $template->render_file(@_) };
   $self->{providers} = [];
+  $self->{shorturls} = [
+    qr{http://t\.co/[0-9a-zA-Z]+},
+  ];
   $self->{locks} = {};
 
   if ($self->{sources} and ref $self->{sources} eq 'ARRAY') {
@@ -44,7 +47,16 @@ sub call {
 
   my $req = Noembed::Request->new($env);
   return error("url parameter is required") unless $req->url;
-  return $self->handle_url($req);
+
+  return sub {
+    my $respond = shift;
+
+    my $working = $self->has_lock($req->hash);
+    $self->add_lock($req->hash, $respond);
+
+    return if $working;
+    return $self->handle_url($req);
+  };
 }
 
 sub template_dir {
@@ -65,24 +77,27 @@ sub share_dir {
 }
 
 sub handle_url {
-  my ($self, $req) = @_;
+  my ($self, $req, $times) = @_;
 
-  return sub {
-    my $respond = shift;
+  $times = 1 unless defined $times;
 
-    my $url = $req->url;
-    my $working = $self->has_lock($url);
-    $self->add_lock($url, $respond);
-    return if $working;
-  
-    for my $provider (@{$self->{providers}}) {
-      if ($provider->matches($req)) {
-        return $self->download($provider, $req);
-      }
-    }
-
-    $self->end_lock($url, error("no matching providers found for $url"));
+  if ($times > 5) {
+    return $self->end_lock($req->hash, error("Too many redirects for " . $req->url));
   }
+
+  for my $re (@{$self->{shorturls}}) {
+    if ($req->url =~ $re) {
+      return $self->resolve($req, $times);
+    }
+  }
+  
+  for my $provider (@{$self->{providers}}) {
+    if ($provider->matches($req)) {
+      return $self->download($provider, $req);
+    }
+  }
+
+  $self->end_lock($req->hash, error("no matching providers found for " . $req->url));
 }
 
 sub json_res {
@@ -113,6 +128,7 @@ sub register_provider {
   if ($loaded) {
     my $provider = $class->new(render => $self->{render});
     push @{ $self->{providers} }, $provider;
+    push @{ $self->{shorturls} }, map {qr{$_}} $provider->shorturls;
   }
   else {
     warn "Could not load provider $class: $error";
@@ -137,18 +153,37 @@ sub download {
         eval {
           $body = decode("utf8", $body);
           my $data = $provider->serialize($body, $req);
-          $self->end_lock($req->url, json_res $data);
+          $self->end_lock($req->hash, json_res $data);
         };
         carp "Error after http request: $@" if $@;
       }
       else {
-        $self->end_lock($req->url, error($headers->{Reason}));
+        $self->end_lock($req->hash, error($headers->{Reason}));
       }
 
       $cv->send unless $nb;
     };
 
   $cv->recv unless $nb;
+}
+
+sub resolve {
+  my ($self, $req, $times) = @_;
+
+  http_request get => $req->url,
+    recurse => 0,
+    sub {
+      my ($body, $headers) = @_;
+
+      if ($headers->{location}) {
+        $req->url($headers->{location}) 
+      }
+      elsif ($body =~ /URL=([^"]+)"/) {
+        $req->url($1);
+      }
+
+      $self->handle_url($req, $times + 1);
+    };
 }
 
 sub providers_response {
@@ -164,21 +199,21 @@ sub providers_response {
 }
 
 sub add_lock {
-  my ($self, $url, $respond) = @_;
+  my ($self, $key, $respond) = @_;
 
-  $self->{locks}{$url} ||= [];
-  push @{$self->{locks}{$url}}, $respond;
+  $self->{locks}{$key} ||= [];
+  push @{$self->{locks}{$key}}, $respond;
 }
 
 sub end_lock {
-  my ($self, $url, $res) = @_;
-  my $locks = delete $self->{locks}{$url};
+  my ($self, $key, $res) = @_;
+  my $locks = delete $self->{locks}{$key};
   $_->([@$res]) for @$locks;
 }
 
 sub has_lock {
-  my ($self, $url) = @_;
-  exists $self->{locks}{$url} and @{$self->{locks}{$url}};
+  my ($self, $key) = @_;
+  exists $self->{locks}{$key} and @{$self->{locks}{$key}};
 }
 
 1;

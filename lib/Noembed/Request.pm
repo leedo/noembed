@@ -2,24 +2,42 @@ package Noembed::Request;
 
 use parent 'Plack::Request';
 
-sub url {
+sub new {
+  my ($class, $env) = @_;
+  my $self = $class->SUPER::new($env);
+  $self->{hash} = $env->{REQUEST_URI};
+  return $self;
+}
+
+sub hash {
   my $self = shift;
-  $self->parameters->{url};
+  return $self->{hash};
+}
+
+sub url {
+  my ($self, $url) = @_;
+  if (defined $url) {
+    $self->parameters->{url} = $url;
+  }
+  return $self->parameters->{url};
 }
 
 sub captures {
-  my ($self, @captures) = @_;
+  my $self = shift;
 
-  if (@captures) {
-    $self->{_captures} = \@captures;
-    return @captures;
-  }
-
-  elsif ($self->{_captures}) {
-    return @{ $self->{_captures} };
+  if ($self->{pattern}) {
+    return ($self->url =~ $self->{pattern});
   }
 
   return ();
+}
+
+sub pattern {
+  my ($self, $pattern) = @_;
+  if (defined $pattern) {
+    $self->{pattern} = $pattern;
+  }
+  $self->{pattern};
 }
 
 sub maxwidth {
