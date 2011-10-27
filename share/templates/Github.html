@@ -6,7 +6,7 @@
     <a href="<?= $commit->{commit}{url} ?>"><?= $commit->{commit}{message} ?></a>
   </h2>
 ? for my $file (@{$commit->{files}}) {
-? my $js = "var f = this.nextSibling.toggleClassName('visible'); return false;";
+? my $js = "var f = this.nextSibling; f.style.display = (f.style.display != 'block' ? 'block' : 'none'); return false;";
   <div class="github-file">
     <a href="<?= $file->{blob_url} ?>" onclick="<?= $js ?>"><?= $file->{filename} ?></a><?= $file->{patch} ?>
   </div>

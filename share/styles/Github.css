@@ -41,10 +41,6 @@
   display: none;
 }
 
-.github-file table.highlighttable.visible {
-  display: table;
-}
-
 .github-commit-author {
   float: right;
   font-size: 0.8em;
