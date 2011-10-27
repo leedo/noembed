@@ -30,7 +30,7 @@ sub filter {
   }
 
   return +{
-    title => $gist->{description},
+    title => ($gist->{description} || $gist->{html_url}) . " by $gist->{user}{login}",
     html => $self->render($gist),
   };
 }
