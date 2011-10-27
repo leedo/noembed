@@ -6,9 +6,19 @@
   background: #fff;
 }
 
+.gist-embed h2 {
+  font-weight: normal;
+  border-bottom: 1px solid #eee;
+  padding: 5px;
+}
+
 .gist-file {
   background: #eee;
   border-top: 1px solid #ddd;
+}
+
+.gist-file table {
+  font-size: 1em;
 }
 
 .gist-description {
@@ -27,7 +37,7 @@
 
 .gist-embed h3 {
   display: block;
-  padding: 3px 5px;
+  padding: 5px;
   margin: 0;
   font-size: 1.2em;
 }
@@ -51,11 +61,13 @@
 
 .gist-file pre {
   margin: 0;
+  font-family: Menlo, DejaVuSansMono, monospace;
 }
 
 td.linenos {
   color: #999;
   text-align: right;
+  padding: 0 5px;
 }
 
 .hll { background-color: #ffffcc }
