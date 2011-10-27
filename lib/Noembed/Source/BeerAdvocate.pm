@@ -42,6 +42,7 @@ sub patterns { 'http://(?:www\.)?beeradvocate\.com/beer/profile/\d+/\d+' }
 sub filter {
   my ($self, $body) = @_;
   my $data = $self->{scraper}->scrape($body);
+  $data->{html} =~ s/<br[^>]*>\s*Displayed[^\.]+\.//s;
   +{
     title => $data->{title},
     html => "<div class=\"beer-advocate-embed\">$data->{html}</div>",
