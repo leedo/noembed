@@ -12,7 +12,7 @@ sub new {
     bin    => $args{bin}    || which("pygmentize") || "/usr/bin/pygmentize",
     lexer  => $args{lexer}  || "text",
     format => $args{format} || "html",
-    options => $args{options} || "linenos=True,noclasses=True",
+    options => $args{options} || "linenos=True",
   }, $class;
 }
 
