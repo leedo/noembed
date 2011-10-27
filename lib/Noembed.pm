@@ -86,16 +86,15 @@ sub handle_url {
     return $self->end_lock($req->hash, error("Too many redirects for " . $req->url));
   }
 
-  for my $re (@{$self->{shorturls}}) {
-    if ($req->url =~ $re) {
-      return $self->resolve($req, $times);
-    }
+  if ($self->is_shorturl($req->url)) {
+    return $self->resolve($req, $times);
   }
-  
-  for my $provider (@{$self->{providers}}) {
-    if ($provider->matches($req)) {
-      return $self->download($provider, $req);
-    }
+ 
+  if (my $provider = $self->find_provider($req)) {
+    return $provider->pre_download($req, sub {
+      my $req = shift;
+      $self->download($provider, $req);
+    });
   }
 
   $self->end_lock($req->hash, error("no matching providers found for " . $req->url));
@@ -166,6 +165,26 @@ sub download {
     };
 
   $cv->recv unless $nb;
+}
+
+sub find_provider {
+  my ($self, $req) = @_;
+
+  for my $provider (@{$self->{providers}}) {
+    return $provider if $provider->matches($req);
+  }
+
+  return ();
+}
+
+sub is_shorturl {
+  my ($self, $url) = @_;
+
+  for my $re (@{$self->{shorturls}}) {
+    return 1 if $url =~ $re;
+  }
+
+  return 0;
 }
 
 sub resolve {

@@ -16,6 +16,11 @@ sub new {
 
 sub prepare_source { }
 
+sub pre_download {
+  my ($self, $req, $cb) = @_;
+  $cb->($req);
+}
+
 sub filename {
   my ($self, $ext) = @_;
   my ($name) = ref($self) =~ /:([^:]+)$/;
