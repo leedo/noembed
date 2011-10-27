@@ -2,21 +2,13 @@ package Noembed::Source::Github;
 
 use Text::MicroTemplate qw/encoded_string/;
 use Noembed::Pygmentize;
-use File::Which qw/which/;
 use JSON;
 
 use parent "Noembed::Source";
 
 sub prepare_source {
   my $self = shift;
-
-  my $pygmentize = which "pygmentize";
-  die "couldn't find pygmentize program" unless $pygmentize;
-
-  $self->{pyg} = Noembed::Pygmentize->new(
-    bin => $pygmentize,
-    lexer => "diff",
-  );
+  $self->{pyg} = Noembed::Pygmentize->new(lexer => "diff");
 }
 
 sub shorturls { 'http://git.io/[_0-9a-zA-Z]+' }

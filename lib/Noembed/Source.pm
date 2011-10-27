@@ -16,9 +16,9 @@ sub new {
 
 sub prepare_source { }
 
-sub pre_download {
-  my ($self, $req, $cb) = @_;
-  $cb->($req);
+sub post_download {
+  my ($self, $body, $cb) = @_;
+  $cb->($body);
 }
 
 sub filename {
@@ -82,13 +82,13 @@ sub matches {
 }
 
 sub serialize {
-  my ($self, $body, $req) = @_;
+  my ($self, $body, $req, @data) = @_;
 
   my $data = {
     title => $req->url,
     provider_name => $self->provider_name,
     # overrides the above properties
-    %{ $self->filter($body, $req) },
+    %{ $self->filter($body, $req, @data) },
     type  => "rich",
     url   => $req->url,
   };

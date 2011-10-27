@@ -91,10 +91,7 @@ sub handle_url {
   }
  
   if (my $provider = $self->find_provider($req)) {
-    return $provider->pre_download($req, sub {
-      my $req = shift;
-      $self->download($provider, $req);
-    });
+    return $self->download($provider, $req);
   }
 
   $self->end_lock($req->hash, error("no matching providers found for " . $req->url));
@@ -152,8 +149,11 @@ sub download {
       if ($headers->{Status} == 200) {
         eval {
           $body = decode("utf8", $body);
-          my $data = $provider->serialize($body, $req);
-          $self->end_lock($req->hash, json_res $data);
+          $provider->post_download($body, sub {
+            my $body = shift;
+            my $data = $provider->serialize($body, $req);
+            $self->end_lock($req->hash, json_res $data);
+          });
         };
         carp "Error after http request: $@" if $@;
       }

@@ -1,6 +1,6 @@
 ? my $commit = shift;
 
-<div class="github-commit" id="commit-<?= $commit->{sha} ?>">
+<div class="github-commit">
   <h2 class="github-commit-message">
     <a href="<?= $commit->{author}{url} ?>" class="github-commit-author"><?= $commit->{author}{login} ?></a>
     <a href="<?= $commit->{commit}{url} ?>"><?= $commit->{commit}{message} ?></a>

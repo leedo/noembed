@@ -1,0 +1,61 @@
+.gist-embed {
+  border-radius: 5px;
+  font-size: 12px;
+  -webkit-box-shadow: 0px 2px 2px rgba(0,0,0,0.5);
+  border: 1px solid #ccc;
+  background: #fff;
+}
+
+.gist-file {
+  border-top: 1px solid #ddd;
+  background: #eee;
+}
+
+.gist-description {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0;
+  padding: 5px;
+  color: #111;
+  overflow: hidden;
+}
+
+.gist-embed a {
+  color: #111;
+  text-decoration: none;
+}
+
+.gist-file > a {
+  display: block;
+  padding: 3px 5px;
+}
+
+.gist-file > a:hover {
+  background: #fff;
+}
+
+.gist-description a:hover {
+  text-decoration: underline;
+}
+
+.gist-embed table.highlighttable {
+  display: none;
+}
+
+.gist-user {
+  float: right;
+  font-size: 0.8em;
+  line-height: 1.6em;
+  font-weight: normal;
+}
+
+.gist-file .synComment    { color: #BC9458 }
+.gist-file .synConstant   { color: #6D9CDE }
+.gist-file .synIdentifier { color: #6D9CBE }
+.gist-file .synStatement  { color: #CC7833 }
+.gist-file .synPreProc    { color: #E6E1DC }
+.gist-file .synType       { color: #d75f5f }
+.gist-file .synSpecial    { color: #DA4939 }
+.gist-file .synUnderlined { color: #000000 ; text-decoration: underline }
+.gist-file .synError      { color: #FFC66D ; background: #990000 none }
+.gist-file .synTodo       { color: #0000FF ; background: #FFFF00 none }
