@@ -32,6 +32,12 @@
   font-size: 1.2em;
 }
 
+.gist-embed table {
+  width: auto;
+  table-layout: auto;
+  height: auto;
+}
+
 .gist-description a:hover {
   text-decoration: underline;
 }
