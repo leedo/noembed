@@ -1,14 +1,25 @@
 ? my $gist = shift;
 
 <div class="gist-embed">
+? if ($gist->{description}) {
   <h2 class="gist-description">
-    <a href="<?= $gist->{user}{url} ?>" class="gist-user"><?= $gist->{user}{login} ?></a>
-    <a href="<?= $gist->{html_url} ?>"><?= $gist->{description} ?></a>
+    <a href="<?= $gist->{user}{url} ?>" class="gist-user" target="_blank"><?= $gist->{user}{login} ?></a>
+    <a href="<?= $gist->{html_url} ?>" target="_blank"><?= $gist->{description} ?></a>
   </h2>
+? }
 ? for my $file (values %{$gist->{files}}) {
-? my $js = "var f = this.nextSibling; f.style.display = (f.style.display != 'block' ? 'block' : 'none'); return false;";
+? if ($gist->{description}) {
+    <h3><?= $file->{filename} ?></h3>
+? }
+? else {
+    <h3>
+      <a href="<?= $gist->{html_url} ?>" target="_blank"><?= $file->{filename} ?></a>
+      <a href="<?= $gist->{user}{url} ?>" class="gist-user" target="_blank"><?= $gist->{user}{login} ?></a>
+    </h3>
+? }
+
   <div class="gist-file">
-    <a href="<?= $file->{raw_url} ?>" onclick="<?= $js ?>"><?= $file->{filename} ?></a><?= $file->{content} ?>
+    <?= $file->{content} ?>
   </div>
 ? }
 </div>

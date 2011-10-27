@@ -25,21 +25,15 @@
   text-decoration: none;
 }
 
-.gist-file > a {
+.gist-embed h3 {
   display: block;
   padding: 3px 5px;
-}
-
-.gist-file > a:hover {
-  background: #fff;
+  margin: 0;
+  font-size: 1.2em;
 }
 
 .gist-description a:hover {
   text-decoration: underline;
-}
-
-.gist-embed table.highlighttable {
-  display: none;
 }
 
 .gist-user {
@@ -49,7 +43,14 @@
   font-weight: normal;
 }
 
-td.linenos { color: #999; }
+.gist-file pre {
+  margin: 0;
+}
+
+td.linenos {
+  color: #999;
+  text-align: right;
+}
 
 .hll { background-color: #ffffcc }
 .c { color: #408080; font-style: italic } /* Comment */
