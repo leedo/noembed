@@ -1,8 +1,8 @@
 ? my $data = shift;
 
 ? if ($data->{url} =~ /\.mp4$/) {
-  <video width="480" height="360" controls="controls">
-    <source type="video/mp4" src="<?= $data->{url} ?>">
+  <video width="480" height="360" poster="<?= $data->{url} ?>" controls="controls" autoplay="autoplay" src="<?= $data->{url} ?>">
+    <img src="<?= $data->{img} ?>">
   </video>
 ? } else {
   <img src="<?= $data->{img} ?>">
