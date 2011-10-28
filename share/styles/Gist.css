@@ -15,6 +15,7 @@
 .gist-file {
   background: #efefef;
   border-top: 1px solid #ddd;
+  overflow-x: auto;
 }
 
 .gist-file table {
