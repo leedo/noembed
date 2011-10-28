@@ -7,7 +7,8 @@ use parent 'Noembed::Source';
 sub prepare_source {
   my $self = shift;
   $self->{scraper} = scraper {
-    process '#main_image', src => '@src';
+    process '#main_image', img => '@src';
+    process '#embed-box input', url => '@value';
   };
 }
 
@@ -19,7 +20,7 @@ sub filter {
   my $data = $self->{scraper}->scrape($body);
 
   return +{
-    html => "<img src=\"$data->{src}\">",
+    html => $self->render($data),
   };
 }
 

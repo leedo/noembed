@@ -1,0 +1,9 @@
+? my $data = shift;
+
+? if ($data->{url} =~ /\.mp4$/) {
+  <video width="480" height="360" controls="controls">
+    <source type="video/mp4" src="<?= $data->{url} ?>">
+  </video>
+? } else {
+  <img src="<?= $data->{img} ?>">
+? }
