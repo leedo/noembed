@@ -18,6 +18,7 @@ use Noembed::Request;
 use parent 'Plack::Component';
 
 our $VERSION = "0.01";
+our $SHAREDIR = "share";
 
 sub prepare_app {
   my $self = shift;
@@ -70,7 +71,7 @@ sub style_dir {
 
 # yuck.
 sub share_dir {
-  my @try = ("share", "../share");
+  my @try = ($SHAREDIR, "../$SHAREDIR");
   for (@try) {
     return $_ if -e "$_/templates/Twitter.html";
   }
