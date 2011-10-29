@@ -155,7 +155,11 @@ sub download {
             $self->end_lock($req->hash, json_res $data);
           });
         };
-        carp "Error after http request: $@" if $@;
+        if ($@) {
+          my $error = $@;
+          $error =~ s/at .+?\.pm line \d+\.//;
+          $self->end_lock($req->hash, error($error));
+        }
       }
       else {
         $self->end_lock($req->hash, error($headers->{Reason}));

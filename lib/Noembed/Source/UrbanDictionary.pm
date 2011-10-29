@@ -19,6 +19,10 @@ sub filter {
 
   my $data = $self->{scraper}->scrape($body);
 
+  if (!@{$data->{words}}) {
+    die "term not found!";
+  }
+
   my $title = $data->{words}->[0];
   $title =~ s/^\s//ms;
   $title =~ s/\s+$//ms;
