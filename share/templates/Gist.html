@@ -8,19 +8,10 @@
   </h2>
 ? }
 ? for my $file (values %{$gist->{files}}) {
-? if ($gist->{description}) {
   <h3>
     <span class="gist-language"><?= $file->{language} ?></span>
     <?= $file->{filename} ?>
   </h3>
-? }
-? else {
-    <h3>
-      <a href="<?= $gist->{html_url} ?>" target="_blank"><?= $file->{filename} ?></a>
-      <a href="<?= $gist->{user}{url} ?>" class="gist-user" target="_blank"><?= $gist->{user}{login} ?></a>
-    </h3>
-? }
-
   <div class="gist-file">
     <?= $file->{content} ?>
   </div>
