@@ -8,7 +8,7 @@ sub prepare_source {
   my $self = shift;
 
   $self->{scraper} = scraper {
-    process 'meta[property="og:title"]', title => '@content';
+    process 'meta[property="og:description"]', title => '@content';
     process 'meta[property="og:image"]', url => '@content';
   };
 }
