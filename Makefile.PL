@@ -4,6 +4,7 @@ perl_version '5.008';
 author 'Lee Aylward <leedo@cpan.org>';
 license 'perl';
 all_from 'lib/Noembed.pm';
+requires 'Data::GUID';
 requires 'Plack' => '0';
 requires 'JSON' => 0;
 requires 'File::ShareDir' => 0;

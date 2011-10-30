@@ -1,4 +1,4 @@
-? my $data = shift;
+? my ($id, $data) = @_;
 
 ? if ($data->{url} =~ /\.mp4$/) {
   <video width="480" height="360" poster="<?= $data->{url} ?>" controls="controls" autoplay="autoplay" src="<?= $data->{url} ?>">

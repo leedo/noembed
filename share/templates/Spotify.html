@@ -1,6 +1,6 @@
-? my $data = shift;
+? my ($id, $data) = @_;
 
-<div class="spotify-embed">
+<div class="spotify-embed" id="<?= $id ?>">
   <img class="spotify-image" width="180" height="180" src="<?= $data->{image} ?>"/>
   <span class="spotify-title"><a href="<?= $data->{link} ?>"><?= $data->{title} ?></a></span>
   by <span class="spotify-artist"><?= $data->{artist} ?></span>

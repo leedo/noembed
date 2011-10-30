@@ -1,6 +1,6 @@
-? my $gist = shift;
+? my ($id, $gist) = @_;
 
-<div class="gist-embed">
+<div class="gist-embed" id="<?= $id ?>">
 ? if ($gist->{description}) {
   <h2 class="gist-description">
     <a href="<?= $gist->{user}{url} ?>" class="gist-user" target="_blank"><?= $gist->{user}{login} ?></a>

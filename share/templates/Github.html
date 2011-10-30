@@ -1,6 +1,6 @@
-? my $commit = shift;
+? my ($id, $commit) = @_;
 
-<div class="github-commit">
+<div class="github-commit" id=<?= $id ?>">
   <h2 class="github-commit-message">
     <a href="<?= $commit->{author}{url} ?>" class="github-commit-author"><?= $commit->{author}{login} ?></a>
     <a href="<?= $commit->{commit}{url} ?>"><?= $commit->{commit}{message} ?></a>

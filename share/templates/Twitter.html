@@ -1,8 +1,7 @@
-? my $data = $_[0];
-? my $id = $data->{id};
-? my $user = $data->{user};
+? my ($id, $tweet) = @_;
+? my $user = $tweet->{user};
 
-<div class="tweet-embed" >
+<div class="tweet-embed" id="<?= $id ?>">
   <div class="tweet_user">
     <div class="tweet_image">
       <a href="http://www.twitter.com/<?= $user->{screen_name} ?>" target="_blank">
@@ -16,18 +15,18 @@
     </div>
     <div class="tweet_name"><?= $user->{name} ?></div>
   </div>
-  <div class="tweet_text"><?= $data->{text} ?></div>
+  <div class="tweet_text"><?= $tweet->{text} ?></div>
   <div class="tweet_info">
-    <a target="_blank" href="http://www.twitter.com/<?= $user->{screen_name}?>/status/<?= $id ?>">
-      <span class="tweet_created_at" id="tweet-<?= $id ?>"><?= $data->{created_at} ?></span>
+    <a target="_blank" href="http://www.twitter.com/<?= $user->{screen_name}?>/status/<?= $tweet->{id} ?>">
+      <span class="tweet_created_at" id="<?= $id ?>-timestamp"><?= $tweet->{created_at} ?></span>
     </a>
-    via <?= $data->{source} ?>
+    via <?= $tweet->{source} ?>
   </div>
 <div>
 
 <script type="text/javascript">
   var months = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'];
-  var elem = document.getElementById("tweet-<?= $id ?>");
+  var elem = document.getElementById("<?= $id ?>-timestamp");
   var date = new Date(elem.innerHTML);
 
   if (date) {

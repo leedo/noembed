@@ -1,4 +1,4 @@
-? my $data = shift;
+? my ($id, $data) = @_;
 <video preload="none" controls="controls" autoplay="autoplay" width="640" height="360" src="<?= $data->{src} ?>">
   <?= $data->{title} ?>
 </video>

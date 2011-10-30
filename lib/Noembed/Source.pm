@@ -1,5 +1,6 @@
 package Noembed::Source;
 
+use Data::GUID;
 use Carp;
 
 sub new {
@@ -29,7 +30,8 @@ sub filename {
 
 sub render {
   my $self = shift;
-  $self->{render}->($self->filename("html"), @_)->as_string;
+  my $id = Data::GUID->new->as_string;
+  $self->{render}->($self->filename("html"), $id, @_)->as_string;
 }
 
 sub request_url {
