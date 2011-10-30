@@ -8,8 +8,9 @@ sub prepare_source {
   my $self = shift;
 
   $self->{scraper} = scraper {
-    process 'meta[property="og:description"]', title => '@content';
+    process 'meta[property="og:description"]', description => '@content';
     process 'meta[property="og:image"]', url => '@content';
+    process 'div.caption', caption => 'TEXT';
   };
 }
 
@@ -21,7 +22,7 @@ sub filter {
   my $data = $self->{scraper}->scrape($body);
 
   return +{
-    title => $data->{title},
+    title => ($data->{caption} || $data->{title}),
     html  => "<img src=\"$data->{url}\">",
   };
 }
