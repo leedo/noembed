@@ -9,7 +9,10 @@
 ? }
 ? for my $file (values %{$gist->{files}}) {
 ? if ($gist->{description}) {
-    <h3><?= $file->{filename} ?></h3>
+  <h3>
+    <span class="gist-language"><?= $file->{language} ?></span>
+    <?= $file->{filename} ?>
+  </h3>
 ? }
 ? else {
     <h3>

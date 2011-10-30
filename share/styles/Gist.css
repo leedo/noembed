@@ -1,20 +1,29 @@
 .gist-embed {
-  border-radius: 5px;
   font-size: 12px;
-  -webkit-box-shadow: 0px 2px 2px rgba(0,0,0,0.5);
   border: 1px solid #ccc;
   background: #fff;
 }
 
-.gist-embed h2 {
+.gist-embed h2, h3 {
   font-weight: normal;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #ddd;
   padding: 5px;
+}
+
+.gist-embed h3 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.gist-language {
+  float: right;
+  color: #999;
+  font-size: 0.8em;
+  padding-top: 0.3em;
 }
 
 .gist-file {
   background: #efefef;
-  border-top: 1px solid #ddd;
   overflow-x: auto;
 }
 
@@ -36,13 +45,6 @@
   text-decoration: none;
 }
 
-.gist-embed h3 {
-  display: block;
-  padding: 5px;
-  margin: 0;
-  font-size: 1.2em;
-}
-
 .gist-embed table {
   width: auto;
   table-layout: auto;
@@ -56,7 +58,7 @@
 .gist-user {
   float: right;
   font-size: 0.8em;
-  line-height: 1.6em;
+  padding-top: 0.3em;
   font-weight: normal;
 }
 
@@ -65,10 +67,22 @@
   font-family: Menlo, DejaVuSansMono, monospace;
 }
 
-td.linenos {
-  color: #999;
+.gist-file table {
+  margin: 0;
+  padding: 0;
+  border-spacing: 0px;
+}
+
+.gist-file td.linenos {
+  color: #eee;
+  background: #bbb;
   text-align: right;
-  padding: 0 5px;
+  padding: 5px;
+  border-right: 1px solid #999;
+}
+
+.gist-file td.code {
+  padding: 5px;
 }
 
 .hll { background-color: #ffffcc }
