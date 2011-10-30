@@ -25,6 +25,9 @@ sub patterns { 'https?://www\.giantbomb\.com/([^/]+)/\d+-\d+/?' }
 sub filter {
   my ($self, $body) = @_;
   my $data = $self->{scraper}->scrape($body);
+  
+  die "not a video" unless $data and $data->{video};
+
   return +{
     title => $data->{video}{title},
     html  => $self->render($data->{video}),
