@@ -32,27 +32,6 @@ sub render {
   $self->{render}->($self->filename("html"), @_)->as_string;
 }
 
-sub style {
-  my $self = shift;
-  
-  # cache it
-  unless (defined $self->{style}) {
-    $self->{style} = do {
-      my $file = Noembed::style_dir() . "/" . $self->filename("css");
-      if (-r $file) {
-        open my $fh, "<", $file;
-        local $/;
-        '<style type="text/css">'.<$fh>.'</style>';
-      }
-      else {
-        "";
-      }
-    };
-  }
-
-  return $self->{style};
-}
-
 sub request_url {
   my ($self, $req) = @_;
   return $req->url;
@@ -93,7 +72,6 @@ sub serialize {
     url   => $req->url,
   };
 
-  $data->{html} .= $self->style;
   return $data;
 }
 

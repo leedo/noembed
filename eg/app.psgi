@@ -23,6 +23,7 @@ my $refcheck = sub {
 builder {
   mount "/"      => Plack::App::File->new(file => "index.html");
   mount "/demo"  => Plack::App::File->new(file => "demo.html");
+  mount "/noembed.css" => sub { $noembed->css_response };
   mount "/providers" => builder {
     enable ReverseProxy;
     enable $refcheck;
