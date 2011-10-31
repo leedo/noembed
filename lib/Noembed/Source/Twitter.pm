@@ -5,6 +5,11 @@ use Text::MicroTemplate qw/encoded_string/;
 
 use parent 'Noembed::Source';
 
+sub prepare_source {
+  my $self = shift;
+  $self->{url_re} = qr{(http://t\.co/[a-zA-Z]+)};
+}
+
 sub patterns { 'https?://(?:www\.)?twitter\.com/(?:#!/)?[^/]+/status(?:es)?/(\d+)' }
 sub provider_name { "Twitter" }
 
@@ -14,15 +19,34 @@ sub request_url {
   return "http://api.twitter.com/1/statuses/show/$id.json";
 }
 
-sub filter {
-  my ($self, $body) = @_;
+sub post_download {
+  my ($self, $body, $cb) = @_;
 
-  my $data = decode_json $body;
-  $data->{$_} = encoded_string $data->{$_} for qw/source text/;
+  my $tweet = decode_json $body;
+  my @urls = $tweet->{text} =~ /$self->{url_re}/g; 
+  return $cb->($tweet) unless @urls;
+  my $cv = AE::cv;
+
+  while (my $url = shift @urls) {
+    $cv->begin;
+    Noembed::http_resolve $url, sub {
+      my $resolved = shift;
+      $tweet->{text} =~ s/\Q$url\E/$resolved/;
+      $cv->end;
+    };
+  }
+
+  $cv->cb(sub {$cb->($tweet)});
+}
+
+sub filter {
+  my ($self, $tweet) = @_;
+
+  $tweet->{$_} = encoded_string $tweet->{$_} for qw/source text/;
 
   return +{
-    title => "Tweet by $data->{user}{name}",
-    html  => $self->render($data),
+    title => "Tweet by $tweet->{user}{name}",
+    html  => $self->render($tweet),
   };
 }
 

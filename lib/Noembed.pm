@@ -88,7 +88,10 @@ sub handle_url {
   }
 
   if ($self->is_shorturl($req->url)) {
-    return $self->resolve($req, $times);
+    return http_resolve $req->url, sub {
+      $req->url(shift);
+      $self->handle_url($req, $times + 1);
+    };
   }
  
   if (my $provider = $self->find_provider($req)) {
@@ -192,22 +195,22 @@ sub is_shorturl {
   return 0;
 }
 
-sub resolve {
-  my ($self, $req, $times) = @_;
+sub http_resolve {
+  my ($url, $cb) = @_;
 
-  http_request get => $req->url,
+  http_request get => $url,
     recurse => 0,
     sub {
       my ($body, $headers) = @_;
 
       if ($headers->{location}) {
-        $req->url($headers->{location}) 
+        $url = $headers->{location};
       }
       elsif ($body =~ /URL=([^"]+)"/) {
-        $req->url($1);
+        $url = $1;
       }
 
-      $self->handle_url($req, $times + 1);
+      $cb->($url);
     };
 }
 
