@@ -255,7 +255,6 @@ sub add_lock {
 sub end_lock {
   my ($self, $key, $res) = @_;
   my $locks = delete $self->{locks}{$key};
-  warn "ending lock";
   $_->([@$res]) for @$locks;
 }
 
