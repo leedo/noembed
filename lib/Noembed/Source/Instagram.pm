@@ -17,7 +17,7 @@ sub prepare_source {
 sub patterns { 'https?://instagr\.am/p/.+' }
 sub provider_name { "Instagram" }
 
-sub filter {
+sub serialize {
   my ($self, $body) = @_;
   my $data = $self->{scraper}->scrape($body);
 

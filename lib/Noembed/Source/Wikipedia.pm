@@ -17,7 +17,7 @@ sub prepare_source {
 sub patterns { 'http://[^\.]+\.wikipedia\.org/wiki/.*' }
 sub provider_name { "Wikipedia" }
 
-sub filter {
+sub serialize {
   my ($self, $body) = @_;
   $self->{scraper}->scrape($body);
 }

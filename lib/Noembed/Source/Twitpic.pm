@@ -15,7 +15,7 @@ sub prepare_source {
 sub patterns { 'http://(www\.)?twitpic\.com/.+' }
 sub provider_name { "Twitpic" }
 
-sub filter {
+sub serialize {
   my ($self, $body) = @_;
 
   my $data = $self->{scraper}->scrape($body);

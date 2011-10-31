@@ -30,7 +30,7 @@ sub request_url {
   return $uri->as_string;
 }
 
-sub filter {
+sub serialize {
   my ($self, $body, $req) = @_;
 
   my $data = decode_json $body;

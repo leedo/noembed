@@ -18,7 +18,7 @@ sub prepare_source {
   $_->{re} = qr{$_->{pattern}} for @{$self->{sites}};
 }
 
-sub filter {
+sub serialize {
   my ($self, $body) = @_;
   my $data = decode_json $body;
 

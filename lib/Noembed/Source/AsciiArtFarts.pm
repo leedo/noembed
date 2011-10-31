@@ -14,7 +14,7 @@ sub prepare_source {
 sub patterns { 'http://www\.asciiartfarts\.com/[0-9]+\.html' }
 sub provider_name { "ASCII Art Farts" }
 
-sub filter {
+sub serialize {
   my ($self, $body) = @_;
   my $data = $self->{scraper}->scrape($body);
   return +{

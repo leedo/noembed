@@ -155,13 +155,13 @@ sub download {
           $body = decode("utf8", $body);
           $provider->post_download($body, sub {
             my $body = shift;
-            my $data = $provider->serialize($body, $req);
+            my $data = $provider->transform($body, $req);
             $self->end_lock($req->hash, json_res $data);
           });
         };
         if ($@) {
           my $error = $@;
-          $error =~ s/at .+?\.pm line \d+\.//;
+          $error =~ s/at .+?\.pm line.+//;
           $self->end_lock($req->hash, error($error));
         }
       }

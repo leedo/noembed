@@ -39,7 +39,7 @@ sub prepare_source {
 sub provider_name { "Beer Advocate" }
 sub patterns { 'http://(?:www\.)?beeradvocate\.com/beer/profile/\d+/\d+' }
 
-sub filter {
+sub serialize {
   my ($self, $body) = @_;
   my $data = $self->{scraper}->scrape($body);
   $data->{html} =~ s/<br[^>]*>\s*Displayed[^\.]+\.//s;

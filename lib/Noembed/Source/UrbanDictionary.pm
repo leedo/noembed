@@ -14,7 +14,7 @@ sub prepare_source {
 sub patterns { 'http://www\.urbandictionary\.com/define\.php\?term=.+' }
 sub provider_name { "Urban Dictionary" }
 
-sub filter {
+sub serialize {
   my ($self, $body) = @_;
 
   my $data = $self->{scraper}->scrape($body);

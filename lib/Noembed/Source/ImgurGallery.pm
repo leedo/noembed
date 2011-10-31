@@ -12,7 +12,7 @@ sub request_url {
   return $req->url.".json";
 }
 
-sub filter {
+sub serialize {
   my ($self, $body) = @_;
   my $data = decode_json($body);
 

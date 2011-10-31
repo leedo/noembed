@@ -19,7 +19,7 @@ sub request_url {
   return "https://api.github.com/gists/".$req->captures->[0];
 }
 
-sub filter {
+sub serialize {
   my ($self, $body) = @_;
   my $gist = decode_json $body;
 

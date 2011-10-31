@@ -19,7 +19,7 @@ sub prepare_source {
 sub patterns { 'https?://open\.spotify\.com/(track|album)/([0-9a-zA-Z]{22})' }
 sub provider_name { "Spotify" }
 
-sub filter {
+sub serialize {
   my ($self, $body, $req) = @_;
 
   my $data = $self->{scraper}->scrape($body);

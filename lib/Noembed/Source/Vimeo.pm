@@ -25,7 +25,7 @@ sub request_url {
   return $uri->as_string;
 }
 
-sub filter {
+sub serialize {
   my ($self, $body) = @_;
   decode_json $body;
 }

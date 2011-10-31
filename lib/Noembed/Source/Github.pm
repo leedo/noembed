@@ -21,7 +21,7 @@ sub request_url {
   return "https://api.github.com/repos/$user/$repo/commits/$hash";
 }
 
-sub filter {
+sub serialize {
   my ($self, $body) = @_;
   my $data = decode_json $body;
 

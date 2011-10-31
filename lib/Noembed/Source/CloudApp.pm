@@ -16,7 +16,7 @@ sub prepare_source {
 sub provider_name { 'CloudApp' }
 sub patterns { 'http://cl\.ly/[0-9a-zA-Z]+' }
 
-sub filter {
+sub serialize {
   my ($self, $body) = @_;
   my $data = $self->{scraper}->scrape($body);
 

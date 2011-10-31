@@ -39,7 +39,7 @@ sub post_download {
   $cv->cb(sub {$cb->($tweet)});
 }
 
-sub filter {
+sub serialize {
   my ($self, $tweet) = @_;
 
   $tweet->{$_} = encoded_string $tweet->{$_} for qw/source text/;

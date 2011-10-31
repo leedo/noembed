@@ -22,7 +22,7 @@ sub prepare_source {
 sub provider_name { "GiantBomb" }
 sub patterns { 'https?://www\.giantbomb\.com/([^/]+)/\d+-\d+/?' }
 
-sub filter {
+sub serialize {
   my ($self, $body) = @_;
   my $data = $self->{scraper}->scrape($body);
   

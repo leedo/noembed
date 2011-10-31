@@ -39,8 +39,8 @@ sub request_url {
   return $req->url;
 }
 
-sub filter {
-  croak "must override filter method";
+sub serialize {
+  croak "must override serialize method";
 }
 
 sub patterns {
@@ -62,14 +62,14 @@ sub matches {
   return 0;
 }
 
-sub serialize {
+sub transform {
   my ($self, $body, $req, @data) = @_;
 
   my $data = {
     title => $req->url,
     provider_name => $self->provider_name,
     # overrides the above properties
-    %{ $self->filter($body, $req, @data) },
+    %{ $self->serialize($body, $req, @data) },
     type  => "rich",
     url   => $req->url,
   };
@@ -114,7 +114,7 @@ regular expressions. e.g. "http://www\.google\.com/.+"
 
 Needs to return the name of the provider. e.g. "Google"
 
-=item filter ($body)
+=item serialize ($body)
 
 Accepts the downloaded content and must return a hash reference.
 The hash reference should contain an 'html' and 'title' key. It can

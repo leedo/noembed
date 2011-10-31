@@ -15,7 +15,7 @@ sub prepare_source {
 sub patterns { 'http://imgur\.com/([0-9a-zA-Z]+)$' }
 sub provider_name { "Imgur" }
 
-sub filter {
+sub serialize {
   my ($self, $body) = @_;
   my $data = $self->{scraper}->scrape($body);
 
