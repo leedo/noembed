@@ -63,13 +63,13 @@ sub matches {
 }
 
 sub transform {
-  my ($self, $body, $req, @data) = @_;
+  my ($self, $body, $req) = @_;
 
   my $data = {
     title => $req->url,
     provider_name => $self->provider_name,
     # overrides the above properties
-    %{ $self->serialize($body, $req, @data) },
+    %{ $self->serialize($body, $req) },
     type  => "rich",
     url   => $req->url,
   };
