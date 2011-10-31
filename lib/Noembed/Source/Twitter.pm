@@ -7,7 +7,7 @@ use parent 'Noembed::Source';
 
 sub prepare_source {
   my $self = shift;
-  $self->{url_re} = qr{(http://t\.co/[a-zA-Z]+)};
+  $self->{url_re} = qr{(http://t\.co/[0-9a-zA-Z]+)};
 }
 
 sub patterns { 'https?://(?:www\.)?twitter\.com/(?:#!/)?[^/]+/status(?:es)?/(\d+)' }
