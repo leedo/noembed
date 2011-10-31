@@ -22,9 +22,17 @@
   font-size: 1em;
 }
 
-.github-language {
+.github-stats {
   float: right;
-  color: #999;
+  font-weight: bold;
+}
+
+.github-addition {
+  color: #00A000;
+}
+
+.github-deletion {
+  color: #A00000;
 }
 
 .github-file {
