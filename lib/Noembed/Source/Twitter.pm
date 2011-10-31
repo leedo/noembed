@@ -26,7 +26,7 @@ sub post_download {
 
   my @names = $tweet->{text} =~ /$self->{name_re}/g;
   for my $name (@names) {
-    $tweet->{text} =~ s{\Q$name\E}{<a href="http://twitter.com/$name">$name</a>};
+    $tweet->{text} =~ s{\Q$name\E}{<a target="_blank" href="http://twitter.com/$name">$name</a>};
   }
 
   my @urls = $tweet->{text} =~ /$self->{url_re}/g; 
