@@ -66,7 +66,7 @@ sub colorize {
   my $out = <$rdr>;
 
   if ($err) {
-    carp $err if $err;
+    carp $err;
     return $text;
   }
   $out =~ s{</pre></div>\Z}{</pre>\n</div>};
