@@ -2,6 +2,7 @@ package Noembed::Source::Github;
 
 use Text::MicroTemplate qw/encoded_string/;
 use Noembed::Pygmentize;
+use AnyEvent;
 use JSON;
 
 use parent "Noembed::Source";
@@ -21,20 +22,30 @@ sub request_url {
   return "https://api.github.com/repos/$user/$repo/commits/$hash";
 }
 
-sub serialize {
-  my ($self, $body) = @_;
-  my $data = decode_json $body;
-
-  my $message = (split "\n", $data->{commit}{message})[0];
+sub post_download {
+  my ($self, $body, $cb) = @_;
+  my $commit = decode_json $body;
+  my $cv = AE::cv;
 
   # syntax highlight the patches
-  for my $file (@{$data->{files}}) {
-    $file->{patch} = encoded_string $self->{pyg}->colorize($file->{patch});
+  for my $file (@{$commit->{files}}) {
+    $cv->begin;
+    $self->{pyg}->colorize($file->{patch}, sub {
+      $file->{patch} = encoded_string $_[0];
+      $cv->end;
+    });
   }
 
+  $cv->cb(sub {$cb->($commit)});
+}
+
+sub serialize {
+  my ($self, $commit) = @_;
+
+  my $message = (split "\n", $commit->{commit}{message})[0];
   return +{
-    html => $self->render($data),
-    title => "$message by $data->{commit}{author}{name}",
+    html => $self->render($commit),
+    title => "$message by $commit->{commit}{author}{name}",
   };
 }
 

@@ -1,22 +1,52 @@
 package Noembed::Pygmentize;
 
-use Carp;
-use IPC::Open3;
+use AnyEvent::Worker;
 use File::Which qw/which/;
-use List::Util qw/first/;
-use Symbol 'gensym'; 
 
 sub new {
   my ($class, %args) = @_;
 
-  my $self = bless {
+  bless {
     bin    => $args{bin}    || which("pygmentize") || "/usr/bin/pygmentize",
     lexer  => $args{lexer}  || "text",
     format => $args{format} || "html",
     options => $args{options} || "linenos=True",
   }, $class;
+}
 
-  return $self;
+sub colorize {
+  my $cb = pop;
+  my ($self, $text, %opts) = @_;
+
+  $opts{lexer}   = $self->{lexer} unless defined $opts{lexer};
+  $opts{format}  = $self->{format} unless defined $opts{format};
+  $opts{options} = $self->{options} unless defined $opts{options};
+
+  $self->worker->do(colorize => $text, %opts, sub {
+    if ($@) {
+      warn $@;
+      return $cb->($text);
+    }
+    $cb->($_[1]);
+  });
+}
+
+sub worker {
+  my $self = shift;
+  $self->{worker} ||= AnyEvent::Worker->new(
+    ['Noembed::Pygmentize::Worker' => $self->{bin}]);
+}
+
+
+package Noembed::Pygmentize::Worker;
+
+use Carp;
+use IPC::Run;
+use List::Util qw/first/;
+
+sub new {
+  my ($class, $bin) = @_;
+  bless { bin => $bin }, $class;
 }
 
 sub has_lexer {
@@ -32,16 +62,12 @@ sub lexers {
 sub build_lexers {
   my $self = shift;
 
-  my($wtr, $rdr, $err);
-  $err = gensym; #ugh
-
-  my $pid = open3($wtr, $rdr, $err,  $self->{bin}, "-L", "lexers");
-  close $wtr;
-  waitpid($pid, 0);
+  my($in, $out, $err);
+  my $pid = IPC::Run::run([$self->{bin}, "-L", "lexers"], \$in, \$out, \$err, );
 
   my @lexers;
 
-  while (my $line = <$rdr>) {
+  for my $line (split "\n", $out) {
     if ($line =~ /^* (.+):/) {
       push @lexers, split ", ", $1;
     }
@@ -53,23 +79,9 @@ sub build_lexers {
 sub colorize {
   my ($self, $text, %opts) = @_;
 
-  my($wtr, $rdr, $err);
-  $err = gensym; #ugh
-
-  my $pid = open3($wtr, $rdr, $err, $self->command(%opts));
-  print $wtr $text;
-  close $wtr;
-  waitpid($pid, 0);
-
-  local $/;
-  my $err = <$err>;
-  my $out = <$rdr>;
-
-  if ($err) {
-    carp $err;
-    return $text;
-  }
-  $out =~ s{</pre></div>\Z}{</pre>\n</div>};
+  my($out, $err);
+  my $pid = IPC::Run::run([$self->command(%opts)], \$text, \$out, \$err);
+  die $err if $err;
   return $out;
 }
 
@@ -82,9 +94,9 @@ sub command {
 
   return (
     $self->{bin},
-    '-l', $opts{lexer}   || $self->{lexer},
-    '-f', $opts{format}  || $self->{format},
-    '-O', $opts{options} || $self->{options},
+    '-l', $opts{lexer},
+    '-f', $opts{format},
+    '-O', $opts{options},
   );
 }
 

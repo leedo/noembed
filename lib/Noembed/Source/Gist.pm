@@ -2,6 +2,7 @@ package Noembed::Source::Gist;
 
 use Text::MicroTemplate qw/encoded_string/;
 use Noembed::Pygmentize;
+use AnyEvent;
 use JSON;
 
 use parent 'Noembed::Source';
@@ -19,15 +20,28 @@ sub request_url {
   return "https://api.github.com/gists/".$req->captures->[0];
 }
 
-sub serialize {
-  my ($self, $body) = @_;
+sub post_download {
+  my ($self, $body, $cb) = @_;
   my $gist = decode_json $body;
+  my $cv = AE::cv;
 
   for my $file (values %{$gist->{files}}) {
-    $file->{content} = encoded_string $self->{pyg}->colorize(
-      $file->{content}, lexer => lc $file->{language}
+    $cv->begin;
+    $self->{pyg}->colorize($file->{content},
+      lexer => lc $file->{language},
+      sub {
+        my $colorized = shift;
+        $file->{content} = encoded_string $colorized;
+        $cv->end;
+      }
     );
   }
+
+  $cv->cb(sub {$cb->($gist)});
+}
+
+sub serialize {
+  my ($self, $gist) = @_;
 
   return +{
     title => ($gist->{description} || $gist->{html_url}) . " by $gist->{user}{login}",
