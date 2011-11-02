@@ -20,6 +20,10 @@ sub serialize {
 
   my $data = $self->{scraper}->scrape($body);
 
+  unless ($data->{image}) {
+    die "no image";
+  }
+
   $data->{caption} =~ s/^\s+//ms;
   $data->{caption} =~ s/\s+$//ms;
 
