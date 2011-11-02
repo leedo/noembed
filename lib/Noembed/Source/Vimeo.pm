@@ -27,7 +27,7 @@ sub request_url {
 
 sub serialize {
   my ($self, $body) = @_;
-  decode_json $body;
+  from_json $body;
 }
 
 1;

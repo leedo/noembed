@@ -14,7 +14,7 @@ sub request_url {
 
 sub serialize {
   my ($self, $body) = @_;
-  my $data = decode_json($body);
+  my $data = from_json $body;
 
   my $image = $data->{gallery}{image};
   my $src = "http://i.imgur.com/$image->{hash}$image->{ext}";

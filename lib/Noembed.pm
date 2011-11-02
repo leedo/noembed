@@ -28,6 +28,7 @@ sub prepare_app {
     use_cache    => 2
   );
 
+  $self->{json} = JSON::XS->new->ascii->pretty;
   $self->{render} = sub { $template->render_file(@_) };
   $self->{providers} = [];
   $self->{shorturls} = [
@@ -161,6 +162,7 @@ sub download {
         };
         if ($@) {
           my $error = $@;
+          warn $error;
           $error =~ s/at .+?\.pm line.+//;
           $self->end_lock($req->hash, error($error));
         }

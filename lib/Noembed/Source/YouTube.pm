@@ -33,7 +33,7 @@ sub request_url {
 sub serialize {
   my ($self, $body, $req) = @_;
 
-  my $data = decode_json $body;
+  my $data = from_json $body;
   my ($id) = $data->{html} =~ m{/v/([^\?]+)?};
 
   # tack on start parameter if timecode was in original URL

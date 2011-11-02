@@ -10,7 +10,7 @@ sub new {
     bin    => $args{bin}    || which("pygmentize") || "/usr/bin/pygmentize",
     lexer  => $args{lexer}  || "text",
     format => $args{format} || "html",
-    options => $args{options} || "linenos=True",
+    options => $args{options} || "linenos=True,encoding='utf-8'",
   }, $class;
 }
 
@@ -43,6 +43,7 @@ package Noembed::Pygmentize::Worker;
 use Carp;
 use IPC::Run;
 use List::Util qw/first/;
+use Encode;
 
 sub new {
   my ($class, $bin) = @_;
@@ -79,10 +80,11 @@ sub build_lexers {
 sub colorize {
   my ($self, $text, %opts) = @_;
 
+  $text = encode("utf-8", $text);
   my($out, $err);
   my $pid = IPC::Run::run([$self->command(%opts)], \$text, \$out, \$err);
   die $err if $err;
-  return $out;
+  return decode("utf-8", $out);
 }
 
 sub command {

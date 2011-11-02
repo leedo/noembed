@@ -2,6 +2,7 @@ package Noembed::Source;
 
 use Data::GUID;
 use Carp;
+use JSON ();
 
 sub new {
   my ($class, %args) = @_;

@@ -24,7 +24,7 @@ sub request_url {
 
 sub post_download {
   my ($self, $body, $cb) = @_;
-  my $commit = decode_json $body;
+  my $commit = from_json $body;
   my $cv = AE::cv;
 
   # syntax highlight the patches

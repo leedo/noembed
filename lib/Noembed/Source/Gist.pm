@@ -22,7 +22,7 @@ sub request_url {
 
 sub post_download {
   my ($self, $body, $cb) = @_;
-  my $gist = decode_json $body;
+  my $gist = from_json $body;
   my $cv = AE::cv;
 
   for my $file (values %{$gist->{files}}) {

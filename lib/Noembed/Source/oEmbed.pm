@@ -20,7 +20,7 @@ sub prepare_source {
 
 sub serialize {
   my ($self, $body) = @_;
-  my $data = decode_json $body;
+  my $data = from_json $body;
 
   if (!$data->{html}) {
     $data->{html} = $self->render($data);

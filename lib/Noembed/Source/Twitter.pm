@@ -22,7 +22,7 @@ sub request_url {
 
 sub post_download {
   my ($self, $body, $cb) = @_;
-  my $tweet = decode_json $body;
+  my $tweet = from_json $body;
 
   my @names = $tweet->{text} =~ /$self->{name_re}/g;
   for my $name (@names) {

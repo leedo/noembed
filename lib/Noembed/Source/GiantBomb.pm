@@ -10,7 +10,7 @@ sub prepare_source {
   $self->{scraper} = scraper {
     process "div.player", video => sub {
       my $el = shift;
-      my $data = decode_json decode_entities $el->attr("data-video");
+      my $data = from_json decode_entities $el->attr("data-video");
       return {
         src => $data->{urls}{progressive_high},
         title => $data->{video_name},
