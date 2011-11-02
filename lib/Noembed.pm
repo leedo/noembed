@@ -28,7 +28,6 @@ sub prepare_app {
     use_cache    => 2
   );
 
-  $self->{json} = JSON::XS->new->ascii->pretty;
   $self->{render} = sub { $template->render_file(@_) };
   $self->{providers} = [];
   $self->{shorturls} = [
