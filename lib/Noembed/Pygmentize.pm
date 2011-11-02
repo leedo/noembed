@@ -7,9 +7,9 @@ sub new {
   my ($class, %args) = @_;
 
   bless {
-    bin    => $args{bin}    || which("pygmentize") || "/usr/bin/pygmentize",
-    lexer  => $args{lexer}  || "text",
-    format => $args{format} || "html",
+    bin     => $args{bin}     || which("pygmentize") || "/usr/bin/pygmentize",
+    lexer   => $args{lexer}   || "text",
+    format  => $args{format}  || "html",
     options => $args{options} || "linenos=True,encoding='utf-8'",
   }, $class;
 }
@@ -18,8 +18,8 @@ sub colorize {
   my $cb = pop;
   my ($self, $text, %opts) = @_;
 
-  $opts{lexer}   = $self->{lexer} unless defined $opts{lexer};
-  $opts{format}  = $self->{format} unless defined $opts{format};
+  $opts{lexer}   = $self->{lexer}   unless defined $opts{lexer};
+  $opts{format}  = $self->{format}  unless defined $opts{format};
   $opts{options} = $self->{options} unless defined $opts{options};
 
   $self->worker->do(colorize => $text, %opts, sub {
@@ -40,7 +40,6 @@ sub worker {
 
 package Noembed::Pygmentize::Worker;
 
-use Carp;
 use IPC::Run;
 use List::Util qw/first/;
 use Encode;
@@ -90,7 +89,7 @@ sub colorize {
 sub command {
   my ($self, %opts) = @_;
 
-  if ($opts{lexer} and !$self->has_lexer($opts{lexer})) {
+  unless ($opts{lexer} and $self->has_lexer($opts{lexer})) {
     $opts{lexer} = "text";
   }
 
