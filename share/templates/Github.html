@@ -2,7 +2,9 @@
 
 <div class="github-embed" id=<?= $id ?>">
   <h2 class="github-description">
-    <a href="<?= $commit->{author}{url} ?>" class="github-user"><?= $commit->{author}{login} ?></a>
+    <? if ($commit->{author}{url}) { ?>
+      <a href="<?= $commit->{author}{url} ?>" class="github-user"><?= $commit->{author}{login} ?></a>
+    <? } ?>
     <a href="<?= $commit->{commit}{url} ?>"><?= $commit->{commit}{message} ?></a>
   </h2>
 ? for my $file (@{$commit->{files}}) {
