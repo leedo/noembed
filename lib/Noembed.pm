@@ -161,7 +161,7 @@ sub download {
         };
         if ($@) {
           my $error = $@;
-          warn $error;
+          warn "error processing $service: $error\n";
           $error =~ s/at .+?\.pm line.+//;
           $self->end_lock($req->hash, error($error));
         }
