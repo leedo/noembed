@@ -19,6 +19,10 @@ sub serialize {
   my ($self, $body) = @_;
   my $data = $self->{scraper}->scrape($body);
 
+  unless ($data->{url} or $data->{img}) {
+    die "No content";
+  }
+
   return +{
     html => $self->render($data),
   };
