@@ -24,7 +24,7 @@ sub serialize {
   my $data = decode_json $body;
   my ($movie) = @{$data};
 
-  die "invalid movie id" unless $movie or $movie eq "Nothing found.";
+  die "invalid movie id" unless $movie and $movie ne "Nothing found.";
 
   ($movie->{year}) = split "-", $movie->{released};
 
