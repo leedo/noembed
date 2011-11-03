@@ -19,6 +19,10 @@ sub serialize {
   my ($self, $body) = @_;
   my $data = $self->{scraper}->scrape($body);
 
+  if ($data->{title}) {
+    $data->{title} =~ s/ - Imgur//;
+  }
+
   return +{
     html => "<img src=\"$data->{src}\">",
     title => $data->{title} || "No title",
