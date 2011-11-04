@@ -88,10 +88,10 @@ sub handle_url {
   }
 
   if ($self->is_shorturl($req->url)) {
-    return http_resolve $req->url, sub {
+    return http_resolve($req->url, sub {
       $req->url(shift);
       $self->handle_url($req, $times + 1);
-    };
+    });
   }
  
   if (my $provider = $self->find_provider($req)) {
@@ -207,7 +207,7 @@ sub http_resolve {
       if ($headers->{location}) {
         $url = $headers->{location};
       }
-      elsif ($body =~ /URL=([^"]+)"/) {
+      elsif ($body and $body =~ /URL=([^"]+)"/) {
         $url = $1;
       }
 
