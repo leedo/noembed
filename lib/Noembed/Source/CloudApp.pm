@@ -18,12 +18,7 @@ sub patterns { 'http://cl\.ly/[0-9a-zA-Z]+' }
 
 sub serialize {
   my ($self, $body) = @_;
-  my $data = $self->{scraper}->scrape($body);
-
-  return +{
-    title => $data->{title},
-    html => $data->{html},
-  };
+  $self->{scraper}->scrape($body);
 }
 
 1;
