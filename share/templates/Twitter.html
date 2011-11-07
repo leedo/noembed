@@ -3,9 +3,8 @@
 
 <div class="tweet-embed" id="<?= $id ?>">
 
-? if (my $tweet = $tweet->{parent_tweet}) {
-?   do {
-?     my $user = $tweet->{user};
+? while (my $tweet = pop @{$tweet->{parents}}) {
+?   my $user = $tweet->{user};
   <div class="tweet-parent">
     <div class="tweet_user">
       <div class="tweet_image">
@@ -27,7 +26,6 @@
 
     <hr>
   </div>
-?   } while ($tweet = $tweet->{parent_tweet})
 ? }
 
   <div class="tweet_user">

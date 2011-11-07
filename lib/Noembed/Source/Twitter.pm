@@ -25,15 +25,17 @@ sub request_url {
 sub post_download {
   my ($self, $body, $cb) = @_;
   my $tweet = from_json $body;
-  $self->download_parents($tweet, sub {
+  $self->download_parents($tweet, [], sub {
+    $tweet->{parents} = shift;
     $self->expand_links($tweet, sub {$cb->($tweet)});
   });
 }
 
 sub download_parents {
-  my ($self, $tweet, $cb) = @_;
+  my $cb = pop;
+  my ($self, $tweet, $parents) = @_;
   my $parent_id = $tweet->{in_reply_to_status_id};
-  return $cb->() unless $parent_id;
+  return $cb->($parents) unless $parent_id;
 
   http_request get => "http://api.twitter.com/1/statuses/show/$parent_id.json", {
         persistent => 0,
@@ -41,11 +43,11 @@ sub download_parents {
     },
     sub {
       my ($body, $headers) = @_;
-      return $cb->() unless $headers->{Status} == 200;;
+      return $cb->($parents) unless $headers->{Status} == 200;;
 
       my $parent = decode_json $body;
-      $tweet->{parent_tweet} = $parent;
-      $self->expand_links($parent, sub {$self->download_parents($parent, $cb)});
+      push @$parents, $parent;
+      $self->expand_links($parent, sub {$self->download_parents($parent, $parents, $cb)});
     };
 }
 
