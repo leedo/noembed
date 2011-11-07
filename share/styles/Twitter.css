@@ -12,6 +12,9 @@
 .tweet-embed a:hover {
   text-decoration: underline;
 }
+.tweet-embed div.tweet_image img {
+  display: block;
+}
 .tweet-embed div.tweet_image {
   float: left;
   margin-right: 5px;
