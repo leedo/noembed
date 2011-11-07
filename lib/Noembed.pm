@@ -143,9 +143,9 @@ sub download {
   my $nb = $req->env->{'psgi.nonblocking'};
   my $cv = AE::cv;
 
-  http_request "get", $service, {
-      persistent => 0,
-      keepalive  => 0,
+  http_request get => $service, {
+        persistent => 0,
+        keepalive  => 0,
     },
     sub {
       my ($body, $headers) = @_;

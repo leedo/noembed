@@ -1,6 +1,8 @@
 package Noembed::Source::Twitter;
 
 use JSON;
+use AnyEvent;
+use AnyEvent::HTTP;
 use Text::MicroTemplate qw/encoded_string/;
 
 use parent 'Noembed::Source';
@@ -23,6 +25,37 @@ sub request_url {
 sub post_download {
   my ($self, $body, $cb) = @_;
   my $tweet = from_json $body;
+  $self->download_parents($tweet, sub {
+    $self->expand_links($tweet, sub {$cb->($tweet)});
+  });
+}
+
+sub download_parents {
+  my ($self, $tweet, $cb) = @_;
+  my $parent_id = $tweet->{in_reply_to_status_id};
+  return $self->expand_links($tweet, $cb) unless $parent_id;
+
+  http_request get => "http://api.twitter.com/1/statuses/show/$parent_id.json", {
+        persistent => 0,
+        keepalive  => 0,
+    },
+    sub {
+      my ($body, $headers) = @_;
+      return $self->expand_links($tweet, $cb) unless $headers->{Status} == 200;;
+
+      my $parent = decode_json $body;
+      $tweet->{parent_tweet} = $parent;
+      $self->expand_links($parent, sub {$self->download_parents($parent, $cb)});
+    };
+}
+
+sub expand_links {
+  my ($self, $tweet, $cb) = @_;
+
+  my $done = sub {
+    $tweet->{$_} = encoded_string $tweet->{$_} for qw/source text/;
+    $cb->()
+  };
 
   my @names = $tweet->{text} =~ /$self->{name_re}/g;
   for my $name (@names) {
@@ -30,7 +63,7 @@ sub post_download {
   }
 
   my @urls = $tweet->{text} =~ /$self->{url_re}/g; 
-  return $cb->($tweet) unless @urls;
+  return $done->() unless @urls;
 
   my $cv = AE::cv;
 
@@ -43,13 +76,11 @@ sub post_download {
     };
   }
 
-  $cv->cb(sub {$cb->($tweet)});
+  $cv->cb($done);
 }
 
 sub serialize {
   my ($self, $tweet) = @_;
-
-  $tweet->{$_} = encoded_string $tweet->{$_} for qw/source text/;
 
   return +{
     title => "Tweet by $tweet->{user}{name}",

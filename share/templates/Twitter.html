@@ -2,6 +2,34 @@
 ? my $user = $tweet->{user};
 
 <div class="tweet-embed" id="<?= $id ?>">
+
+? if (my $tweet = $tweet->{parent_tweet}) {
+?   do {
+?     my $user = $tweet->{user};
+  <div class="tweet-parent">
+    <div class="tweet_user">
+      <div class="tweet_image">
+        <a href="http://www.twitter.com/<?= $user->{screen_name} ?>" target="_blank">
+          <img height="32" width="32" src="https://noembed.com/i/<?= $user->{profile_image_url} ?>">
+        </a>
+      </div>
+      <div class="tweet_screen_name">
+      <a href="http://www.twitter.com/<?= $user->{screen_name} ?>" target="_blank">
+        @<?= $user->{screen_name} ?>
+      </a>
+    </div>
+    <div class="tweet_name"><?= $user->{name} ?></div>
+  </div>
+
+    <div class="tweet_text">
+      <?= $tweet->{text} ?>
+    </div>
+
+    <hr>
+  </div>
+?   } while ($tweet = $tweet->{parent_tweet})
+? }
+
   <div class="tweet_user">
     <div class="tweet_image">
       <a href="http://www.twitter.com/<?= $user->{screen_name} ?>" target="_blank">
