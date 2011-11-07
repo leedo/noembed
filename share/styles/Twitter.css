@@ -5,6 +5,7 @@
   max-width: 500px;
   -webkit-box-shadow: 0px 2px 2px rgba(0,0,0,0.5);
   padding: 10px;
+  font-size: 14px;
 }
 .tweet-embed a {
   text-decoration: none;
@@ -13,14 +14,13 @@
   text-decoration: underline;
 }
 .tweet-embed .tweet-parent {
-  font-size: 0.8em;
+  font-size: 12px;
 }
 .tweet-embed .tweet-parent hr {
   height: 0px;
   border: none;
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #fff;
-  margin: 0 10px 10px 10px;
+  border-top: 1px solid #ddd;
+  margin: 0 0.8em 0.8em 0.8em;
 }
 .tweet-embed div.tweet_image img {
   display: block;
@@ -31,19 +31,19 @@
 }
 .tweet-embed div.tweet_text {
   clear: both;
-  padding: 8px 0;
+  padding: 0.5em 0;
 }
 .tweet-embed div.tweet_screen_name {
   font-weight: bold;
-  margin: 2px 0;
 }
 .tweet-embed div.tweet_info,
 .tweet-embed div.tweet_name {
   color: #999;
+  font-size: 0.9em;
 }
 .tweet-embed div.tweet_info a,
 .tweet-embed div.tweet_info {
-  font-size: 10px;
+  font-size: 0.8em;
   color: #999;
 }
 
