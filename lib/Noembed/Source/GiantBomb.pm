@@ -15,6 +15,7 @@ sub prepare_source {
       from_json decode_entities $el->attr("data-video");
     };
   };
+  $self->{youtube_re} = qr{https?://(?:[^\.]+\.)?youtube\.com/watch/?\?(?:.+&)?v=(.+)};
 }
 
 sub provider_name { "GiantBomb" }
@@ -32,7 +33,7 @@ sub pre_download {
       if ($headers->{Status} == 200) {
         my $video = $self->{scraper}->scrape($body);
         my ($hash) = $req->url =~ /(#.+)$/;
-        $req->pattern(qr{v=([^&]+)});
+        $req->pattern($self->{youtube_re});
         $req->url("http://www.youtube.com/watch?v=$video->{video}{youtube_id}$hash");
       }
       $cb->($req);
