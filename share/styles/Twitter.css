@@ -16,11 +16,20 @@
 .tweet-embed .tweet-parent {
   font-size: 12px;
 }
-.tweet-embed .tweet-parent hr {
-  height: 0px;
-  border: none;
+.tweet-embed .tweet_divider {
   border-top: 1px solid #ddd;
-  margin: 0 0.8em 0.8em 0.8em;
+  margin: 0.5em 0 0.8em 0;
+  text-align: center;
+}
+.tweet-embed .tweet-parent p {
+  margin: 0;
+  margin-top: -0.5em;
+  margin-right: 1em;
+  line-height: 1em;
+  display: inline-block;
+  padding: 0 5px;
+  color: #bbb;
+  background-color: #fafafa;
 }
 .tweet-embed div.tweet_image img {
   display: block;
