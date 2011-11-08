@@ -3,18 +3,16 @@ package Noembed::Source::GiantBomb;
 use JSON;
 use HTML::Entities;
 use Web::Scraper;
-use parent 'Noembed::Source';
+use AnyEvent::HTTP;
+
+use parent 'Noembed::Source::YouTube';
 
 sub prepare_source {
   my $self = shift;
   $self->{scraper} = scraper {
     process "div.player", video => sub {
       my $el = shift;
-      my $data = from_json decode_entities $el->attr("data-video");
-      return {
-        src => $data->{urls}{progressive_high},
-        title => $data->{video_name},
-      };
+      from_json decode_entities $el->attr("data-video");
     };
   };
 }
@@ -22,16 +20,23 @@ sub prepare_source {
 sub provider_name { "GiantBomb" }
 sub patterns { 'https?://www\.giantbomb\.com/([^/]+)/\d+-\d+/?' }
 
-sub serialize {
-  my ($self, $body) = @_;
-  my $data = $self->{scraper}->scrape($body);
-  
-  die "not a video" unless $data and $data->{video};
+sub pre_download {
+  my ($self, $req, $cb) = @_;
 
-  return +{
-    title => $data->{video}{title},
-    html  => $self->render($data->{video}),
-  }
+  http_request get => $req->url, {
+        persistent => 0,
+        keepalive  => 0,
+    },
+    sub {
+      my ($body, $headers) = @_;
+      if ($headers->{Status} == 200) {
+        my $video = $self->{scraper}->scrape($body);
+        my ($hash) = $req->url =~ /(#.+)$/;
+        $req->pattern(qr{v=([^&]+)});
+        $req->url("http://www.youtube.com/watch?v=$video->{video}{youtube_id}$hash");
+      }
+      $cb->($req);
+    };
 }
 
 1;

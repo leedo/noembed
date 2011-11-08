@@ -18,6 +18,11 @@ sub new {
 
 sub prepare_source { }
 
+sub pre_download {
+  my ($self, $req, $cb) = @_;
+  $cb->($req);
+}
+
 sub post_download {
   my ($self, $body, $cb) = @_;
   $cb->($body);

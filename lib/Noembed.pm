@@ -95,7 +95,10 @@ sub handle_url {
   }
  
   if (my $provider = $self->find_provider($req)) {
-    return $self->download($provider, $req);
+    return $provider->pre_download($req, sub {
+      $req = shift;
+      $self->download($provider, $req);
+    });
   }
 
   $self->end_lock($req->hash, error("no matching providers found for " . $req->url));
@@ -140,6 +143,7 @@ sub download {
   my ($self, $provider, $req) = @_;
 
   my $service = $provider->request_url($req);
+  warn $service;
   my $nb = $req->env->{'psgi.nonblocking'};
   my $cv = AE::cv;
 
@@ -154,7 +158,7 @@ sub download {
         eval {
           $body = decode("utf8", $body);
           $provider->post_download($body, sub {
-            my $body = shift;
+            $body = shift;
             my $data = $provider->transform($body, $req);
             $self->end_lock($req->hash, json_res $data);
           });
