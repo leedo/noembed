@@ -143,7 +143,6 @@ sub download {
   my ($self, $provider, $req) = @_;
 
   my $service = $provider->request_url($req);
-  warn $service;
   my $nb = $req->env->{'psgi.nonblocking'};
   my $cv = AE::cv;
 
