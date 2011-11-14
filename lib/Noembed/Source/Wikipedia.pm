@@ -11,15 +11,17 @@ sub provider_name { "Wikipedia" }
 
 sub serialize {
   my ($self, $body, $req) = @_;
+
   my $tree = HTML::TreeBuilder::XPath->new;
   $tree->parse($body);
+
   my $title = $tree->findvalue('//h1[@id="firstHeading"]');
   my $html;
 
-  if (my $img = $tree->findvalue('//div[@class="fullImageLink"]//img/@src')) {
+  if ($req->url =~ m{/wiki/File:.+(?:gif|jpg|png|svg)}i) {
+    my $img = $tree->findvalue('//div[@class="fullImageLink"]//img/@src');
     $html = $self->render(image => $img);
   }
-
   elsif (my $id = $req->captures->[0]) {
     my $start = $tree->findnodes('//span[@id="'.$id.'"]/parent::*/following-sibling::*')->[0];
     if ($start) {
