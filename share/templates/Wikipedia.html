@@ -1,0 +1,9 @@
+? my ($id, %args) = @_
+
+? if ($args{image}) {
+<a href="<?= $args{image} ?>" target="_blank"><img src="<?= $args{image} ?>"></a>
+? } else {
+<div class="wikipedia-embed" id="<?= $id ?>">
+?= $args{summary}
+</div>
+? }
