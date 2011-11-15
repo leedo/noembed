@@ -45,8 +45,7 @@ sub serialize {
     $id .= "?start=$seconds";
   }
 
-  $data->{html} = "<iframe type='text/html' width='$data->{width}' height='$data->{height}'"
-                . " src='https://www.youtube.com/embed/$id' frameborder=0></iframe>";
+  $data->{html} = $self->render($data, "https://www.youtube.com/embed/$id");
   return $data;
 }
 
