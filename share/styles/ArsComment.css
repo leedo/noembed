@@ -1,0 +1,41 @@
+.ars-comment-embed {
+  font-size: 12px;
+  border: 1px solid #ddd;
+  border-right: 1px solid #bbb;
+  border-bottom: 1px solid #bbb;
+  background: #fff;
+  color: #000;
+}
+
+.ars-comment-embed .body {
+  padding: 10px;
+  background: #fafafa;
+}
+
+.ars-comment-embed .byline {
+  border-bottom: 1px solid #eee;
+  font-size: 1.2em;
+  padding: 5px 10px;
+  color: #fff;
+}
+
+.ars-comment-embed div.quotetitle,
+.ars-comment-embed div.quotecontent {
+  border-left: 5px solid #ccc;
+  padding-left: 10px;
+  color: #7E8185;
+  font-weight: bold;
+}
+
+.ars-comment-embed .datetime {
+  color: #7E8185;
+  float: right;
+  font-size: 0.8em;
+  margin-left: 10px;
+}
+
+.ars-comment-embed .byline > a:last-child {
+  float: right;
+  font-size: 0.8em;
+}
+ 
