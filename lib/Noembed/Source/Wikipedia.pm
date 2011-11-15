@@ -1,6 +1,6 @@
 package Noembed::Source::Wikipedia;
 
-use HTML::TreeBuilder::XPath;
+use HTML::TreeBuilder;
 use List::MoreUtils qw/any/;
 use Text::MicroTemplate qw/encoded_string/;
 
@@ -12,27 +12,28 @@ sub provider_name { "Wikipedia" }
 sub serialize {
   my ($self, $body, $req) = @_;
 
-  my $tree = HTML::TreeBuilder::XPath->new;
-  $tree->parse($body);
+  my $root = HTML::TreeBuilder->new_from_content($body)->elementify;
 
-  my $title = $tree->findvalue('//h1[@id="firstHeading"]');
+  my $title = $root->look_down(id => "firstHeading")->as_text;
   my $html;
 
   if ($req->url =~ m{/wiki/File:.+(?:gif|jpg|png|svg)}i) {
-    my $img = $tree->findvalue('//div[@class="fullImageLink"]//img/@src');
-    $html = $self->render(image => $img);
+    my $container = $root->look_down(class => "fullImageLink");
+    my $img = $container->find("img");
+    $html = $self->render(image => $img->attr("src"));
   }
   elsif (my $id = $req->captures->[0]) {
-    my $start = $tree->findnodes('//span[@id="'.$id.'"]/parent::*/following-sibling::*')->[0];
-    if ($start) {
-      $title .= ": " . $tree->findvalue('//span[@id="'.$id.'"]');
-      $html = $self->extract_text_content($start);
+    my $heading = $root->look_down(id => $id);
+    if ($heading) {
+      my $start = $heading->parent->right;
+      $title .= ": " . $heading->as_text;
+      $html = $self->extract_text_content($start, $heading->parent->tag);
     }
   }
 
   if (!$html) {
-    my $start = $tree->findnodes('//div[@class="mw-content-ltr"]/p')->[0];
-    $html = $self->extract_text_content($start);
+    my $start = $root->look_down(class => "mw-content-ltr")->find("p");
+    $html = $self->extract_text_content($start, "table");
   }
 
   return +{
@@ -42,17 +43,18 @@ sub serialize {
 }
 
 sub extract_text_content {
-  my ($self, $el) = @_;
+  my ($self, $el, $stop) = @_;
   my $output;
+
+  $_->destroy for $el->parent->look_down(class => "editsection");
 
   while ($el) {
     my $tag = $el->tag;
 
-    # stop once we hit the toc or a sub-head
-    last if $el->attr("id") eq "toc"
-         or $tag eq "h2";
+    # stop once we hit the stop tag
+    last if $tag eq $stop;
 
-    if (any {$tag eq $_} qw/p ul li/) {
+    if (any {$tag eq $_} qw/p ul li h2 h3 h4/) {
 
       # fix the links
       for my $a ($el->find("a")) {
