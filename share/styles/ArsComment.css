@@ -5,6 +5,7 @@
   border-bottom: 1px solid #bbb;
   background: #fff;
   color: #000;
+  max-width: 600px;
 }
 
 .ars-comment-embed .body {
