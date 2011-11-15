@@ -1,4 +1,6 @@
-? my ($id, $data) = @_;
-<video preload="none" controls="controls" autoplay="autoplay" width="640" height="360" src="<?= $data->{src} ?>">
-  <?= $data->{title} ?>
-</video>
+? my ($id, $data, $url) = @_;
+
+<div class="youtube-embed">
+<iframe type="text/html" width="<?= $data->{width} ?>" height="<?= $data->{height} ?>" src="<?= $url ?>" frameborder=0></iframe>
+<p><a href="javascript:window.open('<?= $url ?>', 'alice-youtube', 'status=0,toolbar=0,location=0,menubar=0,resizable=0,scrollbars=0,height=<?= $data->{height} ?>,width=<?= $data->{width} ?>')">Pop out</a></p>
+</div>
