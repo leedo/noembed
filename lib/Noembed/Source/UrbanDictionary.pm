@@ -1,6 +1,8 @@
 package Noembed::Source::UrbanDictionary;
 
 use Web::Scraper;
+use Text::MicroTemplate qw/encoded_string/;
+
 use parent 'Noembed::Source';
 
 sub prepare_source {
@@ -26,6 +28,8 @@ sub serialize {
   my $title = $data->{words}->[0];
   $title =~ s/^\s//ms;
   $title =~ s/\s+$//ms;
+
+  $data->{definitions} = [ map {encoded_string $_} @{$data->{definitions}} ];
 
   return +{
     title => $title,
