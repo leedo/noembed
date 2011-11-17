@@ -7,8 +7,8 @@ use URI::QueryParam;
 use parent 'Noembed::Source';
 
 sub patterns {
-  'https?://(?:[^\.]+\.)?youtube\.com/watch/?\?(?:.+&)?v=(.+)',
-  'https?://youtu\.be/([a-zA-Z0-9_]+)'
+  'https?://(?:[^\.]+\.)?youtube\.com/watch/?\?(?:.+&)?v=([^&]+)',
+  'https?://youtu\.be/([a-zA-Z0-9_-]+)'
 }
 sub provider_name { "YouTube" }
 
@@ -34,7 +34,7 @@ sub serialize {
   my ($self, $body, $req) = @_;
 
   my $data = from_json $body;
-  my ($id) = $data->{html} =~ m{/v/([^\?]+)?};
+  my ($url) = $data->{html} =~ m{src="([^"]+)"};
 
   # tack on start parameter if timecode was in original URL
   if (my @t = $req->url =~ /[#\?]a?t=(?:(\d+)m)?(\d+)s/) {
@@ -42,10 +42,10 @@ sub serialize {
     if (@t) {
       $seconds += $t[0] * 60;
     }
-    $id .= "?start=$seconds";
+    $url .= "&start=$seconds";
   }
 
-  $data->{html} = $self->render($data, "https://www.youtube.com/embed/$id");
+  $data->{html} = $self->render($data, $url);
   return $data;
 }
 
