@@ -3,5 +3,7 @@
 ? if ($data->{url} =~ /\.mp4$/) {
   <video width="480" height="360" poster="<?= $data->{url} ?>" controls="controls" autoplay="autoplay" src="<?= $data->{url} ?>">
 ? } else {
-  <img src="<?= $data->{img} ?>">
+<a href="<?= $data->{img} ?>" target="_blank">
+  <img src="https://noembed.com/i/<?= $data->{img} ?>">
+</a>
 ? }

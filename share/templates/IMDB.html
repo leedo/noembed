@@ -3,7 +3,7 @@
 <div class="imdb-embed" id="<?= $id ?>">
 ? if (my ($poster) = @{$movie->{posters}}) {
 ? my $image = $poster->{image};
-  <img src="<?= $image->{url} ?>" width="<?= $image->{width} ?>" height="<?= $image->{height} ?>">
+  <img src="http://noembed.com/i/<?= $image->{url} ?>" width="<?= $image->{width} ?>" height="<?= $image->{height} ?>">
 ? }
   <h2><a href="<?= $movie->{url} ?>"><?= $movie->{name} ?></a></h2>
   <ul class="imdb-metadata">

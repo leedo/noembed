@@ -20,7 +20,7 @@ sub serialize {
   my $src = "http://i.imgur.com/$image->{hash}$image->{ext}";
 
   return +{
-    html => "<img src=\"$src\">",
+    html => $self->render($src),
     title => $image->{title} || "No title",
   }
 }

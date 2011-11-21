@@ -24,7 +24,7 @@ sub serialize {
   }
 
   return +{
-    html => "<img src=\"$data->{src}\">",
+    html => $self->render($data),
     title => $data->{title} || "No title",
   }
 }
