@@ -16,7 +16,9 @@ sub serialize {
   die "could not find comment" unless $comment;
 
   my $title = $root->find("title")->as_text;
-  $comment->look_down(href => "#comment-$id")->attr("href", $req->url);
+  my $link = $comment->look_down(href => "#comment-$id");
+  $link->attr("href", $req->url);
+  $link->attr("_target", "blank");
   $comment->attr($_, undef) for qw/id class data-post-id/;
   $comment->attr(class => "ars-comment-embed");
 
