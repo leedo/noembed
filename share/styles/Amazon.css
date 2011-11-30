@@ -1,0 +1,47 @@
+.amazon-embed {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-right: 1px solid #bbb;
+  border-bottom: 1px solid #bbb;
+  background: #fff;
+  overflow: hidden;
+}
+
+.amazon-embed img {
+  float: left;
+  margin-right: 10px;
+  background: #efefef;
+  border: 1px solid #ddd;
+}
+
+.amazon-embed h2 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.amazon-embed a {
+  text-decoration: none;
+}
+
+.amazon-embed ul {
+  overflow: hidden;  
+  padding: 0;
+  margin: 0;
+  margin-top: 0.2em;
+}
+
+.amazon-embed ul li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  margin-right: 5px;
+  color: #bbb;
+  font-weight: bold;
+  font-size: 0.8em;
+}
+
+.amazon-embed p {
+  margin: 0;
+  padding: 0;
+  margin-top: 0.8em;
+}
