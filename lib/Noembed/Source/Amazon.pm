@@ -17,7 +17,7 @@ sub prepare_source {
 }
 
 sub provider_name { "Amazon" }
-sub patterns { 'http://www\.amazon\.com/(?:.+/)?[gd]p/([^/]+)', 'http://amzn\.com/([^/]+)' }
+sub patterns { 'http://www\.amazon\.com/(?:.+/)?[gd]p/(?:product/)?([^/]+)', 'http://amzn\.com/([^/]+)' }
 
 sub request_url {
   my ($self, $req) = @_;
@@ -37,9 +37,9 @@ sub request_url {
 sub serialize {
   my ($self, $body) = @_;
   my $data = XMLin($body,
-    ForceArray => [qw/EditorialReview ImageSet/],
+    ForceArray => [qw/EditorialReview ImageSet Item/],
   );
-  my $item = $data->{Items}{Item};
+  my $item = $data->{Items}{Item}[0];
   my $info = {
     title  => $item->{ItemAttributes}{Title},
     price  => $item->{ItemAttributes}{ListPrice}{FormattedPrice},
@@ -50,7 +50,7 @@ sub serialize {
   };
   return +{
     html => $self->render($info),
-    title => $info->{title},
+    title => $info->{title} || $info->{url},
   };
 }
 
