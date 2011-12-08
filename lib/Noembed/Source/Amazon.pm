@@ -51,6 +51,7 @@ sub serialize {
   return +{
     html => $self->render($info),
     title => $info->{title} || $info->{url},
+    url => $info->{url},
   };
 }
 

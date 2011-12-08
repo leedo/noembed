@@ -74,10 +74,10 @@ sub transform {
   my $data = {
     title => $req->url,
     provider_name => $self->provider_name,
+    url => $req->url,
     # overrides the above properties
     %{ $self->serialize($body, $req) },
     type  => "rich",
-    url   => $req->url,
   };
 
   return $data;
