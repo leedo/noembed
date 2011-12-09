@@ -3,13 +3,17 @@
 <div class="gist-embed" id="<?= $id ?>">
 ? if ($gist->{description}) {
   <h2 class="gist-description">
-    <a href="<?= $gist->{user}{url} ?>" class="gist-user" target="_blank"><?= $gist->{user}{login} ?></a>
+    <? if ($gist->{user}{login}) { ?>
+      <a href="<?= $gist->{user}{url} ?>" class="gist-user" target="_blank"><?= $gist->{user}{login} ?></a>
+    <? } ?>
     <a href="<?= $gist->{html_url} ?>" target="_blank"><?= $gist->{description} ?></a>
   </h2>
 ? }
 ? for my $file (values %{$gist->{files}}) {
   <h3>
-    <span class="gist-language"><?= $file->{language} ?></span>
+    <? if ($gist->{language}) { ?>
+      <span class="gist-language"><?= $file->{language} ?></span>
+    <? } ?>
     <?= $file->{filename} ?>
   </h3>
   <div class="gist-file">

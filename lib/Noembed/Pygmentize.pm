@@ -79,10 +79,17 @@ sub build_lexers {
 sub colorize {
   my ($self, $text, %opts) = @_;
 
-  $text = encode("utf-8", $text);
+  $text = encode("utf-8", "$text\n");
   my($out, $err);
-  my $pid = IPC::Run::run([$self->command(%opts)], \$text, \$out, \$err);
-  die $err if $err;
+
+  eval {
+    IPC::Run::run([$self->command(%opts)], \$text, \$out, \$err, IPC::Run::timeout(3));
+  };
+
+  if ($err or $@) {
+    return "<pre>$text</pre>"
+  }
+
   return decode("utf-8", $out);
 }
 
