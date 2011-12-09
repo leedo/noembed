@@ -1,9 +1,9 @@
-? my ($id, $data) = @_;
+? my ($id, $data, $url) = @_;
 
-<a href="<?= $data->{url} ?>" target="_blank">
+<a href="<?= $url ?>" target="_blank">
 ? if ($data->{type} eq "photo") {
   <img src="https://noembed.com/i/<?= $data->{url} ?>">
 ? } else {
-?=  ($data->{title} or $data->{url})
+?=  ($data->{title} or $url)
 ? }
 </a>

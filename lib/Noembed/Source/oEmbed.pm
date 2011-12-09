@@ -19,13 +19,14 @@ sub prepare_source {
 }
 
 sub serialize {
-  my ($self, $body) = @_;
+  my ($self, $body, $req) = @_;
   my $data = from_json $body;
 
   if (!$data->{html}) {
-    $data->{html} = $self->render($data);
+    $data->{html} = $self->render($data, $req->url);
   }
 
+  delete $data->{url};
   return $data;
 }
 
