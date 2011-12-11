@@ -13,6 +13,7 @@ sub prepare_source {
   $self->{name_re} = qr{(?:^|\W)(@[^\s:]+)};
 }
 
+sub shorturls { 'http://t\.co/[a-zA-Z0-9]' }
 sub patterns { 'https?://(?:www\.)?twitter\.com/(?:#!/)?[^/]+/status(?:es)?/(\d+)' }
 sub provider_name { "Twitter" }
 
