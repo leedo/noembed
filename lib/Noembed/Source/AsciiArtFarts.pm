@@ -1,12 +1,15 @@
 package Noembed::Source::AsciiArtFarts;
 
 use Web::Scraper;
+use Text::MicroTemplate qw/encoded_string/;
+
 use parent 'Noembed::Source';
 
 sub prepare_source {
   my $self = shift;
   $self->{scraper} = scraper {
-    process 'td[bgcolor="#000000"] font', html => 'RAW';
+    process 'td[bgcolor="#000000"] font', color => '@color';
+    process 'td[bgcolor="#000000"] pre', art => 'RAW';
     process 'h1', title => 'TEXT';
   };
 }
@@ -17,8 +20,9 @@ sub provider_name { "ASCII Art Farts" }
 sub serialize {
   my ($self, $body) = @_;
   my $data = $self->{scraper}->scrape($body);
+  $data->{art} = encoded_string $data->{art};
   return +{
-    html => "<div class=\"ascii-fart-embed\">$data->{html}</div>",
+    html => $self->render($data),"",
     title => $data->{title},
   };
 }
