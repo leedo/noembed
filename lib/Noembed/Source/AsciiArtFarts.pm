@@ -22,7 +22,7 @@ sub serialize {
   my $data = $self->{scraper}->scrape($body);
   $data->{art} = encoded_string $data->{art};
   return +{
-    html => $self->render($data),"",
+    html => $self->render($data),
     title => $data->{title},
   };
 }
