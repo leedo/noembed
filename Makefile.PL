@@ -20,6 +20,8 @@ requires 'List::MoreUtils';
 requires 'HTML::Entities';
 requires 'Web::Scraper';
 requires 'File::Which';
+requires 'Plack::Middleware::ReverseProxy';
+requires 'Plack::Middleware::CrossOrigin';
 
 test_requires 'Test::More' => '0.86';
 
