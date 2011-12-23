@@ -68,7 +68,7 @@ sub matches {
   return 0;
 }
 
-sub transform {
+sub finalize {
   my ($self, $body, $req) = @_;
 
   my $data = {

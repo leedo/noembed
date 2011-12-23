@@ -158,7 +158,7 @@ sub download {
           $body = decode("utf8", $body);
           $provider->post_download($body, sub {
             $body = shift;
-            my $data = $provider->transform($body, $req);
+            my $data = $provider->finalize($body, $req);
             $self->end_lock($req->hash, json_res $data);
           });
         };
