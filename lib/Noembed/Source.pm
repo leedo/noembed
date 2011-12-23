@@ -37,7 +37,7 @@ sub filename {
 sub render {
   my $self = shift;
   my $id = Data::GUID->new->as_string;
-  $self->{render}->($self->filename("html"), $id, @_)->as_string;
+  $self->{render}->($self->filename("html"), $id, @_);
 }
 
 sub request_url {

@@ -28,7 +28,7 @@ sub prepare_app {
     use_cache    => 2
   );
 
-  $self->{render} = sub { $template->render_file(@_) };
+  $self->{render} = sub { $template->render_file(@_)->as_string };
   $self->{providers} = [];
   $self->{shorturls} = [
     qr{http://t\.co/[0-9a-zA-Z]+},
