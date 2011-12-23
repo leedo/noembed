@@ -16,12 +16,12 @@ sub patterns { 'https?://path\.com/p/([0-9a-zA-Z]+)$' }
 sub provider_name { "Path" }
 
 sub serialize {
-  my ($self, $body) = @_;
+  my ($self, $body, $req) = @_;
   my $data = $self->{scraper}->scrape($body);
 
   return +{
-    html => $self->render($data),
-    title => $data->{title} || "",
+    html => $self->render($data, $req->url),
+    title => $data->{title},
   }
 }
 

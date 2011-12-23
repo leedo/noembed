@@ -1,5 +1,5 @@
-? my ($id, $data) = @_;
+? my ($id, $data, $url) = @_;
 
-<a href="<?= $data->{src} ?>" target="_blank">
+<a href="<?= $url ?>" target="_blank">
 <img src="https://noembed.com/i/<?= $data->{src} ?>">
 </a>
