@@ -28,7 +28,8 @@ sub post_download {
   for my $file (values %{$gist->{files}}) {
     $cv->begin;
     $self->{pyg}->colorize($file->{content},
-      lexer => lc $file->{language},
+      language => lc $file->{language},
+      filename => lc $file->{filename},
       sub {
         my $colorized = shift;
         $file->{content} = encoded_string $colorized;

@@ -8,7 +8,7 @@ sub new {
 
   bless {
     bin     => $args{bin}     || which("pygmentize") || "/usr/bin/pygmentize",
-    lexer   => $args{lexer}   || "text",
+    lexer   => $args{lexer},
     format  => $args{format}  || "html",
     options => $args{options} || "linenos=True,encoding='utf-8'",
   }, $class;
@@ -25,7 +25,7 @@ sub colorize {
   $self->worker->do(colorize => $text, %opts, sub {
     if ($@) {
       warn $@;
-      return $cb->($text);
+      return $cb->("<pre>$text</pre>");
     }
     $cb->($_[1]);
   });
@@ -41,7 +41,7 @@ sub worker {
 package Noembed::Pygmentize::Worker;
 
 use IPC::Run;
-use List::Util qw/first/;
+use List::MoreUtils qw/any/;
 use Encode;
 
 sub new {
@@ -49,9 +49,20 @@ sub new {
   bless { bin => $bin }, $class;
 }
 
-sub has_lexer {
-  my ($self, $lexer) = @_;
-  return first { $_ eq $lexer } @{$self->lexers};
+sub find_lexer {
+  my ($self, $name, $filename) = @_;
+  my ($extension) = $filename =~ /\.(.+)$/;
+
+  for my $lexer (@{$self->lexers}) {
+    if (any {$name eq $_} @{$lexer->{names}}) {
+      return $lexer->{names}[0];
+    }
+    if (any {$extension eq $_} @{$lexer->{extensions}}) {
+      return $lexer->{names}[0];
+    }
+  }
+
+  return "text";
 }
 
 sub lexers {
@@ -66,10 +77,27 @@ sub build_lexers {
   my $pid = IPC::Run::run([$self->{bin}, "-L", "lexers"], \$in, \$out, \$err, );
 
   my @lexers;
+  my (@names, @extensions);
 
   for my $line (split "\n", $out) {
+
+    # new language
     if ($line =~ /^* (.+):/) {
-      push @lexers, split ", ", $1;
+
+      # add previous language if there is one
+      if (@names) {
+        push @lexers, {
+          names => [@names],
+          extensions => [@extensions],
+        };
+      }
+
+      @names = split ", ", $1;
+      @extensions = ();
+    }
+
+    elsif ($line =~ /filenames (.+)/) {
+      @extensions = map {substr $_, 2} split ", ", $1;
     }
   }
 
@@ -87,7 +115,7 @@ sub colorize {
   };
 
   if ($err or $@) {
-    return "<pre>$text</pre>"
+    die "$err: $@";
   }
 
   return decode("utf-8", $out);
@@ -96,9 +124,8 @@ sub colorize {
 sub command {
   my ($self, %opts) = @_;
 
-  unless ($opts{lexer} and $self->has_lexer($opts{lexer})) {
-    $opts{lexer} = "text";
-  }
+  $opts{lexer} = $self->find_lexer($opts{language}, $opts{filename})
+    unless defined $opts{lexer};
 
   return (
     $self->{bin},
