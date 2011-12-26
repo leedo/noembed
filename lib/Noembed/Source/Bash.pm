@@ -1,7 +1,6 @@
 package Noembed::Source::Bash;
 
 use Web::Scraper;
-use Text::MicroTemplate qw/encoded_string/;
 
 use parent 'Noembed::Source';
 
@@ -23,7 +22,7 @@ sub serialize {
 
   return +{
     title => "Quote #$number",
-    html => $self->render(encoded_string $data->{quote}),
+    html => $self->render(html($data->{quote})),
   };
 }
 

@@ -1,6 +1,5 @@
 package Noembed::Source::Gist;
 
-use Text::MicroTemplate qw/encoded_string/;
 use Noembed::Pygmentize;
 use AnyEvent;
 use JSON;
@@ -32,7 +31,7 @@ sub post_download {
       filename => lc $file->{filename},
       sub {
         my $colorized = shift;
-        $file->{content} = encoded_string $colorized;
+        $file->{content} = html($colorized);
         $cv->end;
       }
     );

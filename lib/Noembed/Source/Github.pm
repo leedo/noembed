@@ -1,6 +1,5 @@
 package Noembed::Source::Github;
 
-use Text::MicroTemplate qw/encoded_string/;
 use Noembed::Pygmentize;
 use AnyEvent;
 use JSON;
@@ -31,7 +30,7 @@ sub post_download {
   for my $file (@{$commit->{files}}) {
     $cv->begin;
     $self->{pyg}->colorize($file->{patch}, sub {
-      $file->{patch} = encoded_string $_[0];
+      $file->{patch} = html($_[0]);
       $cv->end;
     });
   }

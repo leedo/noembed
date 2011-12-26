@@ -2,7 +2,6 @@ package Noembed::Source::Wikipedia;
 
 use HTML::TreeBuilder;
 use List::MoreUtils qw/any/;
-use Text::MicroTemplate qw/encoded_string/;
 
 use parent 'Noembed::Source';
 
@@ -70,7 +69,7 @@ sub extract_text_content {
     $el = $el->right;
   }
 
-  return $self->render(summary => encoded_string $output);
+  return $self->render(summary => html($output));
 }
 
 1;

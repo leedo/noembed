@@ -1,7 +1,6 @@
 package Noembed::Source::Spotify;
 
 use Web::Scraper;
-use Text::MicroTemplate qw/encoded_string/;
 use parent 'Noembed::Source';
 
 sub prepare_source {
@@ -23,7 +22,7 @@ sub serialize {
   my ($self, $body, $req) = @_;
 
   my $data = $self->{scraper}->scrape($body);
-  $data->{$_} = encoded_string $data->{$_} for qw/artist album/;
+  $data->{$_} = html($data->{$_}) for qw/artist album/;
   $data->{type} = $req->captures->[0];
 
   return +{

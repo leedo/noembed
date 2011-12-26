@@ -3,7 +3,6 @@ package Noembed::Source::Twitter;
 use JSON;
 use AnyEvent;
 use AnyEvent::HTTP;
-use Text::MicroTemplate qw/encoded_string/;
 
 use parent 'Noembed::Source';
 
@@ -56,7 +55,7 @@ sub expand_links {
   my ($self, $tweet, $cb) = @_;
 
   my $done = sub {
-    $tweet->{$_} = encoded_string $tweet->{$_} for qw/source text/;
+    $tweet->{$_} = html($tweet->{$_}) for qw/source text/;
     $cb->()
   };
 

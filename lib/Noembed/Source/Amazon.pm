@@ -44,14 +44,14 @@ sub serialize {
     title  => $item->{ItemAttributes}{Title},
     price  => $item->{ItemAttributes}{ListPrice}{FormattedPrice},
     group  => $item->{ItemAttributes}{ProductGroup},
-    review => $item->{EditorialReviews}{EditorialReview}[0]{Content},
+    review => html($item->{EditorialReviews}{EditorialReview}[0]{Content}),
     image  => $item->{ImageSets}{ImageSet}[0]{TinyImage},
     url    => $item->{DetailPageURL},
   };
   return +{
-    html => $self->render($info),
+    html  => $self->render($info),
     title => $info->{title} || $info->{url},
-    url => $info->{url},
+    url   => $info->{url},
   };
 }
 

@@ -3,6 +3,8 @@ package Noembed::Source;
 use Data::GUID;
 use Carp;
 use JSON ();
+use Text::MicroTemplate;
+use Exporter;
 
 sub new {
   my ($class, %args) = @_;
@@ -12,8 +14,13 @@ sub new {
 
   $self->prepare_source;
   $self->{patterns} = [ map {qr{^$_}i} $self->patterns ];
+  *{$class.'::html'} = \&html;
 
   return $self;
+}
+
+sub html {
+  Text::MicroTemplate::encoded_string($_[0]);
 }
 
 sub prepare_source { }
