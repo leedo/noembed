@@ -5,7 +5,7 @@ use HTML::TreeBuilder;
 use parent 'Noembed::Source';
 
 sub patterns {'http://arstechnica\.com/[^#]+#comment-(\d+)'}
-sub provider_name { "ArsTechnica" }
+sub provider_name { "ArsTechnica Comment" }
 
 sub serialize {
   my ($self, $body, $req) = @_;
