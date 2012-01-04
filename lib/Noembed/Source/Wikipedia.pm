@@ -55,7 +55,7 @@ sub extract_text_content {
     # stop once we hit the stop tag
     last if $stop->($el);
 
-    if (any {$el->tag eq $_} qw/p ol ul li h2 h3 h4 div pre/) {
+    if (any {$el->tag eq $_} qw/p ol ul dl dt dd li h2 h3 h4 div pre/) {
 
       # fix the links
       for my $a ($el->find("a")) {
