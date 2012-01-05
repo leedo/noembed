@@ -7,7 +7,6 @@ use parent 'Noembed::Source';
 sub prepare_source {
   my $self = shift;
   $self->{scraper} = scraper {
-    process 'title', title => 'TEXT';
     process 'link[rel="image_src"]', src => '@href';
   };
 }
@@ -19,13 +18,8 @@ sub serialize {
   my ($self, $body) = @_;
   my $data = $self->{scraper}->scrape($body);
 
-  if ($data->{title}) {
-    $data->{title} =~ s/ - Imgur//;
-  }
-
   return +{
     html => $self->render($data),
-    title => $data->{title} || "No title",
   }
 }
 
