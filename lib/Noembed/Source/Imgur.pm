@@ -18,6 +18,8 @@ sub serialize {
   my ($self, $body) = @_;
   my $data = $self->{scraper}->scrape($body);
 
+  die "No image found" unless $data->{src};
+
   return +{
     html => $self->render($data),
   }
