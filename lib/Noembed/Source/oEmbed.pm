@@ -10,6 +10,7 @@ our $DEFAULT = [
   {pattern => 'http://.*\.viddler.com/.*',    service => 'http://lab.viddler.com/services/oembed/'},
   {pattern => 'http://qik.com/video/.*',      service => 'http://qik.com/api/oembed.json'},
   {pattern => 'http://www.hulu.com/watch/.*', service => 'http://www.hulu.com/api/oembed.json'},
+  {pattern => 'http://www.slideshare.net/.*/.*', service => 'http://www.slideshare.net/api/oembed/2'},
 ];
 
 sub prepare_source {
