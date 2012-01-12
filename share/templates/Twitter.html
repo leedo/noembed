@@ -14,30 +14,30 @@
       </div>
       <div class="tweet_screen_name">
       <a href="http://www.twitter.com/<?= $user->{screen_name} ?>" target="_blank">
-        @<?= $user->{screen_name} ?>
+        <div class="tweet_name"><?= $user->{name} ?></div>
+        <?= $user->{screen_name} ?>
       </a>
     </div>
-    <div class="tweet_name"><?= $user->{name} ?></div>
   </div>
     <div class="tweet_text">
       <?= $tweet->{text} ?>
     </div>
-    <div class="tweet_divider"><p>in reply to @<?= $user->{screen_name} ?> ↑</p></div>
   </div>
 ? }
 
+<div class="tweet_main">
   <div class="tweet_user">
     <div class="tweet_image">
       <a href="http://www.twitter.com/<?= $user->{screen_name} ?>" target="_blank">
-        <img height="30" width="30" src="https://noembed.com/i/<?= $user->{profile_image_url} ?>">
+        <img height="32" width="32" src="https://noembed.com/i/<?= $user->{profile_image_url} ?>">
       </a>
     </div>
     <div class="tweet_screen_name">
       <a href="http://www.twitter.com/<?= $user->{screen_name} ?>" target="_blank">
-        @<?= $user->{screen_name} ?>
+        <div class="tweet_name"><?= $user->{name} ?></div>
+        <?= $user->{screen_name} ?>
       </a>
     </div>
-    <div class="tweet_name"><?= $user->{name} ?></div>
   </div>
   <div class="tweet_text"><?= $tweet->{text} ?></div>
   <div class="tweet_info">
@@ -46,6 +46,8 @@
     </a>
     via <?= $tweet->{source} ?>
   </div>
+</div>
+
 <div>
 
 <script type="text/javascript">
