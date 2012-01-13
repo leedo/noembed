@@ -32,10 +32,10 @@
         <img height="32" width="32" src="https://noembed.com/i/<?= $user->{profile_image_url} ?>">
       </a>
     </div>
-    <div class="tweet_screen_name">
+    <div class="tweet_name">
       <a href="http://www.twitter.com/<?= $user->{screen_name} ?>" target="_blank">
-        <div class="tweet_name"><?= $user->{name} ?></div>
-        <?= $user->{screen_name} ?>
+        <span class="tweet_screen_name"><?= $user->{name} ?></span><br>
+        <span class="tweet_real_name"><?= $user->{screen_name} ?></span>
       </a>
     </div>
   </div>

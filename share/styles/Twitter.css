@@ -46,19 +46,16 @@
 .tweet-embed .tweet-parent div.tweet_text {
   padding-bottom: 0;
 }
-.tweet-embed div.tweet_screen_name a {
-  color: #999;
-  font-weight: normal;
-}
-.tweet-embed div.tweet_name {
+.tweet-embed .tweet_screen_name {
   font-weight: bold;
+  color: #000;
+}
+.tweet-embed .tweet_real_name {
+  font-weight: normal;
+  font-size: 0.8em;
+  color: #999;
 }
 
-.tweet-embed div.tweet_info,
-.tweet-embed div.tweet_name {
-  color: #000;
-  font-size: 0.9em;
-}
 .tweet-embed div.tweet_info a,
 .tweet-embed div.tweet_info {
   font-size: 0.8em;
