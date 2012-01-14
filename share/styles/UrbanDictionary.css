@@ -1,7 +1,8 @@
 .urban-dictionary-def {
-  border: 1px solid #ccc;
-  font-size: 12px;
+  border: 1px solid #ddd;
+  border-right: 1px solid #bbb;
+  border-bottom: 1px solid #bbb;
+  background: #fff;
   padding: 0px 10px;
-  -webkit-box-shadow: 0px 2px 2px rgba(0,0,0,0.5);
-  border-radius: 5px;
+  font-size: 12px;
 }
