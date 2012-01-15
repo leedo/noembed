@@ -22,6 +22,10 @@ sub request_url {
     $uri->query_param("maxheight", $req->maxheight);
   }
 
+  if (my $autoplay = $req->param("autoplay")) {
+    $uri->query_param(autoplay => $autoplay);
+  }
+
   return $uri->as_string;
 }
 
