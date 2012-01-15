@@ -47,7 +47,7 @@ sub serialize {
   }
 
   if (my $autoplay = $req->param("autoplay")) {
-    $uri->query_param(autoplay => 1);
+    $uri->query_param(autoplay => $autoplay);
   }
 
   $data->{html} = $self->render($data, $uri->as_string);
