@@ -34,7 +34,8 @@ sub serialize {
   my ($self, $body, $req) = @_;
 
   my $data = from_json $body;
-  my ($url) = $data->{html} =~ m{src="([^"]+)"};
+  my ($src) = $data->{html} =~ m{src="([^"]+)"};
+  my $uri = URI->new($src);
 
   # tack on start parameter if timecode was in original URL
   if (my @t = $req->url =~ /[#\?]a?t=(?:(\d+)m)?(\d+)s/) {
@@ -42,10 +43,14 @@ sub serialize {
     if (@t) {
       $seconds += $t[0] * 60;
     }
-    $url .= "&start=$seconds";
+    $uri->query_param(start => $seconds);
   }
 
-  $data->{html} = $self->render($data, $url);
+  if (my $autoplay = $req->param("autoplay")) {
+    $uri->query_param(autoplay => 1);
+  }
+
+  $data->{html} = $self->render($data, $uri->as_string);
   return $data;
 }
 
