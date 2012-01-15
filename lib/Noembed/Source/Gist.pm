@@ -14,7 +14,7 @@ sub prepare_source {
 sub provider_name { "Gist" }
 sub patterns { 'https?://gist\.github\.com/([0-9a-fA-f]+)' }
 
-sub request_url {
+sub build_url {
   my ($self, $req) = @_;
   return "https://api.github.com/gists/".$req->captures->[0];
 }

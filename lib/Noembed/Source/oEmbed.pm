@@ -37,7 +37,7 @@ sub patterns {
 }
 sub provider_name { "oEmbed" }
 
-sub request_url {
+sub build_url {
   my ($self, $req) = @_;
   for my $site (@{$self->{sites}}) {
     if ($req->url =~ $site->{re}) {
@@ -46,14 +46,7 @@ sub request_url {
       $uri->query_param("url", $req->url);
       $uri->query_param("format", "json");
 
-      if ($req->maxwidth) {
-        $uri->query_param("maxwidth", $req->maxwidth);
-      }
-      if ($req->maxheight) {
-        $uri->query_param("maxheight", $req->maxheight);
-      }
-
-      return $uri->as_string;
+      return $uri;
     }
   }
 }

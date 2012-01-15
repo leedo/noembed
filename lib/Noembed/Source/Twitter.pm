@@ -16,7 +16,7 @@ sub shorturls { 'http://t\.co/[a-zA-Z0-9]' }
 sub patterns { 'https?://(?:www\.)?twitter\.com/(?:#!/)?[^/]+/status(?:es)?/(\d+)' }
 sub provider_name { "Twitter" }
 
-sub request_url {
+sub build_url {
   my ($self, $req) = @_;
   my $id = $req->captures->[0];
   return "http://api.twitter.com/1/statuses/show/$id.json";

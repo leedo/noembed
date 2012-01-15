@@ -13,7 +13,7 @@ sub prepare_source {
 sub patterns { 'http://(?:www\.)?imdb.com/title/(tt\d+)' }
 sub provider_name { 'IMDB' }
 
-sub request_url {
+sub build_url {
   my ($self, $req) = @_;
   my $id = $req->captures->[0];
   return "$self->{tmdb_url}/Movie.imdbLookup/en/json/$self->{tmdb_key}/$id";

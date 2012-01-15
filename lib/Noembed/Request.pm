@@ -41,14 +41,4 @@ sub pattern {
   $self->{pattern};
 }
 
-sub maxwidth {
-  my $self = shift;
-  $self->parameters->{maxwidth};
-}
-
-sub maxheight {
-  my $self = shift;
-  $self->parameters->{maxheight};
-}
-
 1;

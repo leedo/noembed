@@ -19,7 +19,7 @@ sub prepare_source {
 sub provider_name { "Amazon" }
 sub patterns { 'http://www\.amazon\.com/(?:.+/)?[gd]p/(?:product/)?([^/]+)', 'http://amzn\.com/([^/]+)' }
 
-sub request_url {
+sub build_url {
   my ($self, $req) = @_;
   my $asin = $req->captures->[0];
   my $u = URI::Amazon::APA->new('http://webservices.amazon.com/onca/xml');

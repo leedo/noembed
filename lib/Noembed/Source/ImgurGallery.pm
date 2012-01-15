@@ -7,7 +7,7 @@ use parent 'Noembed::Source';
 sub patterns { 'http://imgur\.com/gallery/[0-9a-zA-Z]+' }
 sub provider_name { "Imgur" }
 
-sub request_url {
+sub build_url {
   my ($self, $req) = @_;
   return $req->url.".json";
 }

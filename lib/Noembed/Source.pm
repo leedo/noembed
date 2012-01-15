@@ -3,6 +3,9 @@ package Noembed::Source;
 use Data::GUID;
 use Carp;
 use JSON ();
+use URI;
+use URI::QueryParam;
+use Scalar::Util qw/blessed/;
 use Text::MicroTemplate;
 use Exporter;
 
@@ -47,9 +50,28 @@ sub render {
   $self->{render}->($self->filename("html"), $id, @_);
 }
 
-sub request_url {
+sub build_url {
   my ($self, $req) = @_;
   return $req->url;
+}
+
+sub request_url {
+  my ($self, $req) = @_;
+
+  my $uri = $self->build_url($req);
+  my $params = $req->parameters;
+
+  unless (blessed($uri) and $uri->can("query_param")) {
+    $uri = URI->new($uri);
+  }
+
+  for my $option ($self->options) {
+    if (defined $params->{$option}) {
+      $uri->query_param($option => $params->{$option});
+    }
+  }
+
+  return $uri->as_string;
 }
 
 sub serialize {
@@ -61,6 +83,7 @@ sub patterns {
 }
 
 sub shorturls { }
+sub options { }
 
 sub matches {
   my ($self, $req) = @_;

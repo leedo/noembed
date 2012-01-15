@@ -11,23 +11,16 @@ sub patterns {
   'https?://youtu\.be/([a-zA-Z0-9_-]+)'
 }
 sub provider_name { "YouTube" }
+sub options { qw/maxwidth maxheight autoplay/}
 
-sub request_url {
+sub build_url {
   my ($self, $req) = @_;
   my $uri = URI->new("http://www.youtube.com/oembed/");
 
   my $id = $req->captures->[0];
   $uri->query_param("url", "http://www.youtube.com/watch?v=$id");
 
-  if ($req->maxwidth) {
-    $uri->query_param("maxwidth", $req->maxwidth);
-  }
-
-  if ($req->maxheight) {
-    $uri->query_param("maxheight", $req->maxheight);
-  }
-
-  return $uri->as_string;
+  return $uri;
 }
 
 sub serialize {
