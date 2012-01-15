@@ -51,7 +51,7 @@ sub new {
 
 sub find_lexer {
   my ($self, $name, $filename) = @_;
-  my ($extension) = $filename =~ /\.(.+)$/;
+  my ($extension) = $filename =~ /\.([^\.]+)$/;
 
   for my $lexer (@{$self->lexers}) {
     if (any {$name eq $_} @{$lexer->{names}}) {
@@ -82,7 +82,7 @@ sub build_lexers {
   for my $line (split "\n", $out) {
 
     # new language
-    if ($line =~ /^* (.+):/) {
+    if ($line =~ /^*\s(.+):/) {
 
       # add previous language if there is one
       if (@names) {
@@ -96,7 +96,7 @@ sub build_lexers {
       @extensions = ();
     }
 
-    elsif ($line =~ /filenames (.+)/) {
+    elsif ($line =~ /filenames\s(.+)/) {
       @extensions = map {substr $_, 2} split ", ", $1;
     }
   }
@@ -106,17 +106,12 @@ sub build_lexers {
 
 sub colorize {
   my ($self, $text, %opts) = @_;
-
-  $text = encode("utf-8", "$text\n");
   my($out, $err);
 
-  eval {
-    IPC::Run::run([$self->command(%opts)], \$text, \$out, \$err, IPC::Run::timeout(3));
-  };
+  $text = encode("utf-8", $text);
 
-  if ($err or $@) {
-    die "$err: $@";
-  }
+  IPC::Run::run([$self->command(%opts)], \$text, \$out, \$err, IPC::Run::timeout(3));
+  die $err if $err;
 
   return decode("utf-8", $out);
 }
@@ -124,8 +119,9 @@ sub colorize {
 sub command {
   my ($self, %opts) = @_;
 
-  $opts{lexer} = $self->find_lexer($opts{language}, $opts{filename})
-    unless defined $opts{lexer};
+  unless (defined $opts{lexer}) {
+    $opts{lexer} = $self->find_lexer($opts{language}, $opts{filename})
+  } 
 
   return (
     $self->{bin},
