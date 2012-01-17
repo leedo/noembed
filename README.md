@@ -49,6 +49,12 @@ attempts to embed it in the page.
 
 Lee Aylward
 
+# CONTRIBUTORS
+
+- Clint Ecker (Path support)
+- Ryan Baumann (Spotify support)
+- Bryce Kerley (Spelling fixes)
+
 # LICENSE
 
 This library is free software; you can redistribute it and/or modify
