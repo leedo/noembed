@@ -325,6 +325,18 @@ attempts to embed it in the page.
 
 Lee Aylward
 
+=head1 CONTRIBUTORS
+
+=over 4
+
+=item * Clint Ecker (Path support)
+
+=item * Ryan Baumann (Spotify support)
+
+=item * Bryce Kerley (Spelling fixes)
+
+=back
+
 =head1 LICENSE
 
 This library is free software; you can redistribute it and/or modify
