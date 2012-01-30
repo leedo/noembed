@@ -42,7 +42,7 @@ sub serialize {
   my $item = $data->{Items}{Item}[0];
   my $info = {
     title  => $item->{ItemAttributes}{Title},
-    price  => $item->{ItemAttributes}{ListPrice}{FormattedPrice},
+    price  => $item->{OfferSummary}{LowestNewPrice}{FormattedPrice},
     group  => $item->{ItemAttributes}{ProductGroup},
     review => html($item->{EditorialReviews}{EditorialReview}[0]{Content}),
     image  => $item->{ImageSets}{ImageSet}[0]{TinyImage},
