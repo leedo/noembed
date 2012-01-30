@@ -1,6 +1,9 @@
 ? my ($id, $data, $lyric, $definition) = @_;
+? my ($artist, $song) = split " – ", $data->{title};
 
 <div class="rapgenius-embed">
+  <div class="rapgenius-artist"><?= $artist ?></div>
+  <div class="rapgenius-song"><?= $song ?></div>
   <div class="rapgenius-lyric"><?= $lyric ?></div>
   <div class="rapgenius-definition"><?= $definition ?></div>
 </div>
