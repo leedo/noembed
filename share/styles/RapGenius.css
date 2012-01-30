@@ -5,7 +5,7 @@
 }
 
 .rapgenius-embed a {
-  color: #fff;
+  color: #fff !important;
 }
 
 .rapgenius-song,
