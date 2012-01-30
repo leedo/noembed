@@ -72,6 +72,8 @@ sub serialize {
 
   my $definition = do {
     my $node = $tree->look_down("data-id" => $lyric_id);
+    my @images = $node->look_down("_tag" => "img");
+    $_->attr("src" => $_->attr("data-src")) for @images;
     html($node->as_HTML(""));
   };
 
