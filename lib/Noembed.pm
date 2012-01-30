@@ -204,6 +204,7 @@ sub http_resolve {
 
   http_request get => $url,
     recurse => 0,
+    persistent => 0,
     sub {
       my ($body, $headers) = @_;
 

@@ -4,6 +4,7 @@ use parent 'Noembed::Source';
 
 use Web::Scraper;
 use AnyEvent::HTTP;
+use Encode;
 use JSON;
 
 sub prepare_source {
@@ -22,10 +23,32 @@ sub prepare_source {
   }
 }
 
-sub patterns {'http://rapgenius\.com/[^/]+#note-(\d+)'}
+sub patterns {
+  'http://rapgenius\.com/[^/]+#note-(\d+)',
+  'http://rapgenius\.com/(\d+)/[^/]+/[^/]+',
+}
+sub shorturls {'http://rapgenius\.com/\d+/?$'}
 sub provider_name { "rapgenius" }
 
 sub post_download {
+  my ($self, $body, $callback) = @_;
+
+  if ($body =~ /^window\.location = "\/([^"]+)"$/m) {
+    http_request get => "http://rapgenius.com/$1", {
+        recurse => 0,
+        persistent => 0,
+      },
+      sub {
+        my $body = decode "utf-8", shift;
+        $self->get_definitions($body, $callback)
+      };
+  }
+  else {
+    $self->get_definitions($body, $callback);
+  }
+}
+
+sub get_definitions {
   my ($self, $body, $callback) = @_;
   my $data = $self->{scraper}->scrape($body);
 
