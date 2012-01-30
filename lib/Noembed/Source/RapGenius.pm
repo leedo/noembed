@@ -40,7 +40,7 @@ sub post_download {
     };
 }
 
-sub finalize {
+sub serialize {
   my ($self, $data, $req) = @_;
 
   my $lyric_id = $req->captures->[0];
