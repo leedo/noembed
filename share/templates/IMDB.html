@@ -11,7 +11,11 @@
 ? for my $field (@info) {
     <li><?= $field ?></li>
 ? }
+? if ($movie->{genres}) {
     <li><?= join ", ", map {$_->{name}} @{$movie->{genres}} ?></li>
+? }
   </ul>
+? if ($movie->{overview}) {
   <p class="imdb-overview"><?= $movie->{overview} ?></p>
+? }
 </div>
