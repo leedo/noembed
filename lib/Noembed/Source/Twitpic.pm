@@ -7,7 +7,7 @@ sub prepare_source {
   my $self = shift;
 
   $self->{scraper} = scraper {
-    process "#photo-display", image => '@src';
+    process "#media > img", image => '@src';
     process "#view-photo-caption", caption => 'TEXT';
   };
 }
