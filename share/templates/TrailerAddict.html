@@ -1,0 +1,9 @@
+? my ($id, $data) = @_;
+
+<object width="<?= $data->{width} ?>" height="<?= $data->{height} ?>">
+  <param name="movie" value="<?= $data->{movie} ?>"></param>
+  <param name="allowscriptaccess" value="always">
+  <param name="wmode" value="transparent"></param>
+  <param name="allowFullScreen" value="true"></param>
+  <embed src="<?= $data->{movie} ?>" type="application/x-shockwave-flash" allowscriptaccess="always" wmode="transparent" width="<?= $data->{width} ?>" height="<?= $data->{height} ?>" allowFullScreen="true"></embed>
+</object>
