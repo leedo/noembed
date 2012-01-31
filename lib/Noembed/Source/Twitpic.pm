@@ -8,7 +8,7 @@ sub prepare_source {
 
   $self->{scraper} = scraper {
     process "#media > img", image => '@src';
-    process "#view-photo-caption", caption => 'TEXT';
+    process "#media-caption > p", caption => 'TEXT';
   };
 }
 
@@ -26,6 +26,10 @@ sub serialize {
 
   $data->{caption} =~ s/^\s+//ms;
   $data->{caption} =~ s/\s+$//ms;
+
+  if (!$data->{caption}) {
+    ($data->{caption}) = $data->{image} =~ /\/([^\/]+\.(?:jpg|gif|png))/;
+  }
 
   return +{
     html  => $self->render($data),
