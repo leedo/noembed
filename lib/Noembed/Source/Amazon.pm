@@ -17,7 +17,7 @@ sub prepare_source {
 }
 
 sub provider_name { "Amazon" }
-sub patterns { 'http://www\.amazon\.com/(?:.+/)?[gd]p/(?:product/)?([^/]+)', 'http://amzn\.com/([^/]+)' }
+sub patterns { 'http://www\.amazon\.com/(?:.+/)?[gd]p/(?:product/)?(?:tags-on-product/)?([^/]+)', 'http://amzn\.com/([^/]+)' }
 
 sub build_url {
   my ($self, $req) = @_;
@@ -40,6 +40,7 @@ sub serialize {
     ForceArray => [qw/EditorialReview ImageSet Item/],
   );
   my $item = $data->{Items}{Item}[0];
+  die "no item" unless $item;
   my $info = {
     title  => $item->{ItemAttributes}{Title},
     price  => $item->{OfferSummary}{LowestNewPrice}{FormattedPrice},
