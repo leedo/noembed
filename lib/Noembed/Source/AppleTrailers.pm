@@ -40,7 +40,7 @@ sub post_download {
 
 sub serialize {
   my ($self, $data, $req) = @_;
-  my ($title) =~ $data->{title} =~ /(.+) - Movie Trailer/;
+  my ($title) = $data->{title} =~ /(.+) - Movie Trailers/;
   return {
     title => $title,
     html => $self->render($data->{src}),
