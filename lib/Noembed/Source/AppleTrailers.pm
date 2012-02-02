@@ -14,7 +14,7 @@ sub prepare_source {
   };
 }
 
-sub provider_name { "Apple Trailer" }
+sub provider_name { "iTunes Movie Trailer" }
 sub patterns { 'http://trailers\.apple\.com/trailers/[^/]+/[^/]+' }
 
 sub post_download {
