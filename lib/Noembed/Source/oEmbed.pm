@@ -11,6 +11,7 @@ our $DEFAULT = [
   {pattern => 'http://qik.com/video/.*',      service => 'http://qik.com/api/oembed.json'},
   {pattern => 'http://www.hulu.com/watch/.*', service => 'http://www.hulu.com/api/oembed.json'},
   {pattern => 'http://www.slideshare.net/.*/.*', service => 'http://www.slideshare.net/api/oembed/2'},
+  {pattern => 'http://soundcloud.com/.*/.*', service => 'http://soundcloud.com/oembed'},
 ];
 
 sub prepare_source {
