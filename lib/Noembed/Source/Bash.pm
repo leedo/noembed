@@ -20,6 +20,8 @@ sub serialize {
   my $number = $req->captures->[0];
   my $data = $self->{scraper}->scrape($body);
 
+  die "no quote" unless $data->{quote};
+
   return +{
     title => "Quote #$number",
     html => $self->render(html($data->{quote})),
