@@ -11,6 +11,7 @@ requires 'IPC::Run';
 requires 'Data::GUID';
 requires 'Plack';
 requires 'JSON';
+requires 'Imager';
 requires 'File::ShareDir';
 requires 'Text::MicroTemplate';
 requires 'AnyEvent::HTTP';
