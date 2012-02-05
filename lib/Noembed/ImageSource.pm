@@ -20,6 +20,7 @@ sub serialize {
   my ($self, $data, $req) = @_;
 
   return +{
+    title => $data->{title} || $req->url,
     html => $self->render($data, $req->url),
   }
 }
