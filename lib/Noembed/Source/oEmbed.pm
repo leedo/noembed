@@ -20,6 +20,8 @@ sub prepare_source {
   $_->{re} = qr{$_->{pattern}} for @{$self->{sites}};
 }
 
+sub options { qw/maxwidth maxheight/ };
+
 sub serialize {
   my ($self, $body, $req) = @_;
   my $data = from_json $body;
