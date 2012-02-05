@@ -3,7 +3,7 @@ package Noembed::Source::AppleTrailers;
 use parent 'Noembed::Source';
 
 use Web::Scraper;
-use AnyEvent::HTTP;
+use Noembed::Util;
 
 sub prepare_source {
   my $self = shift;
@@ -27,17 +27,14 @@ sub post_download {
   die "can not find path" unless $path;
 
   my $url = "http://trailers.apple.com/$path/includes/trailer/large.html";
-  http_request get => $url, {
-      recurse => 0,
-      persistent => 0
-    },
-    sub {
-      my ($body, $headers) = @_;
-      my $src = $self->{scraper}->scrape($body);
-      die "can not find movie src" unless $src->{src};
-      $data->{src} = $src->{src};
-      $callback->($data);
-    };
+
+  Noembed::Util::http_get $url, sub {
+    my ($body, $headers) = @_;
+    my $src = $self->{scraper}->scrape($body);
+    die "can not find movie src" unless $src->{src};
+    $data->{src} = $src->{src};
+    $callback->($data);
+  };
 }
 
 sub serialize {

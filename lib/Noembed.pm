@@ -8,11 +8,10 @@ use Module::Find ();
 use Class::Load;
 use Text::MicroTemplate::File;
 use File::ShareDir;
-use AnyEvent::HTTP;
-use Encode;
 use JSON;
 use AnyEvent::Strict;
 
+use Noembed::Util;
 use Noembed::Request;
 
 use parent 'Plack::Component';
@@ -88,7 +87,7 @@ sub handle_url {
   }
 
   if ($self->is_shorturl($req->url)) {
-    return http_resolve($req->url, sub {
+    return Noembed::Util::http_resolve($req->url, sub {
       $req->url(shift);
       $self->handle_url($req, $times + 1);
     });
@@ -143,19 +142,12 @@ sub download {
   my ($self, $provider, $req) = @_;
 
   my $service = $provider->request_url($req);
-  my $nb = $req->env->{'psgi.nonblocking'};
-  my $cv = AE::cv;
 
-  http_request get => $service, {
-        persistent => 0,
-        keepalive  => 0,
-    },
-    sub {
-      my ($body, $headers) = @_;
+  Noembed::Util::http_get $service, sub {
+    my ($body, $headers) = @_;
 
-      if ($headers->{Status} == 200) {
+    if ($headers->{Status} == 200) {
         eval {
-          $body = decode("utf8", $body);
           $provider->post_download($body, sub {
             $body = shift;
             my $data = $provider->finalize($body, $req);
@@ -172,11 +164,7 @@ sub download {
       else {
         $self->end_lock($req->hash, error($headers->{Reason}));
       }
-
-      $cv->send unless $nb;
     };
-
-  $cv->recv unless $nb;
 }
 
 sub find_provider {
@@ -197,26 +185,6 @@ sub is_shorturl {
   }
 
   return 0;
-}
-
-sub http_resolve {
-  my ($url, $cb) = @_;
-
-  http_request get => $url,
-    recurse => 0,
-    persistent => 0,
-    sub {
-      my ($body, $headers) = @_;
-
-      if ($headers->{location}) {
-        $url = $headers->{location};
-      }
-      elsif ($body and $body =~ /URL=([^"]+)"/) {
-        $url = $1;
-      }
-
-      $cb->($url);
-    };
 }
 
 sub providers_response {

@@ -84,6 +84,7 @@ sub patterns {
 
 sub shorturls { }
 sub options { }
+sub icon { }
 
 sub matches {
   my ($self, $req) = @_;

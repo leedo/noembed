@@ -2,7 +2,7 @@ package Noembed::Source::Twitter;
 
 use JSON;
 use AnyEvent;
-use AnyEvent::HTTP;
+use Noembed::Util;
 
 use parent 'Noembed::Source';
 
@@ -37,18 +37,14 @@ sub download_parents {
   my $parent_id = $tweet->{in_reply_to_status_id};
   return $cb->($parents) unless $parent_id;
 
-  http_request get => "http://api.twitter.com/1/statuses/show/$parent_id.json", {
-        persistent => 0,
-        keepalive  => 0,
-    },
-    sub {
-      my ($body, $headers) = @_;
-      return $cb->($parents) unless $headers->{Status} == 200;;
+  Noembed::Util::http_get "http://api.twitter.com/1/statuses/show/$parent_id.json", sub {
+    my ($body, $headers) = @_;
+    return $cb->($parents) unless $headers->{Status} == 200;;
 
-      my $parent = decode_json $body;
-      push @$parents, $parent;
-      $self->expand_links($parent, sub {$self->download_parents($parent, $parents, $cb)});
-    };
+    my $parent = decode_json $body;
+    push @$parents, $parent;
+    $self->expand_links($parent, sub {$self->download_parents($parent, $parents, $cb)});
+  };
 }
 
 sub expand_links {
@@ -71,7 +67,7 @@ sub expand_links {
 
   for my $url (@urls) {
     $cv->begin;
-    Noembed::http_resolve $url, sub {
+    Noembed::Util::http_resolve $url, sub {
       my $resolved = shift;
       $tweet->{text} =~ s/\Q$url\E/$resolved/;
       $cv->end;

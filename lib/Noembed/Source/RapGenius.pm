@@ -2,8 +2,8 @@ package Noembed::Source::RapGenius;
 
 use parent 'Noembed::Source';
 
+use Noembed::Util;
 use Web::Scraper;
-use AnyEvent::HTTP;
 use Encode;
 use JSON;
 
@@ -34,14 +34,10 @@ sub post_download {
   my ($self, $body, $callback) = @_;
 
   if ($body =~ /^window\.location = "\/([^"]+)"$/m) {
-    http_request get => "http://rapgenius.com/$1", {
-        recurse => 0,
-        persistent => 0,
-      },
-      sub {
-        my $body = decode "utf-8", shift;
-        $self->get_definitions($body, $callback)
-      };
+    Noembed::Util::http_get "http://rapgenius.com/$1", sub {
+      my $body = decode "utf-8", shift;
+      $self->get_definitions($body, $callback)
+    };
   }
   else {
     $self->get_definitions($body, $callback);
@@ -52,15 +48,11 @@ sub get_definitions {
   my ($self, $body, $callback) = @_;
   my $data = $self->{scraper}->scrape($body);
 
-  http_request get => "http://rapgenius.com/annotations/for_song_page?song_id=$data->{id}", {
-      persistent => 0,
-      keepalive  => 0,
-    },
-    sub {
-      my ($body, $headers) = @_;
-      $data->{definitions} = $body;
-      $callback->($data);
-    };
+  Noembed::Util::http_get "http://rapgenius.com/annotations/for_song_page?song_id=$data->{id}", sub {
+    my ($body, $headers) = @_;
+    $data->{definitions} = $body;
+    $callback->($data);
+  };
 }
 
 sub serialize {
