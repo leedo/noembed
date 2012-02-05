@@ -71,10 +71,12 @@
           e.stop();
           var query = window.location.search.toQueryParams();
 
-          if (query.url) {
-            $('url').setValue(query.url);
-            embed();
-          }
+          ['url', 'maxwidth', 'maxheight'].each(function(field) {
+            if (query[field]) {
+              $(field).setValue(query[field]);
+            }
+          });
+          if (query['url']) embed();
         };
 
         window.onload = window.onpopstate;
