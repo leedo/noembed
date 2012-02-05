@@ -35,7 +35,7 @@ sub pre_download {
 }
 
 sub post_download {
-  my ($self, $body, $cb) = @_;
+  my ($self, $body, $req, $cb) = @_;
   $cb->($body);
 }
 
