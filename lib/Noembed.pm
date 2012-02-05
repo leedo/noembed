@@ -87,10 +87,10 @@ sub handle_url {
   }
 
   if ($self->is_shorturl($req->url)) {
-    return Noembed::Util::http_resolve($req->url, sub {
+    return Noembed::Util::http_resolve $req->url, sub {
       $req->url(shift);
       $self->handle_url($req, $times + 1);
-    });
+    };
   }
  
   if (my $provider = $self->find_provider($req)) {

@@ -11,7 +11,7 @@ my $imager = Noembed::Imager->new;
 sub http_resolve {
   my ($url, $cb) = @_;
 
-  Noembed::Util::http_get $url, sub {
+  Noembed::Util::http_get($url, sub {
     my ($body, $headers) = @_;
 
     if ($headers->{location}) {
@@ -22,11 +22,13 @@ sub http_resolve {
     }
 
     $cb->($url);
-  };
+  });
 }
 
 sub http_get {
   my ($url, $cb) = @_;
+
+  die "no callback" unless $cb;
 
   AnyEvent::HTTP::http_request get => $url, {
       persistent => 0,
