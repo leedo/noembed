@@ -1,3 +1,4 @@
 META.yml
 Makefile
 *.swp
+.DS_Store
