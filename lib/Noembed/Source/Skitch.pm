@@ -12,6 +12,11 @@ sub prepare_source {
   };
 }
 
+sub image_data {
+  my ($self, $body) = @_;
+  $self->{scraper}->scrape($body);
+}
+
 sub provider_name {"Skitch"}
 sub patterns {"https?://(?:www\.)?skitch\.com/([^/]+)/[^/]+/.+"}
 

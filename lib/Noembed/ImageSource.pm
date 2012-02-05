@@ -5,7 +5,7 @@ use parent 'Noembed::Source';
 sub post_download {
   my ($self, $body, $req, $cb) = @_;
 
-  my $data = $self->{scraper}->scrape($body);
+  my $data = $self->image_data($body, $req);
   die "No image found" unless $data->{src};
 
   Noembed::Util::dimensions $data->{src}, $req, sub {

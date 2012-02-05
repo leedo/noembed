@@ -13,6 +13,11 @@ sub prepare_source {
   };
 }
 
+sub image_data {
+  my ($self, $body) = @_;
+  $self->{scraper}->scrape($body);
+}
+
 sub patterns { 'https?://instagr\.am/p/.+' }
 sub provider_name { "Instagram" }
 

@@ -12,6 +12,11 @@ sub prepare_source {
   };
 }
 
+sub image_data {
+  my ($self, $body) = @_;
+  $self->{scraper}->scrape($body);
+}
+
 sub patterns { 'https?://path\.com/p/([0-9a-zA-Z]+)$' }
 sub provider_name { "Path" }
 
