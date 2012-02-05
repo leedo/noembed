@@ -8,6 +8,7 @@ use URI::QueryParam;
 use Scalar::Util qw/blessed/;
 use Text::MicroTemplate;
 use Exporter;
+use Noembed::Util;
 
 sub new {
   my ($class, %args) = @_;

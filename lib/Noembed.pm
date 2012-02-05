@@ -148,7 +148,7 @@ sub download {
 
     if ($headers->{Status} == 200) {
         eval {
-          $provider->post_download($body, sub {
+          $provider->post_download($body, $req, sub {
             $body = shift;
             my $data = $provider->finalize($body, $req);
             $self->end_lock($req->hash, json_res $data);

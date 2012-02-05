@@ -2,7 +2,7 @@ package Noembed::Source::Imgur;
 
 use Web::Scraper;
 
-use parent 'Noembed::Source';
+use parent 'Noembed::ImageSource';
 
 sub prepare_source {
   my $self = shift;
@@ -13,16 +13,5 @@ sub prepare_source {
 
 sub patterns { 'http://imgur\.com/([0-9a-zA-Z]+)$' }
 sub provider_name { "Imgur" }
-
-sub serialize {
-  my ($self, $body) = @_;
-  my $data = $self->{scraper}->scrape($body);
-
-  die "No image found" unless $data->{src};
-
-  return +{
-    html => $self->render($data),
-  }
-}
 
 1;

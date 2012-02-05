@@ -3,7 +3,6 @@ package Noembed::Source::GiantBomb;
 use JSON;
 use HTML::Entities;
 use Web::Scraper;
-use Noembed::Util;
 
 use parent 'Noembed::Source::YouTube';
 

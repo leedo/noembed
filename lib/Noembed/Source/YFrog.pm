@@ -2,30 +2,16 @@ package Noembed::Source::YFrog;
 
 use Web::Scraper;
 
-use parent 'Noembed::Source';
+use parent 'Noembed::ImageSource';
 
 sub prepare_source {
   my $self = shift;
   $self->{scraper} = scraper {
-    process '#main_image', img => '@src';
-    process '#embed-box input', url => '@value';
+    process '#main_image', src => '@src';
   };
 }
 
 sub patterns { 'http://yfrog\.com/[0-9a-zA-Z]+' }
 sub provider_name { 'YFrog' }
-
-sub serialize {
-  my ($self, $body) = @_;
-  my $data = $self->{scraper}->scrape($body);
-
-  unless ($data->{url} or $data->{img}) {
-    die "No content";
-  }
-
-  return +{
-    html => $self->render($data),
-  };
-}
 
 1;

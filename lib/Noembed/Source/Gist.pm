@@ -1,15 +1,9 @@
 package Noembed::Source::Gist;
 
-use Noembed::Pygmentize;
 use AnyEvent;
 use JSON;
 
 use parent 'Noembed::Source';
-
-sub prepare_source {
-  my $self = shift;
-  $self->{pyg} = Noembed::Pygmentize->new;
-}
 
 sub provider_name { "Gist" }
 sub patterns { 'https?://gist\.github\.com/([0-9a-fA-f]+)' }
@@ -20,21 +14,21 @@ sub build_url {
 }
 
 sub post_download {
-  my ($self, $body, $cb) = @_;
+  my ($self, $body, $req, $cb) = @_;
   my $gist = from_json $body;
   my $cv = AE::cv;
 
   for my $file (values %{$gist->{files}}) {
     $cv->begin;
-    $self->{pyg}->colorize($file->{content},
+
+    Noembed::Util::colorize $file->{content},
       language => lc $file->{language},
       filename => lc $file->{filename},
       sub {
         my $colorized = shift;
         $file->{content} = html($colorized);
         $cv->end;
-      }
-    );
+      };
   }
 
   $cv->cb(sub {$cb->($gist)});

@@ -2,7 +2,6 @@ package Noembed::Source::RapGenius;
 
 use parent 'Noembed::Source';
 
-use Noembed::Util;
 use Web::Scraper;
 use Encode;
 use JSON;
@@ -31,7 +30,7 @@ sub shorturls {'http://rapgenius\.com/\d+/?$'}
 sub provider_name { "rapgenius" }
 
 sub post_download {
-  my ($self, $body, $callback) = @_;
+  my ($self, $body, $req, $callback) = @_;
 
   if ($body =~ /^window\.location = "\/([^"]+)"$/m) {
     Noembed::Util::http_get "http://rapgenius.com/$1", sub {

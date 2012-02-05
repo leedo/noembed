@@ -2,7 +2,6 @@ package Noembed::Source::Twitter;
 
 use JSON;
 use AnyEvent;
-use Noembed::Util;
 
 use parent 'Noembed::Source';
 
@@ -23,7 +22,7 @@ sub build_url {
 }
 
 sub post_download {
-  my ($self, $body, $cb) = @_;
+  my ($self, $body, $req, $cb) = @_;
   my $tweet = from_json $body;
   $self->download_parents($tweet, [], sub {
     $tweet->{parents} = shift;
