@@ -104,11 +104,13 @@ sub handle_url {
 }
 
 sub json_res {
-  my $body = encode_json shift;
+  my ($data, @headers) = @_;
+  my $body = encode_json $data;
 
   [
     200,
     [
+      @headers,
       'Content-Type', 'text/javascript; charset=utf-8',
       'Content-Length', length $body
     ],
@@ -117,7 +119,7 @@ sub json_res {
 }
 
 sub error {
-  json_res {error => ($_[0] || "unknown error")};
+  json_res {error => ($_[0] || "unknown error")}, 'Cache-Control', 'no-cache';
 }
 
 sub register_provider {
