@@ -8,23 +8,6 @@ use Noembed::Imager;
 my $pygment = Noembed::Pygmentize->new;
 my $imager = Noembed::Imager->new;
 
-sub http_resolve {
-  my ($url, $cb) = @_;
-
-  Noembed::Util::http_get($url, sub {
-    my ($body, $headers) = @_;
-
-    if ($headers->{location}) {
-      $url = $headers->{location};
-    }
-    elsif ($body and $body =~ /URL=([^"]+)"/) {
-      $url = $1;
-    }
-
-    $cb->($url);
-  });
-}
-
 sub http_get {
   my ($url, $cb) = @_;
 
@@ -42,6 +25,23 @@ sub http_get {
       }
       $cb->($body, $headers);
     };
+}
+
+sub http_resolve {
+  my ($url, $cb) = @_;
+
+  Noembed::Util::http_get $url, sub {
+    my ($body, $headers) = @_;
+
+    if ($headers->{location}) {
+      $url = $headers->{location};
+    }
+    elsif ($body and $body =~ /URL=([^"]+)"/) {
+      $url = $1;
+    }
+
+    $cb->($url);
+  };
 }
 
 sub dimensions {
