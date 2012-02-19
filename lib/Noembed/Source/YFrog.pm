@@ -16,7 +16,7 @@ sub image_data {
   $self->{scraper}->scrape($body);
 }
 
-sub patterns { 'http://yfrog\.com/[0-9a-zA-Z]+' }
+sub patterns { 'http://yfrog\.com/[0-9a-zA-Z]+/?$' }
 sub provider_name { 'YFrog' }
 
 1;
