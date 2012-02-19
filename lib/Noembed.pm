@@ -203,7 +203,7 @@ sub providers_response {
 
 sub css_response {
   my ($self, $env) = @_;
-  my $css = join "\n", map {
+  $self->{css} ||= join "\n", map {
     my $file = style_dir() . "/" . $_->filename("css");
     if (-r $file) {
       open my $fh, "<", $file;
@@ -218,8 +218,8 @@ sub css_response {
   return [
     200,
     [ "Content-Type" => "text/css",
-      "Content-Length" => length($css) ],
-    [$css]
+      "Content-Length" => length($self->{css}) ],
+    [$self->{css}]
   ];
 }
 
