@@ -1,6 +1,5 @@
 package Noembed::Source;
 
-use Data::GUID;
 use Carp;
 use JSON ();
 use URI;

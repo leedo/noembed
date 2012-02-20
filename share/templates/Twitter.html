@@ -1,4 +1,4 @@
-? my ($tweet) = @_;
+? my ($id, $tweet) = @_;
 ? my $user = $tweet->{user};
 
 ? while (my $tweet = pop @{$tweet->{parents}}) {
