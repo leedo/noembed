@@ -6,7 +6,6 @@ use JSON ();
 use URI;
 use URI::QueryParam;
 use Scalar::Util qw/blessed/;
-use Text::MicroTemplate;
 use Exporter;
 use Noembed::Util;
 
@@ -18,13 +17,9 @@ sub new {
 
   $self->prepare_source;
   $self->{patterns} = [ map {qr{^$_}i} $self->patterns ];
-  *{$class.'::html'} = \&html;
+  *{$class.'::html'} = *Noembed::Util::html;
 
   return $self;
-}
-
-sub html {
-  Text::MicroTemplate::encoded_string($_[0]);
 }
 
 sub prepare_source { }
@@ -47,8 +42,7 @@ sub filename {
 
 sub render {
   my $self = shift;
-  my $id = Data::GUID->new->as_string;
-  $self->{render}->($self->filename, $id, @_);
+  $self->{render}->($self->filename("html"), @_);
 }
 
 sub build_url {

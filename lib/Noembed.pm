@@ -27,7 +27,7 @@ sub prepare_app {
     use_cache    => 2
   );
 
-  $self->{render} = sub { $template->render_file("wrapper.html", @_)->as_string };
+  $self->{render} = sub { $template->render_file(@_)->as_string };
   $self->{providers} = [];
   $self->{shorturls} = [
     qr{http://t\.co/[0-9a-zA-Z]+},
@@ -153,6 +153,7 @@ sub download {
           $provider->post_download($body, $req, sub {
             $body = shift;
             my $data = $provider->finalize($body, $req);
+            $data->{html} = $self->{render}->("wrapper.html", $provider, $data);
             $self->end_lock($req->hash, json_res $data);
           });
         };

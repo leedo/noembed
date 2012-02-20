@@ -27,8 +27,7 @@ sub serialize {
 
 sub render {
   my $self = shift;
-  my $id = Data::GUID->new->as_string;
-  $self->{render}->("ImageSource.html", $id, @_);
+  $self->{render}->("ImageSource.html", @_);
 }
 
 1;

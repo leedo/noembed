@@ -4,6 +4,7 @@ use Encode;
 use AnyEvent::HTTP ();
 use Noembed::Pygmentize;
 use Noembed::Imager;
+use Text::MicroTemplate ();
 
 my $pygment = Noembed::Pygmentize->new;
 my $imager = Noembed::Imager->new;
@@ -78,6 +79,10 @@ sub colorize {
   my $cb = pop;
   my ($text, %options) = @_;
   $pygment->colorize($text, %options, $cb);
+}
+
+sub html {
+  Text::MicroTemplate::encoded_string($_[0]);
 }
 
 1;

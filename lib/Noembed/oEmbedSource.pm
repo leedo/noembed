@@ -22,8 +22,7 @@ sub serialize {
 
 sub render {
   my $self = shift;
-  my $id = Data::GUID->new->as_string;
-  $self->{render}->("oEmbed", $id, @_);
+  $self->{render}->("oEmbed.html", @_);
 }
 
 sub provider_name {

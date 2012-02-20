@@ -1,14 +1,15 @@
-? my ($class, $id, @args) = @_;
+? my ($provider, $res) = @_;
 
-<div class="noembed-embed " id="<?= $id ?>">
+<div class="noembed-embed ">
   <div class="noembed-wrapper">
-    <div class="noembed-embed-inner noembed-<?= lc $class ?>">
-      <?= $_mt->render_file("$class.html", @args) ?>
+    <div class="noembed-embed-inner noembed-<?= lc $provider->filename ?>">
+      <?= Noembed::Util::html($res->{html}) ?>
     </div>
     <table class="noembed-meta-info">
       <tr>
-        <td class="favicon"><img src="/favicon/<?= $class ?>.png"></td>
-        <td><?= $class ?></td>
+        <td class="favicon"><img src="/favicon/<?= $provider->filename("png") ?>"></td>
+        <td><?= $provider->provider_name ?></td>
+        <td align="right"><a href="<?= $res->{url} ?>"><?= $res->{url} ?></a></td>
       </tr>
     </table>
   </div>

@@ -1,11 +1,3 @@
-.noembed-beeradvocate {
-  border: 1px solid #ddd;
-  border-right: 1px solid #bbb;
-  border-bottom: 1px solid #bbb;
-  background: #fff;
-  padding: 5px;
-  font-size: 12px;
-}
 .noembed-beeradvocate table td {
   font-size: 11px;
 }

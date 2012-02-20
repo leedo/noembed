@@ -29,6 +29,12 @@
   line-height: 1em;
 }
 
+.noembed-embed .noembed-meta-info a {
+  text-decoration: none;
+  color: #666;
+  font-weight: bold;
+}
+
 .noembed-embed .favicon {
   height: 16px;
   width: 16px;
