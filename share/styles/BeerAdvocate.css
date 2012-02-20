@@ -1,4 +1,4 @@
-div.beer-advocate-embed {
+.noembed-beeradvocate {
   border: 1px solid #ddd;
   border-right: 1px solid #bbb;
   border-bottom: 1px solid #bbb;
@@ -6,10 +6,10 @@ div.beer-advocate-embed {
   padding: 5px;
   font-size: 12px;
 }
-div.beer-advocate-embed table td {
+.noembed-beeradvocate table td {
   font-size: 11px;
 }
-div.beer-advocate-embed span.BAscore_big {
+.noembed-beeradvocate span.BAscore_big {
   font-size: 22px;
   color: #c00;
   font-weight: bold;

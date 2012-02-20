@@ -42,13 +42,13 @@ sub post_download {
 sub filename {
   my ($self, $ext) = @_;
   my ($name) = ref($self) =~ /:([^:]+)$/;
-  return "$name.$ext";
+  return $ext ? "$name.$ext" : $name;
 }
 
 sub render {
   my $self = shift;
   my $id = Data::GUID->new->as_string;
-  $self->{render}->($self->filename("html"), $id, @_);
+  $self->{render}->($self->filename, $id, @_);
 }
 
 sub build_url {

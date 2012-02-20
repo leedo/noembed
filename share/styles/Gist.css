@@ -1,45 +1,36 @@
-.gist-embed {
-  font-size: 12px;
-  border: 1px solid #ddd;
-  border-right: 1px solid #bbb;
-  border-bottom: 1px solid #bbb;
-  background: #fff;
-  overflow: hidden;
-}
-
-.gist-embed h2 {
+.noembed-gist h2 {
   font-weight: normal;
-  padding: 5px 0;
   font-size: 1.2em;
-  margin: 0 5px;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 5px;
   border-bottom: 1px solid #eee;
 }
 
-.gist-embed h3 {
+.noembed-gist h3 {
   font-weight: normal;
-  padding: 5px;
   margin: 0;
+  padding: 0;
   font-size: 1em;
 }
 
-.gist-language {
+.noembed-gist .gist-language {
   float: right;
   color: #999;
 }
 
-.gist-file {
+.noembed-gist .gist-file {
   background: #efefef;
   overflow-x: auto;
-  margin: 0 5px;
-  margin-bottom: 5px;
+  margin-top: 5px;
   max-height: 300px;
 }
 
-.gist-file table {
+.noembed-gist .gist-file table {
   font-size: 1em;
 }
 
-.gist-description {
+.noembed-gist .gist-description {
   font-size: 1.5em;
   font-weight: bold;
   margin: 0;
@@ -48,37 +39,37 @@
   overflow: hidden;
 }
 
-.gist-embed a {
+.noembed-gist a {
   color: #111;
   text-decoration: underline;
 }
 
-.gist-embed table {
+.noembed-gist table {
   width: auto;
   table-layout: auto;
   height: auto;
 }
 
-.gist-description a:hover {
+.noembed-gist .gist-description a:hover {
   text-decoration: underline;
 }
 
-.gist-user {
+.noembed-gist .gist-user {
   float: right;
 }
 
-.gist-file pre {
+.noembed-gist .gist-file pre {
   margin: 0;
   font-family: Menlo, DejaVuSansMono, monospace;
 }
 
-.gist-file table {
+.noembed-gist .gist-file table {
   margin: 0;
   padding: 0;
   border-spacing: 0px;
 }
 
-.gist-file td.linenos {
+.noembed-gist .gist-file td.linenos {
   color: #eee;
   background: #bbb;
   text-align: right;
@@ -86,7 +77,7 @@
   border-right: 1px solid #aaa;
 }
 
-.gist-file td.code {
+.noembed-gist .gist-file td.code {
   padding: 5px;
 }
 

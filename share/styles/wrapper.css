@@ -1,0 +1,43 @@
+.noembed-wrapper {
+  display: inline-block;
+}
+
+.noembed-embed-inner {
+  padding: 5px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  border-right: 1px solid #bbb;
+  border-bottom: none;
+  background: #fff;
+  color: #000;
+  font-size: 12px;
+}
+
+.noembed-embed .noembed-meta-info {
+  background: #efefef;
+  width: 100%;
+  font-size: 10px;
+  color: #666;
+  border: 1px solid #ddd;
+  border-top: none;
+  border-right: 1px solid #bbb;
+  border-bottom: 1px solid #bbb;
+}
+
+.noembed-embed .noembed-meta-info td {
+  vertical-align: middle;
+  line-height: 1em;
+}
+
+.noembed-embed .favicon {
+  height: 16px;
+  width: 16px;
+}
+.noembed-embed .favicon img {
+  width: 16px;
+  width: 16px;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  border: none;
+}

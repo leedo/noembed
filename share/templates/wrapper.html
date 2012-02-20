@@ -1,0 +1,15 @@
+? my ($class, $id, @args) = @_;
+
+<div class="noembed-embed " id="<?= $id ?>">
+  <div class="noembed-wrapper">
+    <div class="noembed-embed-inner noembed-<?= lc $class ?>">
+      <?= $_mt->render_file("$class.html", @args) ?>
+    </div>
+    <table class="noembed-meta-info">
+      <tr>
+        <td class="favicon"><img src="/favicon/<?= $class ?>.png"></td>
+        <td><?= $class ?></td>
+      </tr>
+    </table>
+  </div>
+</div>

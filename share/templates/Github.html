@@ -1,26 +1,24 @@
-? my ($id, $commit) = @_;
+? my ($commit) = @_;
 
-<div class="github-embed" id=<?= $id ?>">
-  <h2 class="github-description">
-    <? if ($commit->{author}{url}) { ?>
-      <a href="<?= $commit->{author}{url} ?>" class="github-user"><?= $commit->{author}{login} ?></a>
-    <? } ?>
-    <a href="<?= $commit->{commit}{url} ?>"><?= $commit->{commit}{message} ?></a>
-  </h2>
+<h2 class="github-description">
+  <? if ($commit->{author}{url}) { ?>
+  <a href="<?= $commit->{author}{url} ?>" class="github-user"><?= $commit->{author}{login} ?></a>
+  <? } ?>
+  <a href="<?= $commit->{commit}{url} ?>"><?= $commit->{commit}{message} ?></a>
+</h2>
 ? for my $file (@{$commit->{files}}) {
-  <h3>
-    <a href="<?= $file->{blob_url} ?>" target="_blank"><?= $file->{filename} ?></a>
-    <span class="github-stats">
+<h3>
+  <a href="<?= $file->{blob_url} ?>" target="_blank"><?= $file->{filename} ?></a>
+  <span class="github-stats">
 ? if ($file->{additions}) {
-      <span class="github-addition">+<?= $file->{additions} ?></span>
+    <span class="github-addition">+<?= $file->{additions} ?></span>
 ? }
 ? if ($file->{deletions}) {
-      <span class="github-deletion">-<?= $file->{deletions} ?></span>
+    <span class="github-deletion">-<?= $file->{deletions} ?></span>
 ? }
-    </span>
-  </h3>
-  <div class="github-file">
-    <?= $file->{patch} ?>
-  </div>
-? }
+  </span>
+</h3>
+<div class="github-file">
+  <?= $file->{patch} ?>
 </div>
+? }

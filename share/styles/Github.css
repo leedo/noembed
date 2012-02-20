@@ -1,13 +1,4 @@
-.github-embed {
-  font-size: 12px;
-  border: 1px solid #ddd;
-  border-right: 1px solid #bbb;
-  border-bottom: 1px solid #bbb;
-  background: #fff;
-  overflow: hidden;
-}
-
-.github-embed h2 {
+.noembed-github h2 {
   font-weight: normal;
   padding: 5px 0;
   font-size: 1.2em;
@@ -15,27 +6,27 @@
   border-bottom: 1px solid #eee;
 }
 
-.github-embed h3 {
+.noembed-github h3 {
   font-weight: normal;
   padding: 5px;
   margin: 0;
   font-size: 1em;
 }
 
-.github-stats {
+.noembed-github .github-stats {
   float: right;
   font-weight: bold;
 }
 
-.github-addition {
+.noembed-github .github-addition {
   color: #00A000;
 }
 
-.github-deletion {
+.noembed-github .github-deletion {
   color: #A00000;
 }
 
-.github-file {
+.noembed-github .github-file {
   background: #efefef;
   overflow-x: auto;
   margin: 0 5px;
@@ -43,11 +34,11 @@
   max-height: 300px;
 }
 
-.github-file table {
+.noembed-github .github-file table {
   font-size: 1em;
 }
 
-.github-description {
+.noembed-github .github-description {
   font-size: 1.5em;
   font-weight: bold;
   margin: 0;
@@ -56,37 +47,37 @@
   overflow: hidden;
 }
 
-.github-embed a {
+.noembed-github a {
   color: #111;
   text-decoration: underline;
 }
 
-.github-embed table {
+.noembed-github table {
   width: auto;
   table-layout: auto;
   height: auto;
 }
 
-.github-description a:hover {
+.noembed-github .github-description a:hover {
   text-decoration: underline;
 }
 
-.github-user {
+.noembed-github .github-user {
   float: right;
 }
 
-.github-file pre {
+.noembed-github .github-file pre {
   margin: 0;
   font-family: Menlo, DejaVuSansMono, monospace;
 }
 
-.github-file table {
+.noembed-github .github-file table {
   margin: 0;
   padding: 0;
   border-spacing: 0px;
 }
 
-.github-file td.linenos {
+.noembed-github .github-file td.linenos {
   color: #eee;
   background: #bbb;
   text-align: right;
@@ -94,7 +85,7 @@
   border-right: 1px solid #aaa;
 }
 
-.github-file td.code {
+.noembed-github .github-file td.code {
   padding: 5px;
 }
 

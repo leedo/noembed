@@ -13,6 +13,7 @@ builder {
   mount "/"      => Plack::App::File->new(file => "index.html");
   mount "/demo"  => Plack::App::File->new(file => "demo.html");
   mount "/noembed.css" => sub { $noembed->css_response };
+  mount "/favicon/" => Plack::App::File->new(root => Noembed::share_dir . "/icons/");
 
   mount "/providers" => builder {
     enable 'CrossOrigin', origins => '*', methods => '*', headers => '*';

@@ -1,8 +1,9 @@
-div.ascii-fart-embed {
-  width: 100%;
-  overflow: hidden;
+.noembed-asciiartfarts {
+  padding: 0;
+  border: none;
 }
-div.ascii-fart-embed pre {
+
+.noembed-asciiartfarts pre {
   padding: 5px 10px;
   display: block;
   float: left;

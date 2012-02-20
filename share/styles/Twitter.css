@@ -1,4 +1,4 @@
-.tweet-embed {
+.noembed-twitter {
   border: 1px solid #ddd;
   border-right: 1px solid #bbb;
   border-bottom: 1px solid #bbb;
@@ -7,22 +7,22 @@
   max-width: 500px;
   font-size: 16px;
 }
-.tweet-embed a {
+.noembed-twitter a {
   text-decoration: none;
 }
-.tweet-embed a:hover {
+.noembed-twitter a:hover {
   text-decoration: underline;
 }
-.tweet-embed .tweet-parent {
+.noembed-twitter .tweet-parent {
   font-size: 12px;
   border-bottom: 1px solid #ddd;
   background: #f3f3f3;
   padding: 10px;
 }
-.tweet-embed .tweet_main {
+.noembed-twitter .tweet_main {
   padding: 10px;
 }
-.tweet-embed .tweet-parent p {
+.noembed-twitter .tweet-parent p {
   margin: 0;
   margin-top: -0.5em;
   margin-right: 1em;
@@ -32,32 +32,32 @@
   color: #bbb;
   background-color: #fafafa;
 }
-.tweet-embed div.tweet_image img {
+.noembed-twitter div.tweet_image img {
   display: block;
 }
-.tweet-embed div.tweet_image {
+.noembed-twitter div.tweet_image {
   float: left;
   margin-right: 5px;
 }
-.tweet-embed div.tweet_text {
+.noembed-twitter div.tweet_text {
   clear: both;
   padding: 0.5em 0;
 }
-.tweet-embed .tweet-parent div.tweet_text {
+.noembed-twitter .tweet-parent div.tweet_text {
   padding-bottom: 0;
 }
-.tweet-embed .tweet_screen_name {
+.noembed-twitter .tweet_screen_name {
   font-weight: bold;
   color: #000;
 }
-.tweet-embed .tweet_real_name {
+.noembed-twitter .tweet_real_name {
   font-weight: normal;
   font-size: 12px;
   color: #999;
 }
 
-.tweet-embed div.tweet_info a,
-.tweet-embed div.tweet_info {
+.noembed-twitter div.tweet_info a,
+.noembed-twitter div.tweet_info {
   font-size: 12px;
   color: #999;
 }

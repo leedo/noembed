@@ -1,14 +1,12 @@
-? my ($id, $info) = @_;
+? my ($info) = @_;
 
-<div class="amazon-embed" id="<?= $id ?>">
-  <img src="http://noembed.com/i/<?= $info->{image}{URL} ?>" width="<?= $info->{image}{Width} ?>" height="<?= $info->{image}{Height} ?>">
-  <h2><a target="_blank" href="<?= $info->{url} ?>"><?= $info->{title} ?></a></h2>
-  <ul>
+<img src="http://noembed.com/i/<?= $info->{image}{URL} ?>" width="<?= $info->{image}{Width} ?>" height="<?= $info->{image}{Height} ?>">
+<h2><a target="_blank" href="<?= $info->{url} ?>"><?= $info->{title} ?></a></h2>
+<ul>
 ? my @info = grep {$_} map {$info->{$_}} qw/group price/;
 ? for my $field (@info) {
-    <li><?= $field ?></li>
+  <li><?= $field ?></li>
 ? }
-  </ul>
+</ul>
 
-  <p><?= $info->{review} ?></p>
-</div>
+<p><?= $info->{review} ?></p>

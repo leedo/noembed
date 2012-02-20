@@ -1,4 +1,4 @@
-.imdb-embed {
+.noembed-imdb {
   padding: 10px;
   border: 1px solid #ddd;
   border-right: 1px solid #bbb;
@@ -7,30 +7,30 @@
   overflow: hidden;
 }
 
-.imdb-embed img {
+.noembed-imdb img {
   float: left;
   margin-right: 10px;
   background: #efefef;
   border: 1px solid #ddd;
 }
 
-.imdb-embed h2 {
+.noembed-imdb h2 {
   margin: 0;
   font-size: 1.2em;
 }
 
-.imdb-embed a {
+.noembed-imdb a {
   text-decoration: none;
 }
 
-.imdb-embed ul.imdb-metadata {
+.noembed-imdb ul.imdb-metadata {
   overflow: hidden;  
   padding: 0;
   margin: 0;
   margin-top: 0.2em;
 }
 
-.imdb-embed ul.imdb-metadata li {
+.noembed-imdb ul.imdb-metadata li {
   display: inline-block;
   padding: 0;
   margin: 0;
@@ -40,7 +40,7 @@
   font-size: 0.8em;
 }
 
-.imdb-embed p.imdb-overview {
+.noembed-imdb p.imdb-overview {
   margin: 0;
   padding: 0;
   margin-top: 0.8em;

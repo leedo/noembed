@@ -1,32 +1,32 @@
-.rapgenius-embed {
+.noembed-rapgenius {
   padding: 10px;
   background: #000;
   color: #000;
 }
 
-.rapgenius-embed a {
+.noembed-rapgenius a {
   color: #fff !important;
 }
 
-.rapgenius-song,
-.rapgenius-artist {
+.noembed-rapgenius .rapgenius-song,
+.noembed-rapgenius .rapgenius-artist {
   color: #fff;
   font-size: 18px;
   font-weight: bold;
   text-transform: uppercase;
 }
 
-.rapgenius-song {
+.noembed-rapgenius .rapgenius-song {
   color: #FF9000;
 }
 
-.rapgenius-lyric:before {
+.noembed-rapgenius .rapgenius-lyric:before {
   content: "“ ";
   font-size: 32px;
   line-height: 1em;
 }
 
-.rapgenius-lyric {
+.noembed-rapgenius .rapgenius-lyric {
   color: #0076BC;
   font-style: italic;
   font-weight: bold;
@@ -36,6 +36,6 @@
   margin: 10px 0;
 }
 
-.rapgenius-definition {
+.noembed-rapgenius .rapgenius-definition {
   color: #fff;
 }

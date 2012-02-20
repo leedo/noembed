@@ -1,21 +1,19 @@
-? my ($id, $movie) = @_;
+? my ($movie) = @_;
 
-<div class="imdb-embed" id="<?= $id ?>">
 ? if (my ($poster) = @{$movie->{posters}}) {
 ? my $image = $poster->{image};
-  <img src="http://noembed.com/i/<?= $image->{url} ?>" width="<?= $image->{width} ?>" height="<?= $image->{height} ?>">
+<img src="http://noembed.com/i/<?= $image->{url} ?>" width="<?= $image->{width} ?>" height="<?= $image->{height} ?>">
 ? }
-  <h2><a href="<?= $movie->{url} ?>"><?= $movie->{name} ?></a></h2>
-  <ul class="imdb-metadata">
+<h2><a href="<?= $movie->{url} ?>"><?= $movie->{name} ?></a></h2>
+<ul class="imdb-metadata">
 ? my @info = grep {$_} map {$movie->{$_}} qw/certification year/;
 ? for my $field (@info) {
-    <li><?= $field ?></li>
+  <li><?= $field ?></li>
 ? }
 ? if ($movie->{genres}) {
-    <li><?= join ", ", map {$_->{name}} @{$movie->{genres}} ?></li>
+  <li><?= join ", ", map {$_->{name}} @{$movie->{genres}} ?></li>
 ? }
-  </ul>
+</ul>
 ? if ($movie->{overview}) {
-  <p class="imdb-overview"><?= $movie->{overview} ?></p>
+<p class="imdb-overview"><?= $movie->{overview} ?></p>
 ? }
-</div>

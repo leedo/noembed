@@ -27,7 +27,7 @@ sub prepare_app {
     use_cache    => 2
   );
 
-  $self->{render} = sub { $template->render_file(@_)->as_string };
+  $self->{render} = sub { $template->render_file("wrapper.html", @_)->as_string };
   $self->{providers} = [];
   $self->{shorturls} = [
     qr{http://t\.co/[0-9a-zA-Z]+},
@@ -204,7 +204,7 @@ sub providers_response {
 sub css_response {
   my ($self, $env) = @_;
   $self->{css} ||= join "\n", map {
-    my $file = style_dir() . "/" . $_->filename("css");
+    my $file = style_dir() . "/" . $_;
     if (-r $file) {
       open my $fh, "<", $file;
       local $/;
@@ -213,7 +213,7 @@ sub css_response {
     else {
       "";
     }
-  } @{$self->{providers}};
+  } "wrapper.css", map {$_->filename("css")} @{$self->{providers}};
 
   return [
     200,

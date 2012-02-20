@@ -1,6 +1,5 @@
-? my ($id, $gist) = @_;
+? my ($gist) = @_;
 
-<div class="gist-embed" id="<?= $id ?>">
 ? if ($gist->{description}) {
   <h2 class="gist-description">
     <? if ($gist->{user}{login}) { ?>
@@ -20,4 +19,3 @@
     <?= $file->{content} ?>
   </div>
 ? }
-</div>
