@@ -1,4 +1,7 @@
 ? my ($provider, $res) = @_;
+? my $truncated = do {
+?   length $res->{url} > 50 ? substr($res->{url}, 0, 50) . "…" : $res->{url};
+? };
 
 <div class="noembed-embed ">
   <div class="noembed-wrapper">
@@ -9,7 +12,9 @@
       <tr>
         <td class="favicon"><img src="https://noembed.com/favicon/<?= $provider->filename("png") ?>"></td>
         <td><?= $provider->provider_name ?></td>
-        <td align="right"><a href="<?= $res->{url} ?>"><?= $res->{url} ?></a></td>
+        <td align="right">
+          <a title="<?= $res->{url} ?>" href="<?= $res->{url} ?>"><?= $truncated ?></a>
+        </td>
       </tr>
     </table>
   </div>
