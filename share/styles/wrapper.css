@@ -29,6 +29,14 @@
   line-height: 1em;
 }
 
+.noembed-embed .noembed-meta-info td:first-child {
+  padding-left: 5px;
+}
+
+.noembed-embed .noembed-meta-info td:last-child {
+  padding-right: 5px;
+}
+
 .noembed-embed .noembed-meta-info a {
   text-decoration: none;
   color: #666;
