@@ -34,7 +34,6 @@ sub post_download {
 
   if ($body =~ /^window\.location = "\/([^"]+)"$/m) {
     Noembed::Util::http_get "http://rapgenius.com/$1", sub {
-      my $body = decode "utf-8", shift;
       $self->get_definitions($body, $callback)
     };
   }
