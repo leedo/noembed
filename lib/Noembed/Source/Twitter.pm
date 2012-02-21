@@ -2,7 +2,6 @@ package Noembed::Source::Twitter;
 
 use JSON;
 use AnyEvent;
-use Data::GUID;
 
 use parent 'Noembed::Source';
 
@@ -78,12 +77,11 @@ sub expand_links {
 }
 
 sub serialize {
-  my ($self, $tweet) = @_;
-  my $id = Data::GUID;
+  my ($self, $tweet, $req) = @_;
 
   return +{
     title => "Tweet by $tweet->{user}{name}",
-    html  => $self->render(Data::GUID->new, $tweet),
+    html  => $self->render($req->hash, $tweet),
   };
 }
 

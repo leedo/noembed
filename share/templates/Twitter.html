@@ -40,7 +40,7 @@
   <div class="tweet_text"><?= $tweet->{text} ?></div>
   <div class="tweet_info">
     <a target="_blank" href="http://www.twitter.com/<?= $user->{screen_name}?>/status/<?= $tweet->{id} ?>">
-      <span class="tweet_created_at" id="<?= $id ?>-timestamp"><?= $tweet->{created_at} ?></span>
+      <span class="tweet_created_at" id="noembed-timestamp-<?= $id ?>"><?= $tweet->{created_at} ?></span>
     </a>
     via <?= $tweet->{source} ?>
   </div>
@@ -48,7 +48,7 @@
 
 <script type="text/javascript">
   var months = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'];
-  var elem = document.getElementById("<?= $id ?>-timestamp");
+  var elem = document.getElementById("noembed-timestamp-<?= $id ?>");
   var date = new Date(elem.innerHTML);
 
   if (date) {

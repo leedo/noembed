@@ -8,7 +8,6 @@ all_from 'lib/Noembed.pm';
 
 requires 'AnyEvent::Worker';
 requires 'IPC::Run';
-requires 'Data::GUID';
 requires 'Plack';
 requires 'JSON';
 requires 'Imager';
