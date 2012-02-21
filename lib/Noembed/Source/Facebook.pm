@@ -1,8 +1,9 @@
 package Noembed::Source::Facebook;
 
+use parent 'Noembed::Source';
+
 use Noembed::Util;
 use JSON;
-use base 'Noembed::Source';
 
 sub provider_name { "Facebook" }
 sub patterns { 'https?://www\.facebook\.com/([^/]+)/posts/(\d+)' }
@@ -14,7 +15,6 @@ sub pre_download {
     my ($body, $headers) = @_;
     my $data = decode_json $body;
     $req->url("https://graph.facebook.com/$data->{id}_".$req->captures->[1]);
-    print $req->url."\n";
     $cb->($req);
   };
 }
