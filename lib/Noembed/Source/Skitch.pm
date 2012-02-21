@@ -19,5 +19,6 @@ sub image_data {
 
 sub provider_name {"Skitch"}
 sub patterns {"https?://(?:www\.)?skitch\.com/([^/]+)/[^/]+/.+"}
+sub shorturls { "http://skit\.ch/[^/]+" }
 
 1;
