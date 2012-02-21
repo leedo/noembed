@@ -14,17 +14,19 @@ sub pre_download {
   Noembed::Util::http_get $profile, sub {
     my ($body, $headers) = @_;
     my $data = decode_json $body;
+    $req->{orig_url} = $req->url; # bleh
     $req->url("https://graph.facebook.com/$data->{id}_".$req->captures->[1]);
     $cb->($req);
   };
 }
 
 sub serialize {
-  my ($self, $body) = @_;
+  my ($self, $body, $req) = @_;
   my $data = decode_json $body;
   return {
     title => "Facebook message by $data->{from}{name}",
     html  => "<p>$data->{message}</p>",
+    url   => $req->{orig_url}
   }
 }
 
