@@ -1,10 +1,16 @@
 package Noembed::Source::GiantBomb;
 
 use JSON;
+use URI;
+use URI::QueryParam;
 use HTML::Entities;
 use Web::Scraper;
 
-use parent 'Noembed::Source::YouTube';
+use parent 'Noembed::Source';
+
+# bleh, just use youtube's serialize method
+# it has fancy things like time jumping
+*{__PACKAGE__."::serialize"} = *Noembed::Source::YouTube::serialize;
 
 sub prepare_source {
   my $self = shift;
@@ -14,11 +20,11 @@ sub prepare_source {
       from_json decode_entities $el->attr("data-video");
     };
   };
-  $self->{youtube_re} = qr{https?://(?:[^\.]+\.)?youtube\.com/watch/?\?(?:.+&)?v=(.+)};
 }
 
 sub provider_name { "GiantBomb" }
-sub patterns { 'https?://www\.giantbomb\.com/([^/]+)/\d+-\d+/?' }
+sub options { qw/maxwidth maxheight autoplay/}
+sub patterns { 'https?://www\.giantbomb\.com/[^/]+/\d+-\d+/?' }
 
 sub pre_download {
   my ($self, $req, $cb) = @_;
@@ -27,9 +33,9 @@ sub pre_download {
     my ($body, $headers) = @_;
     if ($headers->{Status} == 200) {
       my $video = $self->{scraper}->scrape($body);
-      my ($hash) = $req->url =~ /(#.+)$/;
-      $req->pattern($self->{youtube_re});
-      $req->url("http://www.youtube.com/watch?v=$video->{video}{youtube_id}$hash");
+      my $uri = URI->new("http://www.youtube.com/oembed/");
+      $uri->query_param("url", "http://www.youtube.com/watch?v=$video->{video}{youtube_id}");
+      $req->content_url($uri);
     }
     $cb->($req);
   };

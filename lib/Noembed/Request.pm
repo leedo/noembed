@@ -2,10 +2,12 @@ package Noembed::Request;
 
 use parent 'Plack::Request';
 
+use Digest::SHA1;
+
 sub new {
   my ($class, $env) = @_;
   my $self = $class->SUPER::new($env);
-  $self->{hash} = $env->{REQUEST_URI};
+  $self->{hash} = Digest::SHA1::sha1_hex(lc $env->{QUERY_STRING});
   return $self;
 }
 
@@ -20,6 +22,19 @@ sub url {
     $self->parameters->{url} = $url;
   }
   return $self->parameters->{url};
+}
+
+sub content_url {
+  my ($self, $url) = @_;
+
+  if (defined $url) {
+    $self->{content_url} = $url;
+  }
+  if ($self->{content_url}) {
+    return $self->{content_url};
+  }
+
+  return $self->url;
 }
 
 sub captures {

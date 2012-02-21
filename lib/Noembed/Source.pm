@@ -46,7 +46,7 @@ sub render {
 
 sub build_url {
   my ($self, $req) = @_;
-  return $req->url;
+  return $req->content_url;
 }
 
 sub request_url {
