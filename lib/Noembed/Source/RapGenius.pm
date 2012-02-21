@@ -34,7 +34,7 @@ sub post_download {
 
   if ($body =~ /^window\.location = "\/([^"]+)"$/m) {
     Noembed::Util::http_get "http://rapgenius.com/$1", sub {
-      $self->get_definitions($body, $callback)
+      $self->get_definitions($_[0], $callback);
     };
   }
   else {
