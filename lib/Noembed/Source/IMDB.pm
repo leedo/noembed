@@ -21,7 +21,7 @@ sub build_url {
 
 sub serialize {
   my ($self, $body) = @_;
-  my $data = decode_json $body;
+  my $data = from_json $body;
   my ($movie) = @{$data};
 
   die "invalid movie id" unless $movie and $movie ne "Nothing found.";
