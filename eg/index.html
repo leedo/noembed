@@ -169,6 +169,7 @@ my_embed_function(
       <li>Soundcloud</li>
       <li>Picplz</li>
       <li>Lockerz</li>
+      <li>Facebook posts</li>
     </ul>
 
     <h3>The <code>/providers</code> endpoint</h3>
@@ -182,13 +183,21 @@ my_embed_function(
     <h2>Development</h2>
     <p>
       All the source code for Noembed is <a href="http://www.github.com/leedo/noembed">
-      on github</a>. Patches are accepted to add new services. To
-      write a new provider, inherit from the <code>Noembed::Source</code>
-      and define <code>provider_name</code>, <code>patterns</code>,
-      and <code>serialize</code> methods. Take a
-      look at an <a href="https://github.com/leedo/noembed/blob/master/lib/Noembed/Source/TED.pm">existing
-        source</a> for an example.
+      on github</a>. Patches are accepted to add new services.
     </p>
+
+    <p>
+      If you want to add new sites you'll probably want to have a look at these documents:
+    </p>
+
+    <ul>
+      <li><a href="docs/Noembed.html">Noembed</a></li>
+      <li><a href="docs/Source.html">Noembed::Source</a></li>
+      <li><a href="docs/ImageSource.html">Noembed::ImageSource</a></li>
+      <li><a href="docs/oEmbedSource.html">Noembed::oEmbedSource</a></li>
+      <li><a href="docs/Util.html">Noembed::Util</a></li>
+      <li><a href="docs/Request.html">Noembed::Request</a></li>
+    </ul>
 
     <h2>Similar sites</h2>
     <p>
