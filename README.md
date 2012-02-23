@@ -4,27 +4,26 @@ Noembed - extendable oEmbed gateway
 
 # SYNOPSIS
 
-  use Plack::Builder;
-  use Noembed;
+    use Plack::Builder;
+    use Noembed;
 
-  my $noembed = Noembed->new;
+    my $noembed = Noembed->new;
 
-  builder {
+    builder {
 
-    # an oEmbed endpoint supporting lots of sites
-    mount "/embed" => builder {
-      enable "JSONP";
-      $noembed->to_app;
+      # an oEmbed endpoint supporting lots of sites
+      mount "/embed" => builder {
+        enable "JSONP";
+        $noembed->to_app;
+      };
+
+      # a CSS file with all the styles
+      mount "/noembed.css" => $noembed->css_response;
+
+      # a JSON response describing all the supported sites
+      # and what URL patterns they match
+      mount "/providers" => $noembed->providers_response;
     };
-
-    # a CSS file with all the styles
-    mount "/noembed.css" => $noembed->css_response;
-
-    # a JSON response describing all the supported sites
-    # and what URL patterns they match
-    mount "/providers" => $noembed->providers_response;
-
-  };
 
 # DESCRIPTION
 
