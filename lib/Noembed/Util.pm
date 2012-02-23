@@ -10,14 +10,15 @@ my $pygment = Noembed::Pygmentize->new;
 my $imager = Noembed::Imager->new;
 
 sub http_get {
-  my ($url, $cb) = @_;
+  my $cb = pop;
+  my ($url, @options) = @_;
 
   die "no callback" unless $cb;
 
-  AnyEvent::HTTP::http_request get => $url, {
+  AnyEvent::HTTP::http_request get => $url,
       persistent => 0,
       keepalive  => 0,
-    },
+      @options,
     sub {
       my ($body, $headers) = @_;
 
@@ -31,7 +32,7 @@ sub http_get {
 sub http_resolve {
   my ($url, $cb) = @_;
 
-  Noembed::Util::http_get $url, sub {
+  Noembed::Util::http_get $url, recurse => 0, sub {
     my ($body, $headers) = @_;
 
     if ($headers->{location}) {
