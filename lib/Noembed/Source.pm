@@ -168,7 +168,7 @@ option for L<Noembed::Source::YouTube|YouTube>.
 
 =back
 
-=head1 HOOKS
+=head2 HOOKS
 
 =over 4
 
@@ -234,6 +234,22 @@ for a template in C<./share/templates/> that matches the name of
 the class (e.g. C<Google.pm> -> C<Google.html>). The render method
 will pass arguments onto the template. See L<Text::MicroTemplate>
 for template basics.
+
+  package Noembed::Source::Dictionary;
+
+  ...
+
+  sub serialize {
+    my ($self, $content) = @_;
+    my $data = from_json $content;
+
+    # render ./share/templates/Dictionary.html template,
+    # passing in $data
+    return {
+      html  => $self->render($data),
+      title => $data->{title},
+    };
+  }
 
 If you create a similarly named stylesheet (C<Google.pm> ->
 C<Google.css>) in C<./share/styles/>, it will automatically be
