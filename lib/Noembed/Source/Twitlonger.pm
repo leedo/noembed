@@ -1,7 +1,8 @@
 package Noembed::Source::Twitlonger;
 
-use XML::Simple;
 use parent 'Noembed::Source';
+
+use XML::Simple ();
 
 sub provider_name { 'Twitlonger' }
 sub shorturls { 'http://tl\.gd/[^/]+' }
@@ -14,7 +15,7 @@ sub build_url {
 
 sub serialize {
   my ($self, $body) = @_;
-  my $data = XMLin($body);
+  my $data = XML::Simple::XMLin($body);
 
   die $data->{error} if exists $data->{error};
   die "no post" unless exists $data->{post};
