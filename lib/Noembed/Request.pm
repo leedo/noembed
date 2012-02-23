@@ -82,10 +82,10 @@ A SHA1 hash representing the requested embed.
 The URL that the client requested for embedding. This should not
 change throughout the response.
 
-=item content_url
+=item content_url ($url)
 
 The URL that Noembed will download. Typically, you will not need to change
-this. It is populated by a sources C<build_url> method. However, it can be 
+this. It is populated by a source's C<build_url> method. However, it can be 
 used in a C<pre_download> hook to modify the URL will be downloaded.
 
 =item pattern

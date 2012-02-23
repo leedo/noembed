@@ -138,7 +138,7 @@ Must return the name of the provider. e.g. C<Google>
 
 =item serialize ($body, $req)
 
-Receives the downloaded content and original request. This must
+Receives the downloaded content and embed request. This must
 return a hash reference containing C<html> and C<title> keys.
 Additional key/value pairs will be included in the JSON response
 to the client.

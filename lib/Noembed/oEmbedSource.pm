@@ -51,9 +51,10 @@ Noembed::oEmbedSource - a base class for sites with existing oEmbed support
 
 =head1 DESCRIPTION
 
-This is the simplest of source base classes. It is meant for sites that already have
-oEmbed support. For sites like this we can simply proxy requests to their oEmbed
-endpoint. For this reason this base class only needs to have C<oembed_url> defined.
+This is the simplest of base classes. It is meant for sites that
+already support oEmbed. For these sites we can simply proxy requests
+to their oEmbed endpoint. These classes can skip defining C<serialize>
+and C<build_url>, but must define C<oembed_url>.
 
 =head1 METHODS
 
