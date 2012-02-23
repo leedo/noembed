@@ -68,7 +68,7 @@ sub expand_links {
     $cv->begin;
     Noembed::Util::http_resolve $url, sub {
       my $resolved = shift;
-      $tweet->{text} =~ s/\Q$url\E/$resolved/;
+      $tweet->{text} =~ s/\Q$url\E/<a target="_blank" href="$resolved">$resolved<\/a>/;
       $cv->end;
     };
   }
