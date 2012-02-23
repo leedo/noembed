@@ -248,50 +248,52 @@ sub has_lock {
 
 =head1 NAME
 
-Noembed - oembed gateway
+Noembed - extendable oEmbed gateway
 
 =head1 SYNOPSIS
 
-    use Plack::Builder;
-    use Noembed;
+  use Plack::Builder;
+  use Noembed;
 
-    builder {
-      mount "/oembed" => builder {
-        enable JSONP;
-        Noembed->new->to_app;
-      };
+  my $noembed = Noembed->new;
+
+  builder {
+
+    # an oEmbed endpoint supporting lots of sites
+    mount "/embed" => builder {
+      enable "JSONP";
+      $noembed->to_app;
     };
+
+    # a CSS file with all the styles
+    mount "/noembed.css" => $noembed->css_response;
+
+    # a JSON response describing all the supported sites
+    # and what URL patterns they match
+    mount "/providers" => $noembed->providers_response;
+
+  };
 
 =head1 DESCRIPTION
 
-Noembed is an oEmbed gateway. It lets you fetch information about
-external URLs, which you can then use to embed into HTML pages.
-Noembed can fetch information about a large list of URLs, and it
-is very easy to define new types of URLs.
+Noembed is an oEmbed gateway. It allows you to fetch information
+about external URLs, which can then be embeded HTML pages. Noembed
+supports a large list of sites and makes it easy to add more.
 
-To add a new set of URLs to Noembed you create a new class that
-inherits from L<Noembed::Source> and override a few methods.
-
-=head1 CUSTOM SOURCES
-
-Use the C<sources> option to load a custom list of source classes.
-All classes are assumed to be under the Noembed::Source namespace
-unless prefixed with C<+>.
-
-    # only load YouTube and a custom source
-    my $noembed = Noembed->new(
-      sources => [qw/ YouTube +My::Custom::Source /]
-    );
-
-    builder {
-      mount "/oembed" => $noembed->to_app;
-    };
+To add a new site to Noembed create a new class that inherits from
+L<Noembed::Source>, L<Noembed::ImageSource>, or L<Noembed::oEmbedSource>
+and override the required methods.
 
 =head1 EXAMPLES
 
 To see an example of how to use Noembed from the client side, take
 a look at the demo in the eg/ directory. It accepts a URL and
 attempts to embed it in the page.
+
+=head1 SEE ALSO
+
+L<Noembed::Source>, L<Noembed::ImageSource>, L<Noembed::oEmbedSource>,
+L<Noembed::Util>, L<Web::Scraper>
 
 =head1 AUTHOR
 

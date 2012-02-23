@@ -42,3 +42,32 @@ sub build_url {
 }
 
 1;
+
+=pod
+
+=head1 NAME
+
+Noembed::oEmbedSource - a base class for sites with existing oEmbed support
+
+=head1 DESCRIPTION
+
+This is the simplest of source base classes. It is meant for sites that already have
+oEmbed support. For sites like this we can simply proxy requests to their oEmbed
+endpoint. For this reason this base class only needs to have C<oembed_url> defined.
+
+=head1 METHODS
+
+=over 4
+
+=item oembed_url
+
+Must return a string with the site's oEmbed endpoint. e.g. C<http://soundcloud.com/oembed>
+
+=back
+
+=head1 SEE ALSO
+
+L<Noembed::Source::SoundCloud>, L<Noembed::Source::Flickr>, L<Noembed::Source::Hulu>,
+L<Noembed::Source::Qik>, L<Noembed::Source::SlideShare>, L<Noembed::Source::Viddler>
+
+=cut

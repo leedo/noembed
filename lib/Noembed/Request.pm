@@ -57,3 +57,46 @@ sub pattern {
 }
 
 1;
+
+=pod
+
+=head1 NAME
+
+Noembed::Request - a client embed request
+
+=head1 DESCRIPTION
+
+This class represents a client embed request. See L<Plack::Request>
+for details on most methods.
+
+=head1 ADDITIONAL METHODS
+
+=over 4
+
+=item hash
+
+A SHA1 hash representing the requested embed.
+
+=item url
+
+The URL that the client requested for embedding. This should not
+change throughout the response.
+
+=item content_url
+
+The URL that Noembed will download. Typically, you will not need to change
+this. It is populated by a sources C<build_url> method. However, it can be 
+used in a C<pre_download> hook to modify the URL will be downloaded.
+
+=item pattern
+
+If the requested URL matched any of the loaded L<Sources> this will return
+the compiled regular expression that it matched.
+
+=item captures
+
+Returns an array reference with any captures from the matched C<pattern>.
+
+=back
+
+=cut

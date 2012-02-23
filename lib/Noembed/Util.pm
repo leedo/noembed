@@ -87,3 +87,64 @@ sub html {
 }
 
 1;
+
+=pod
+
+=head1 NAME
+
+Noembed::Util - useful functions for Noembed
+
+=head1 DESCRIPTION
+
+This package includes a number of functions that are used throughout L<Noembed>.
+Many of these are asynchronous and accept a callback as the last argument.
+
+=head1 FUNCTIONS
+
+=over 4
+
+=item http_get ($url, %options, $callback)
+
+Download a URL and call the callback when it is completed. See
+L<AnyEvent::HTTP> for a list of options.
+
+  Noembed::Util::http_get $url, sub {
+    my ($body, $headers) = @_;
+    if ($headers->{Status} == 200) {
+      ... do some work.
+    }
+  };
+
+=item http_resolve ($url, $callback)
+
+Determine what location, if any, a URL redirects to.
+
+  Noembed::Util::http_resolve "http://bit.ly/abcd", sub {
+    my $resolved = shift;
+    ... do some work.
+  };
+
+=item colorize ($text, %options, $callback)
+
+Syntax highlight a block of text. Valid options include: C<language>,
+C<filename>. See L<Noembed::Pygmentize> for more options.
+
+=item dimensions ($image_url, [$request,] $callback)
+
+Download an image url and determine the height and width. If a
+L<Noembed::Request> object is included this will check for the
+C<maxwidth> and C<maxheight> parameters and scale down the dimensions
+based on these limits.
+
+=item html ($text)
+
+Returns a version of C<$text> that will not be automatically escaped 
+when used inside a template.
+
+=back
+
+=head1 SEE ALSO
+
+L<Noembed::Pygmentize>, L<Noembed::Imager>
+
+=cut
