@@ -1,0 +1,10 @@
+? my $post = shift;
+
+<div class="noembed-comment-byline">
+  <span class="noembed-comment-author">
+    <a target="_blank" href="http://twitter.com/#!/<?= $post->{user} ?>"><?= $post->{user} ?></a>
+  </span>
+</div>
+<div class="noembed-comment-body">
+?= $post->{content}
+</div>
