@@ -21,10 +21,10 @@ sub pre_download {
 
 sub serialize {
   my ($self, $body, $req) = @_;
-  my $data = decode_json $body;
+  my $message = decode_json $body;
   return {
-    title => "Facebook message by $data->{from}{name}",
-    html  => "<p>$data->{message}</p>",
+    title => "Facebook message by $message->{from}{name}",
+    html  => $self->render($message),
   }
 }
 
