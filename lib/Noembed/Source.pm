@@ -154,6 +154,12 @@ to the client.
 A convenience method called when noembed starts. Use it to set up
 your source (e.g. build a C<Web::Scraper> attribute.)
 
+=item build_url ($req)
+
+This method should return the URL to be downloaded. It can return
+either a string or URI object. By default it returns the URL provided
+in the embed request.
+
 =item shorturls
 
 Like C<patterns>, this must return a list of strings that can be
