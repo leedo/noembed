@@ -90,7 +90,8 @@ sub html {
 }
 
 sub clean_html {
-  my $tree = HTML::TreeBuilder->new_from_content($_[0]);
+  my $html = shift;
+  my $tree = HTML::TreeBuilder->new_from_content($html);
   $tree->ignore_ignorable_whitespace(0);
   $_->delete for $tree->find("script");
 
@@ -101,7 +102,10 @@ sub clean_html {
     return ();
   });
 
-  html($tree->as_HTML);
+  $html = $tree->as_HTML;
+  $tree->delete;
+
+  html($html);
 }
 
 sub json_res {
