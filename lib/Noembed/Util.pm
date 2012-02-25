@@ -17,9 +17,9 @@ sub http_get {
   die "no callback" unless $cb;
 
   AnyEvent::HTTP::http_request get => $url,
-      persistent => 0,
-      keepalive  => 0,
-      @options,
+    persistent => 0,
+    keepalive  => 0,
+    @options,
     sub {
       my ($body, $headers) = @_;
 
