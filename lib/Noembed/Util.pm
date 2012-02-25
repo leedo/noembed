@@ -157,6 +157,12 @@ based on these limits.
 Returns a version of C<$text> that will not be automatically escaped 
 when used inside a template.
 
+=item json_res ($hashref or $arrayref)
+
+Accepts either a hash or array reference and returns a valid PSGI
+response. The response will have a C<text/javascript> Content-Type
+and the correct Content-Length set.
+
 =back
 
 =head1 SEE ALSO
