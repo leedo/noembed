@@ -7,7 +7,7 @@ use parent 'Noembed::Source';
 sub prepare_source {
   my $self = shift;
   $self->{scraper} = scraper {
-    process "p.qt", quote => "RAW";
+    process "p.qt", quote => "HTML";
   };
 }
 

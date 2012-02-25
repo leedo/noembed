@@ -31,7 +31,7 @@ sub prepare_source {
         $img->attr(src => $base.$src);
       }
 
-      $e->as_HTML;
+      clean_html($e->as_HTML);
     };
   };
 }

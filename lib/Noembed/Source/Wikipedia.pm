@@ -55,21 +55,18 @@ sub extract_text_content {
     # stop once we hit the stop tag
     last if $stop->($el);
 
-    if (any {$el->tag eq $_} qw/p ol ul dl dt dd li h2 h3 h4 div pre/) {
-
-      # fix the links
-      for my $a ($el->find("a")) {
-        my $href = $a->attr("href");
-        $a->attr("target", "_blank");
-        $a->attr("href", "http://www.wikipedia.org/$href");
-      }
-
-      $output .= $el->as_HTML;
+    # fix the links
+    for my $a ($el->find("a")) {
+      my $href = $a->attr("href");
+      $a->attr("target", "_blank");
+      $a->attr("href", "http://www.wikipedia.org/$href");
     }
+
+    $output .= $el->as_HTML;
     $el = $el->right;
   }
 
-  return $self->render(summary => html($output));
+  return $self->render(summary => clean_html($output));
 }
 
 1;

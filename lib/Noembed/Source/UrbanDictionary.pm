@@ -28,7 +28,7 @@ sub serialize {
   $title =~ s/^\s//ms;
   $title =~ s/\s+$//ms;
 
-  $data->{definitions} = [ map {html($_)} @{$data->{definitions}} ];
+  $data->{definitions} = [ map {clean_html($_)} @{$data->{definitions}} ];
 
   return +{
     title => $title,

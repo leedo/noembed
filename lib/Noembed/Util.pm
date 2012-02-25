@@ -3,9 +3,11 @@ package Noembed::Util;
 use Encode;
 use JSON ();
 use AnyEvent::HTTP ();
+use Text::MicroTemplate ();
+use HTML::TreeBuilder;
+
 use Noembed::Pygmentize;
 use Noembed::Imager;
-use Text::MicroTemplate ();
 
 my $pygment = Noembed::Pygmentize->new;
 my $imager = Noembed::Imager->new;
@@ -87,6 +89,21 @@ sub html {
   Text::MicroTemplate::encoded_string($_[0]);
 }
 
+sub clean_html {
+  my $tree = HTML::TreeBuilder->new_from_content($_[0]);
+  $tree->ignore_ignorable_whitespace(0);
+  $_->delete for $tree->find("script");
+
+  $tree->look_down(sub {
+    my $elem = shift;
+    my %attr = $elem->all_external_attr;
+    $elem->attr($_, undef) for grep {/^on[a-z]/i and $attr{$_} !~ /javascript/i} keys %attr;
+    return ();
+  });
+
+  html($tree->as_HTML);
+}
+
 sub json_res {
   my ($data, @headers) = @_;
   my $body = JSON::encode_json $data;
@@ -156,6 +173,13 @@ based on these limits.
 
 Returns a version of C<$text> that will not be automatically escaped 
 when used inside a template.
+
+=item clean_html ($text)
+
+Similar to the C<html> function, but strips out any potential
+scripts.  That includes C<script> tags, event handlers such as
+C<onclick> or C<href="javascript:...">. B<Currently, this does not
+preserve all white space.>
 
 =item json_res ($hashref or $arrayref)
 

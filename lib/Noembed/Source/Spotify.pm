@@ -22,7 +22,7 @@ sub serialize {
   my ($self, $body, $req) = @_;
 
   my $data = $self->{scraper}->scrape($body);
-  $data->{$_} = html($data->{$_}) for qw/artist album/;
+  $data->{$_} = clean_html($data->{$_}) for qw/artist album/;
   $data->{type} = $req->captures->[0];
 
   return +{

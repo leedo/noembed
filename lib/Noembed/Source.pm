@@ -17,6 +17,7 @@ sub new {
   $self->prepare_source;
   $self->{patterns} = [ map {qr{^$_}i} $self->patterns ];
   *{$class.'::html'} = *Noembed::Util::html;
+  *{$class.'::clean_html'} = *Noembed::Util::clean_html;
 
   return $self;
 }

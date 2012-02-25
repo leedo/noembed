@@ -50,7 +50,7 @@ sub expand_links {
   my ($self, $tweet, $cb) = @_;
 
   my $done = sub {
-    $tweet->{$_} = html($tweet->{$_}) for qw/source text/;
+    $tweet->{$_} = clean_html($tweet->{$_}) for qw/source text/;
     $cb->()
   };
 
