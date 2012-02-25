@@ -119,32 +119,31 @@ sub register_provider {
 
 sub download {
   my ($self, $provider, $req) = @_;
-
   my $service = $provider->request_url($req);
 
   Noembed::Util::http_get $service, sub {
     my ($body, $headers) = @_;
 
     if ($headers->{Status} == 200) {
-        eval {
-          $provider->post_download($body, $req, sub {
-            $body = shift;
-            my $data = $provider->finalize($body, $req);
-            $data->{html} = $self->{render}->("wrapper.html", $provider, $data);
-            $self->end_lock($req->hash, Noembed::Util::json_res $data);
-          });
-        };
-        if ($@) {
-          my $error = $@;
-          warn "error processing $service: $error\n";
-          $error =~ s/at .+?\.pm line.+//;
-          $self->end_lock($req->hash, error($error));
-        }
+      eval {
+        $provider->post_download($body, $req, sub {
+          $body = shift;
+          my $data = $provider->finalize($body, $req);
+          $data->{html} = $self->{render}->("wrapper.html", $provider, $data);
+          $self->end_lock($req->hash, Noembed::Util::json_res $data);
+        });
+      };
+      if ($@) {
+        my $error = $@;
+        warn "error processing $service: $error\n";
+        $error =~ s/at .+?\.pm line.+//;
+        $self->end_lock($req->hash, error($error));
       }
-      else {
-        $self->end_lock($req->hash, $req->error($headers->{Reason}));
-      }
-    };
+    }
+    else {
+      $self->end_lock($req->hash, $req->error($headers->{Reason}));
+    }
+  };
 }
 
 sub find_provider {
