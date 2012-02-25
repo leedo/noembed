@@ -1,6 +1,7 @@
 package Noembed::Util;
 
 use Encode;
+use JSON ();
 use AnyEvent::HTTP ();
 use Noembed::Pygmentize;
 use Noembed::Imager;
@@ -84,6 +85,21 @@ sub colorize {
 
 sub html {
   Text::MicroTemplate::encoded_string($_[0]);
+}
+
+sub json_res {
+  my ($data, @headers) = @_;
+  my $body = JSON::encode_json $data;
+
+  [
+    200,
+    [
+      @headers,
+      'Content-Type', 'text/javascript; charset=utf-8',
+      'Content-Length', length $body
+    ],
+    [$body]
+  ];
 }
 
 1;

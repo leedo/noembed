@@ -8,8 +8,6 @@ use Module::Find ();
 use Class::Load;
 use Text::MicroTemplate::File;
 use File::ShareDir;
-use JSON;
-use AnyEvent::Strict;
 
 use Noembed::Util;
 use Noembed::Request;
@@ -47,7 +45,7 @@ sub call {
   my ($self, $env) = @_;
 
   my $req = Noembed::Request->new($env);
-  return error("url parameter is required") unless $req->url;
+  return $req->error("url parameter is required") unless $req->url;
 
   return sub {
     my $respond = shift;
@@ -83,7 +81,7 @@ sub handle_url {
   $times = 1 unless defined $times;
 
   if ($times > 5) {
-    return $self->end_lock($req->hash, error("Too many redirects for " . $req->url));
+    return $self->end_lock($req->hash, $req->error("Too many redirects"));
   }
 
   if ($self->is_shorturl($req->url)) {
@@ -100,26 +98,7 @@ sub handle_url {
     });
   }
 
-  $self->end_lock($req->hash, error("no matching providers found for " . $req->url));
-}
-
-sub json_res {
-  my ($data, @headers) = @_;
-  my $body = encode_json $data;
-
-  [
-    200,
-    [
-      @headers,
-      'Content-Type', 'text/javascript; charset=utf-8',
-      'Content-Length', length $body
-    ],
-    [$body]
-  ];
-}
-
-sub error {
-  json_res {error => ($_[0] || "unknown error")}, 'Cache-Control', 'no-cache';
+  $self->end_lock($req->hash, $req->error("no matching providers found"));
 }
 
 sub register_provider {
@@ -154,7 +133,7 @@ sub download {
             $body = shift;
             my $data = $provider->finalize($body, $req);
             $data->{html} = $self->{render}->("wrapper.html", $provider, $data);
-            $self->end_lock($req->hash, json_res $data);
+            $self->end_lock($req->hash, Noembed::Util::json_res $data);
           });
         };
         if ($@) {
@@ -165,7 +144,7 @@ sub download {
         }
       }
       else {
-        $self->end_lock($req->hash, error($headers->{Reason}));
+        $self->end_lock($req->hash, $req->error($headers->{Reason}));
       }
     };
 }
@@ -199,7 +178,7 @@ sub providers_response {
     }
   } @{$self->{providers}} ];
 
-  return json_res $providers; 
+  return Noembed::Util::json_res $providers; 
 }
 
 sub css_response {

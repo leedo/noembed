@@ -3,6 +3,7 @@ package Noembed::Request;
 use parent 'Plack::Request';
 
 use Digest::SHA1;
+use Noembed::Util;
 
 sub new {
   my ($class, $env) = @_;
@@ -54,6 +55,15 @@ sub pattern {
     $self->{pattern} = $pattern;
   }
   $self->{pattern};
+}
+
+sub error {
+  my ($self, $message) = @_;
+
+  Noembed::Util::json_res {
+    error => ($message || "unknown error"),
+    url   => $self->url,
+  }, 'Cache-Control', 'no-cache';
 }
 
 1;
