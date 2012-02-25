@@ -102,7 +102,7 @@ sub handle_url {
 sub register_provider {
   my ($self, $class) = @_;
 
-  if ($class !~ /^Noembed::Source::/ and $class !~ s/^\+//) {
+  if ($class !~ /^Noembed::Source::/) {
     $class = "Noembed::Source::$class";
   }
 

@@ -107,6 +107,10 @@ the compiled regular expression that it matched.
 
 Returns an array reference with any captures from the matched C<pattern>.
 
+=item error
+
+Accepts an error message and returns a JSON PSGI response.
+
 =back
 
 =cut
