@@ -27,9 +27,7 @@ sub prepare_app {
 
   $self->{render} = sub { $template->render_file(@_)->as_string };
   $self->{providers} = [];
-  $self->{shorturls} = [
-    qr{http://t\.co/[0-9a-zA-Z]+},
-  ];
+  $self->{shorturls} = [];
   $self->{locks} = {};
 
   if ($self->{sources} and ref $self->{sources} eq 'ARRAY') {
