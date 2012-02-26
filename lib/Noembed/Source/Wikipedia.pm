@@ -39,6 +39,8 @@ sub serialize {
     });
   }
 
+  $root->delete;
+
   return +{
     title => $title,
     html  => $html,
