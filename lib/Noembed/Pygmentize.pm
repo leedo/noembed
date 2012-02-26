@@ -40,7 +40,7 @@ sub worker {
 
 package Noembed::Pygmentize::Worker;
 
-use IPC::Run;
+use IPC::Run3;
 use List::MoreUtils qw/any/;
 use Encode;
 
@@ -74,7 +74,7 @@ sub build_lexers {
   my $self = shift;
 
   my($in, $out, $err);
-  my $pid = IPC::Run::run([$self->{bin}, "-L", "lexers"], \$in, \$out, \$err, );
+  my $pid = IPC::Run3::run3([$self->{bin}, "-L", "lexers"], \$in, \$out, \$err, );
 
   my @lexers;
   my (@names, @extensions);
@@ -110,7 +110,7 @@ sub colorize {
 
   $text = encode("utf-8", $text);
 
-  IPC::Run::run([$self->command(%opts)], \$text, \$out, \$err, IPC::Run::timeout(3));
+  IPC::Run3::run3([$self->command(%opts)], \$text, \$out, \$err);
   die $err if $err;
 
   return decode("utf-8", $out);

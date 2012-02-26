@@ -7,7 +7,7 @@ license 'perl';
 all_from 'lib/Noembed.pm';
 
 requires 'AnyEvent::Worker';
-requires 'IPC::Run';
+requires 'IPC::Run3';
 requires 'Plack';
 requires 'JSON';
 requires 'Imager';
