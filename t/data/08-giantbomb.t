@@ -1,2 +1,0 @@
-http://www.giantbomb.com/quick-look-mount-blade-with-fire-and-sword/17-4097/
-{"html":"<video preload=\"none\" controls width=\"640\" height=\"360\" src=\"http://media.giantbomb.com/video/vf_mountandblade_guns_ql_050611_1500.mp4\">Quick Look: Mount &amp; Blade: With Fire and Sword</video>\n","provider_name":"GiantBomb","url":"http://www.giantbomb.com/quick-look-mount-blade-with-fire-and-sword/17-4097/","type":"rich","title":"Quick Look: Mount & Blade: With Fire and Sword"}
