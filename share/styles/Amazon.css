@@ -1,10 +1,5 @@
 .noembed-amazon {
   padding: 10px;
-  border: 1px solid #ddd;
-  border-right: 1px solid #bbb;
-  border-bottom: 1px solid #bbb;
-  background: #fff;
-  overflow: hidden;
 }
 
 .noembed-amazon img {
