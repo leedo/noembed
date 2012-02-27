@@ -41,9 +41,6 @@ sub http_resolve {
     if ($headers->{location}) {
       $url = $headers->{location};
     }
-    elsif ($body and $body =~ /URL=([^"]+)"/) {
-      $url = $1;
-    }
 
     $cb->($url);
   };
