@@ -209,6 +209,7 @@ sub add_lock {
 
   $self->{timers}{$key} ||= AE::timer 30, 0, sub {
     delete $self->{timers}{$key};
+    warn "timeout for " . $req->url;
     $self->end_lock($key, $req->error("timeout"));
   };
 }
