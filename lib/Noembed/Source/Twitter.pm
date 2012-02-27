@@ -9,7 +9,7 @@ sub prepare_source {
   my $self = shift;
   $self->{url_re} = qr{(http://t\.co/[0-9a-zA-Z]+)};
   $self->{name_re} = qr{(?:^|\W)(@[^\s:]+)};
-  $self->{tweet_api} = "http://api.twitter.com/1/statuses/show/%d.json?include_entities=true";
+  $self->{tweet_api} = "http://api.twitter.com/1/statuses/show/%s.json?include_entities=true";
 }
 
 sub shorturls { 'http://t\.co/[a-zA-Z0-9]' }
