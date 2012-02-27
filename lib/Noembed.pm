@@ -282,7 +282,7 @@ Lee Aylward
 
 =item * Ryan Baumann (Spotify support)
 
-=item * Bryce Kerley (Spelling fixes)
+=item * Bryce Kerley (Spelling fixes, Facebook and Twitter API help)
 
 =back
 

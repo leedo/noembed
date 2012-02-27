@@ -9,6 +9,7 @@ sub prepare_source {
   my $self = shift;
   $self->{url_re} = qr{(http://t\.co/[0-9a-zA-Z]+)};
   $self->{name_re} = qr{(?:^|\W)(@[^\s:]+)};
+  $self->{tweet_api} = "http://api.twitter.com/1/statuses/show/%d.json?include_entities=true";
 }
 
 sub shorturls { 'http://t\.co/[a-zA-Z0-9]' }
@@ -17,16 +18,33 @@ sub provider_name { "Twitter" }
 
 sub build_url {
   my ($self, $req) = @_;
-  my $id = $req->captures->[0];
-  return "http://api.twitter.com/1/statuses/show/$id.json";
+  return sprintf $self->{tweet_api}, $req->captures->[0];
+}
+
+sub expand_entities {
+  my $tweet = shift;
+
+  for my $mention (@{$tweet->{entities}{user_mentions}}) {
+    my $name = $mention->{screen_name};
+    my $html = "<a target=\"_blank\" href=\"http://twitter.com/$name\">\@$name</a>";
+    $tweet->{text} =~ s/@\Q$name\E/$html/;
+  }
+
+  for my $url ((@{$tweet->{entities}{urls}}, @{$tweet->{entities}{media}})) {
+    my $html = "<a target=\"_blank\" href=\"$url->{expanded_url}\">$url->{display_url}<\/a>";
+    $tweet->{text} =~ s/\Q$url->{url}\E/$html/;
+  }
+
+  $tweet->{$_} = clean_html($tweet->{$_}) for qw/source text/;
+  return $tweet;
 }
 
 sub post_download {
   my ($self, $body, $req, $cb) = @_;
-  my $tweet = from_json $body;
+  my $tweet = expand_entities from_json $body;
   $self->download_parents($tweet, [], sub {
     $tweet->{parents} = shift;
-    $self->expand_links($tweet, sub {$cb->($tweet)});
+    $cb->($tweet);
   });
 }
 
@@ -36,44 +54,16 @@ sub download_parents {
   my $parent_id = $tweet->{in_reply_to_status_id};
   return $cb->($parents) unless $parent_id;
 
-  Noembed::Util::http_get "http://api.twitter.com/1/statuses/show/$parent_id.json", sub {
+  my $url = sprintf $self->{tweet_api}, $parent_id;
+
+  Noembed::Util::http_get $url, sub {
     my ($body, $headers) = @_;
     return $cb->($parents) unless $headers->{Status} == 200;;
 
-    my $parent = decode_json $body;
+    my $parent = expand_entities decode_json $body;
     push @$parents, $parent;
-    $self->expand_links($parent, sub {$self->download_parents($parent, $parents, $cb)});
+    $self->download_parents($parent, $parents, $cb);
   };
-}
-
-sub expand_links {
-  my ($self, $tweet, $cb) = @_;
-
-  my $done = sub {
-    $tweet->{$_} = clean_html($tweet->{$_}) for qw/source text/;
-    $cb->()
-  };
-
-  my @names = $tweet->{text} =~ /$self->{name_re}/g;
-  for my $name (@names) {
-    $tweet->{text} =~ s{\Q$name\E}{<a target="_blank" href="http://twitter.com/$name">$name</a>};
-  }
-
-  my @urls = $tweet->{text} =~ /$self->{url_re}/g; 
-  return $done->() unless @urls;
-
-  my $cv = AE::cv;
-
-  for my $url (@urls) {
-    $cv->begin;
-    Noembed::Util::http_resolve $url, sub {
-      my $resolved = shift;
-      $tweet->{text} =~ s/\Q$url\E/<a target="_blank" href="$resolved">$resolved<\/a>/;
-      $cv->end;
-    };
-  }
-
-  $cv->cb($done);
 }
 
 sub serialize {
