@@ -37,7 +37,14 @@
       </a>
     </div>
   </div>
-  <div class="tweet_text"><?= $tweet->{text} ?></div>
+  <div class="tweet_text">
+    <?= $tweet->{text} ?>
+? if ($tweet->{entities}{media}) {
+?   for my $image (grep {$_->{type} eq "photo"} @{$tweet->{entities}{media}}) {
+<p><img width="<?= $image->{sizes}{small}{w} ?>" height="<?= $image->{sizes}{small}{h} ?>" src="<?= $image->{media_url_https} ?>"></p>
+?   }
+? }
+  </div>
   <div class="tweet_info">
     <a target="_blank" href="http://www.twitter.com/<?= $user->{screen_name}?>/status/<?= $tweet->{id} ?>">
       <span class="tweet_created_at" id="noembed-timestamp-<?= $id ?>"><?= $tweet->{created_at} ?></span>
