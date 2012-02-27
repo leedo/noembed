@@ -49,7 +49,7 @@ sub call {
     my $respond = shift;
 
     my $working = $self->has_lock($req->hash);
-    $self->add_lock($req->hash, $respond);
+    $self->add_lock($req, $respond);
 
     return if $working;
     return $self->handle_url($req);
@@ -201,14 +201,22 @@ sub css_response {
 }
 
 sub add_lock {
-  my ($self, $key, $respond) = @_;
+  my ($self, $req, $respond) = @_;
+  my $key = $req->hash;
 
   $self->{locks}{$key} ||= [];
   push @{$self->{locks}{$key}}, $respond;
+
+  $self->{timers}{$key} ||= AE::timer 30, 0, sub {
+    delete $self->{timers}{$key};
+    $self->end_lock($key, $req->error("timeout"));
+  };
 }
 
 sub end_lock {
   my ($self, $key, $res) = @_;
+
+  delete $self->{timers}{$key};
   my $locks = delete $self->{locks}{$key};
   $_->([@$res]) for @$locks;
 }

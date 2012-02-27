@@ -21,6 +21,7 @@ sub http_get {
   AnyEvent::HTTP::http_request get => $url,
     persistent => 0,
     keepalive  => 0,
+    timeout    => 15,
     @options,
     sub {
       my ($body, $headers) = @_;
