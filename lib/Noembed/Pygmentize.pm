@@ -82,7 +82,7 @@ sub build_lexers {
   for my $line (split "\n", $out) {
 
     # new language
-    if ($line =~ /^*\s(.+):/) {
+    if ($line =~ /^\*\s(.+):/) {
 
       # add previous language if there is one
       if (@names) {
