@@ -9,10 +9,13 @@ use JSON;
 sub prepare_source {
   my $self = shift;
   $self->{secret} = do {
-    open my $fh, '<', "$ENV{HOME}/.aws_secret";
-    local $/;
-    my $json = <$fh>;
-    decode_json $json;
+    my $file = "$ENV{HOME}/.aws_secret";
+    if (-r $file) {
+      open my $fh, '<', $file;
+      local $/;
+      my $json = <$fh>;
+      decode_json $json;
+    }
   };
 }
 
