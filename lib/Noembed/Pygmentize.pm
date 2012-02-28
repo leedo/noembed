@@ -108,7 +108,7 @@ sub colorize {
   my ($self, $text, %opts) = @_;
   my($out, $err);
 
-  $text = encode("utf-8", $text);
+  #$text = encode("utf-8", $text);
 
   IPC::Run3::run3([$self->command(%opts)], \$text, \$out, \$err);
   die $err if $err;
