@@ -13,6 +13,7 @@ requires 'JSON';
 requires 'JSON::XS';
 requires 'Digest::SHA1';
 requires 'URI::Amazon::APA';
+requires 'XML::Simple';
 requires 'Imager';
 requires 'File::ShareDir';
 requires 'Text::MicroTemplate';
