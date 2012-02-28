@@ -12,6 +12,7 @@ requires 'Plack';
 requires 'JSON';
 requires 'JSON::XS';
 requires 'Digest::SHA1';
+requires 'URI::Amazon::APA';
 requires 'Imager';
 requires 'File::ShareDir';
 requires 'Text::MicroTemplate';
