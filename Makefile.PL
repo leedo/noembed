@@ -24,7 +24,7 @@ requires 'List::MoreUtils';
 requires 'HTML::Entities';
 requires 'Web::Scraper';
 requires 'File::Which';
-rqeuires 'Net::SSLeay';
+requires 'Net::SSLeay';
 requires 'Plack::Middleware::ReverseProxy';
 requires 'Plack::Middleware::CrossOrigin';
 
