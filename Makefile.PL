@@ -6,7 +6,7 @@ author 'Lee Aylward <leedo@cpan.org>';
 license 'perl';
 all_from 'lib/Noembed.pm';
 
-requires 'AnyEvent::Worker';
+requires 'AnyEvent::Worker' => 0;
 requires 'IPC::Run3';
 requires 'Plack';
 requires 'JSON';
