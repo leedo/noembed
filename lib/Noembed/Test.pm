@@ -1,10 +1,12 @@
 package Noembed::Test;
 
 use Carp;
-use HTTP::Request;
 use Test::More;
-use Plack::Test;
+use Test::Fatal;
 use URI::Escape;
+use HTTP::Message::PSGI;
+use HTTP::Request;
+use Noembed;
 use JSON;
 
 use base Exporter::;
@@ -13,22 +15,37 @@ use base Exporter::;
 sub test_embed {
   my %args = @_;
 
-  local $Plack::Test::Impl = 'Server';
-  local $ENV{PLACK_SERVER} = 'Twiggy';
+  use Data::Dump qw/pp/;
+  my $noembed = Noembed->new;
+  $noembed->prepare_app;
 
-  my $app    = delete $args{app} or croak "app is required";
-  my $url    = delete $args{url} or croak "url is required";
-  my $output = delete $args{output} or croak "output is required";
+  my $url     = delete $args{url} or croak "url is required";
+  my $output  = delete $args{output} or croak "output is required";
 
-  test_psgi
-    app => $app,
-    client =>  sub {
-      my $cb = shift;
-      my $req = HTTP::Request->new(GET => "/embed?url=".uri_escape($url));
-      my $res = $cb->($req);
-      my $input = decode_json $res->content;
-      is_deeply $input, $output, $url;
-    };
+  my $env = HTTP::Request->new(GET => "/embed?url=".uri_escape($url))->to_psgi;
+  my $req = Noembed::Request->new($env);
+
+  my $cv = AE::cv;
+
+  $noembed->add_lock($req, sub {
+    my $res = shift;
+    is $res->[0], 200, "status $url";
+
+    my $data = decode_json $res->[2][0];
+
+    is(
+      exception { die $data->{error} if $data->{error}},
+      undef,
+      "no error $url",
+    );
+
+    is_deeply $data, $output, $url;
+
+    $cv->send;
+  });
+
+  $noembed->handle_url($req);
+  $cv->recv;
 }
 
 1;

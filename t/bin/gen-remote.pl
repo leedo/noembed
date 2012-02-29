@@ -12,7 +12,6 @@ use HTTP::Request::Common;
 my $noembed = Noembed->new;
 
 my @urls = qw[
-  http://www.amazon.com/Kindle-eReader-eBook-Reader-e-Reader-Special-Offers/dp/B0051QVESA/
   http://trailers.apple.com/trailers/independent/rampart/
   http://www.asciiartfarts.com/20060409.html
   http://bash.org/?948884
@@ -20,8 +19,6 @@ my @urls = qw[
   https://www.facebook.com/LessConf/posts/10150577380768167
   http://www.flickr.com/photos/lidocaineus/6218766021/
   http://www.giantbomb.com/quick-look-saints-row-the-third-gangstas-in-space/17-5729/
-  https://gist.github.com/796300
-  https://github.com/leedo/noembed/commit/ffac1db04e856a5be5e81b41afe60b9235634794
   http://www.hulu.com/watch/331283/saturday-night-live-jay-z-and-beyonces-baby
   http://www.imdb.com/title/tt0032976/
   http://imgur.com/wRBSP
