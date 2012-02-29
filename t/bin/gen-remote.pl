@@ -11,9 +11,7 @@ use URI::Escape;
 use JSON;
 use HTTP::Request::Common;
 
-my $noembed = Noembed->new;
-
-my @urls = qw[
+my @urls = @ARGV or qw{
   http://trailers.apple.com/trailers/independent/rampart/
   http://www.asciiartfarts.com/20060409.html
   http://bash.org/?948884
@@ -28,13 +26,7 @@ my @urls = qw[
   https://path.com/p/3xnh1s
   http://picplz.com/user/marcovgl/pic/kwj1l/
   http://rapgenius.com/353465
-
-];
-
-my $app = Noembed->new->to_app;
-
-local $ENV{PLACK_SERVER} = 'Twiggy';
-local $Plack::Test::Impl = 'Server';
+};
 
 my $orig = \&Noembed::Util::http_get;
 local *Noembed::Util::http_get = sub {
@@ -49,6 +41,11 @@ local *Noembed::Util::http_get = sub {
     $cb->($body, $headers)
   });
 };
+
+local $ENV{PLACK_SERVER} = 'Twiggy';
+local $Plack::Test::Impl = 'Server';
+
+my $app = Noembed->new->to_app;
 
 test_psgi $app, sub {
   my $cb = shift;

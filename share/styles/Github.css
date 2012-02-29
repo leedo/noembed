@@ -1,16 +1,11 @@
-.noembed-github h2 {
-  font-weight: normal;
-  padding: 5px 0;
-  font-size: 1.2em;
-  margin: 0 5px;
-  border-bottom: 1px solid #eee;
+.noembed-github {
+  display: block;
 }
 
-.noembed-github h3 {
-  font-weight: normal;
-  padding: 5px;
-  margin: 0;
-  font-size: 1em;
+.noembed-github p {
+  padding: 5px 0;
+  font-size: 12px;
+  margin: 0 5px;
 }
 
 .noembed-github .github-stats {
@@ -26,20 +21,28 @@
   color: #A00000;
 }
 
+.noembed-github .github-change {
+  border-top: 1px solid #eee;
+  padding: 5px;
+}
+
 .noembed-github .github-file {
   background: #efefef;
   overflow-x: auto;
-  margin: 0 5px;
-  margin-bottom: 5px;
+  margin: 5px 0;
   max-height: 300px;
+  display: none;
+}
+
+.noembed-github .github-file.visible {
+  display: block;
 }
 
 .noembed-github .github-file table {
-  font-size: 1em;
+  font-size: 12px;
 }
 
 .noembed-github .github-description {
-  font-size: 1.5em;
   font-weight: bold;
   margin: 0;
   padding: 5px;
