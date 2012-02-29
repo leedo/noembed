@@ -6,6 +6,7 @@ use Test::Fatal;
 use URI::Escape;
 use HTTP::Message::PSGI;
 use HTTP::Request;
+use Digest::SHA1 qw/sha1_hex/;
 use Noembed;
 use JSON;
 
@@ -18,33 +19,45 @@ sub test_embed {
   my $noembed = Noembed->new;
   $noembed->prepare_app;
 
-  my $url     = delete $args{url} or croak "url is required";
-  my $output  = delete $args{output} or croak "output is required";
+  my $url    = delete $args{url} or croak "url is required";
+  my $output = delete $args{output} or croak "output is required";
+
+  local *Noembed::Util::http_get;
+  *Noembed::Util::http_get = \&_local_http_get if $args{local};
 
   my $env = HTTP::Request->new(GET => "/embed?url=".uri_escape($url))->to_psgi;
   my $req = Noembed::Request->new($env);
-
   my $cv = AE::cv;
 
   $noembed->add_lock($req, sub {
     my $res = shift;
-    is $res->[0], 200, "status $url";
-
     my $data = decode_json $res->[2][0];
 
-    is(
-      exception { die $data->{error} if $data->{error}},
-      undef,
-      "no error $url",
-    );
-
-    is_deeply $data, $output, $url;
+    is $res->[0], 200, "200 status";
+    is $data->{error}, undef, "no error";
+    is_deeply $data, $output, "response matches";
 
     $cv->send;
   });
 
   $noembed->handle_url($req);
   $cv->recv;
+}
+
+sub _local_http_get {
+  my $cb = pop;
+  my $url = shift;
+  my $hash = sha1_hex $url;
+
+  unless (-e "t/data/requests/$hash") {
+    die "no local copy of this request! use t/bin/gen-tests.pl";
+  }
+
+  open my $fh, "<", "t/data/requests/$hash";
+  local $/;
+  my $body = <$fh>;
+  my $res = decode_json $body;
+  $cb->(@$res);
 }
 
 1;

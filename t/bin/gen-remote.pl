@@ -4,6 +4,8 @@ use strict;
 use warnings;
 
 use Noembed;
+use Noembed::Util;
+use Digest::SHA1 qw/sha1_hex/;
 use Plack::Test;
 use URI::Escape;
 use JSON;
@@ -34,10 +36,25 @@ my $app = Noembed->new->to_app;
 local $ENV{PLACK_SERVER} = 'Twiggy';
 local $Plack::Test::Impl = 'Server';
 
+my $orig = \&Noembed::Util::http_get;
+local *Noembed::Util::http_get = sub {
+  my $cb = pop;
+  my $url = shift;
+  my $hash = sha1_hex $url;
+
+  $orig->($url, @_, sub {
+    my ($body, $headers) = @_;
+    open my $fh, ">", "t/data/requests/$hash";
+    print $fh encode_json [ $body, $headers ];
+    $cb->($body, $headers)
+  });
+};
+
 test_psgi $app, sub {
   my $cb = shift;
+
   for my $url (@urls) {
-    print "requesting $url\n";
+    print "generating test - $url\n";
 
     my $res = $cb->(GET "/?url=" . uri_escape($url));
 
