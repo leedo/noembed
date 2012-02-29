@@ -6,7 +6,7 @@ author 'Lee Aylward <leedo@cpan.org>';
 license 'perl';
 all_from 'lib/Noembed.pm';
 
-requires 'AnyEvent::Worker' => 0;
+requires 'AnyEvent::Worker';
 requires 'IPC::Run3';
 requires 'Plack';
 requires 'JSON';
@@ -28,6 +28,7 @@ requires 'Plack::Middleware::ReverseProxy';
 requires 'Plack::Middleware::CrossOrigin';
 
 test_requires 'Test::More' => '0.86';
+test_requires 'Test::Fatal';
 
 no_index directory => "eg";
 install_share;

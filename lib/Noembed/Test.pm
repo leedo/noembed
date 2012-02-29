@@ -15,7 +15,6 @@ use base Exporter::;
 sub test_embed {
   my %args = @_;
 
-  use Data::Dump qw/pp/;
   my $noembed = Noembed->new;
   $noembed->prepare_app;
 
