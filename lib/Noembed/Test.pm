@@ -33,9 +33,11 @@ sub test_embed {
     my $res = shift;
     my $data = decode_json $res->[2][0];
 
-    is $res->[0], 200, "200 status";
-    is $data->{error}, undef, "no error";
-    is_deeply $data, $output, "response matches";
+    subtest $url => sub {
+      is $res->[0], 200, "200 status";
+      is $data->{error}, undef, "no error";
+      is_deeply $data, $output, "response matches";
+    };
 
     $cv->send;
   });
