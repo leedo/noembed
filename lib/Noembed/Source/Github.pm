@@ -20,7 +20,8 @@ sub post_download {
   my $commit = from_json $body;
   my $cv = AE::cv;
 
-  # syntax highlight the patches
+  die "no files" unless @{$commit->{files}};
+
   for my $file (@{$commit->{files}}) {
     $cv->begin;
 

@@ -18,6 +18,8 @@ sub post_download {
   my $gist = from_json $body;
   my $cv = AE::cv;
 
+  die "no files" unless @{$gist->{files}};
+
   for my $file (values %{$gist->{files}}) {
     $cv->begin;
 
@@ -25,8 +27,7 @@ sub post_download {
       language => lc $file->{language},
       filename => lc $file->{filename},
       sub {
-        my $colorized = shift;
-        $file->{content} = html($colorized);
+        $file->{content} = html($_[0]);
         $cv->end;
       };
   }
