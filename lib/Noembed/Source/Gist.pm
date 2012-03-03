@@ -18,7 +18,7 @@ sub post_download {
   my $gist = from_json $body;
   my $cv = AE::cv;
 
-  die "no files" unless @{$gist->{files}};
+  die "no files" unless %{$gist->{files}};
 
   for my $file (values %{$gist->{files}}) {
     $cv->begin;

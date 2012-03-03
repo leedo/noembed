@@ -29,7 +29,6 @@ requires 'Plack::Middleware::ReverseProxy';
 requires 'Plack::Middleware::CrossOrigin';
 
 test_requires 'Test::More' => '0.86';
-test_requires 'Test::Fatal';
 
 no_index directory => "eg";
 install_share;
