@@ -51,7 +51,9 @@ sub extract_text_content {
   my ($self, $el, $stop) = @_;
   my $output;
 
-  $_->destroy for $el->parent->look_down(class => "editsection");
+  $_->destroy for $el->parent->look_down(sub {
+    $_[0]->attr('class') =~ /editsection|tright/
+  });
 
   while ($el) {
     # stop once we hit the stop tag
