@@ -1,7 +1,7 @@
 package Noembed::Source::Wikipedia;
 
 use HTML::TreeBuilder;
-use List::MoreUtils qw/any/;
+use List::Util qw/first/;
 
 use parent 'Noembed::Source';
 
@@ -33,9 +33,9 @@ sub serialize {
   }
 
   if (!$html) {
-    my $start = $root->look_down(class => "mw-content-ltr")->find("p");
+    my $start = first {$_->tag eq "p"} $root->look_down(class => "mw-content-ltr")->content_list;
     $html = $self->extract_text_content($start, sub {
-      $_[0]->tag eq "h2" or $_[0]->attr("class") eq "toc";
+      $_[0]->tag =~ /^(?:h2|h3)$/ or $_[0]->attr("class") eq "toc";
     });
   }
 
