@@ -34,7 +34,8 @@ sub serialize {
   $comment->attr($_, undef) for qw/id class data-post-id/;
   $comment->attr(class => "ars-comment-embed");
 
-  my $title = $root->look_down(_tag => "~comment")->attr("text");
+  my @comments = $root->find("~comment");
+  my $title = $comments[-1]->attr("text");
   $title =~ s/^\s+//;
   $title =~ s/\s+$//;
 
