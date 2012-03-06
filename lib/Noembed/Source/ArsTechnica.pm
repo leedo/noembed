@@ -6,7 +6,7 @@ use parent 'Noembed::Source';
 
 sub patterns {
   'http://arstechnica\.com/[^#]+#comment-(\d+)',
-  'http://arstechnica\.com/civis/viewtopic\.php\?(?:.+&)?[pt]=(\d+)'
+  'http://arstechnica\.com/civis/viewtopic\.php\?(?:.+&)?p=(\d+)'
 }
 sub provider_name { "ArsTechnica" }
 sub build_url {
