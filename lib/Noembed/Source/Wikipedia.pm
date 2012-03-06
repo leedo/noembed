@@ -52,7 +52,7 @@ sub extract_text_content {
   my $output;
 
   $_->destroy for $el->parent->look_down(sub {
-    $_[0]->attr('class') =~ /editsection|tright|tleft/
+    $_[0]->attr('class') =~ /editsection|tright|tleft|infobox/
   });
 
   while ($el) {
