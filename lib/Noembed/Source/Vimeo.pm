@@ -6,7 +6,7 @@ use URI::QueryParam;
 
 use parent 'Noembed::Source';
 
-sub patterns { 'http://(?:www\.)?vimeo\.com/.+' }
+sub patterns { 'https?://(?:www\.)?vimeo\.com/.+' }
 sub provider_name { "Vimeo" }
 
 sub options {
