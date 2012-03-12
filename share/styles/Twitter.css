@@ -58,3 +58,6 @@
   color: #999;
 }
 
+.noembed-twitter div.tweet-info div {
+  display: inline;
+}
