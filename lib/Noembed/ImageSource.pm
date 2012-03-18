@@ -20,8 +20,12 @@ sub serialize {
   my ($self, $data, $req) = @_;
 
   return +{
-    title => $data->{title} || $req->url,
-    html => $self->render($data, $req->url),
+    type   => "photo",
+    title  => $data->{title} || $req->url,
+    width  => $data->{width},
+    height => $data->{height},
+    url    => $data->{src},
+    html   => $self->render($data, $req->url),
   }
 }
 
