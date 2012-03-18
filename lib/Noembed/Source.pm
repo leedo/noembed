@@ -100,9 +100,9 @@ sub finalize {
     title => $req->url,
     provider_name => $self->provider_name,
     url => $req->url,
+    type  => "rich",
     # overrides the above properties
     %{ $self->serialize($body, $req) },
-    type  => "rich",
   };
 
   return $data;

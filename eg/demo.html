@@ -22,6 +22,9 @@
           if ($('maxheight').value) {
             query['maxheight'] = $('maxheight').value;
           }
+          if ($('nowrap').checked) {
+            query['nowrap'] = "on";
+          }
 
           window.history.pushState({}, "", "/demo?"+Object.toQueryString(query));
 
@@ -159,6 +162,9 @@
               <label for="url">Paste a URL to embed:</label>
               <textarea name="url" id="url"></textarea>
               <div id="limits">
+                <label for="nowrap">No Wrapper</label>
+                <input type="checkbox" id="nowrap">
+
                 <label for="maxwidth">Max width</label>
                 <input type="text" id="maxwidth">
 
