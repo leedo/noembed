@@ -74,7 +74,7 @@
           e.stop();
           var query = window.location.search.toQueryParams();
 
-          ['url', 'maxwidth', 'maxheight'].each(function(field) {
+          ['url', 'maxwidth', 'maxheight', 'nowrap'].each(function(field) {
             if (query[field]) {
               $(field).setValue(query[field]);
             }
@@ -107,7 +107,7 @@
         color: #000;
         text-decoration: none;
       }
-      table#container>tbody>tr>td:first-child {
+      table#container>tbody>tr>td.left {
         background: #eee;
         border-right: 2px solid #ccc;
       }
@@ -120,6 +120,15 @@
         text-align: center;
         display: block;
         margin-top: 50%;
+      }
+      table#container>tbody>tr>td.right {
+        background: #fff;
+      }
+      table#container>tbody>tr>td.top {
+        height: 50%;
+      }
+      table#container>tbody>tr>td.bottom {
+        height: 50%;
       }
       form#request label {
         font-size: 14px;
@@ -156,7 +165,7 @@
     <table id="container" cellspacing="0" cellpadding="0">
       <tbody>
         <tr>
-          <td>
+          <td rowspan="2" class="left">
             <h1><a title="back to homepage" href="/">Noembed<span style="color:#999;font-size:0.8em">↩</span></a></h1>
             <form action="/embed" method="get" id="request">
               <label for="url">Paste a URL to embed:</label>
@@ -189,7 +198,7 @@
               <li><a href="http://open.spotify.com/track/07FjCnZHF4XpHyMMFS20rl">http://open.spotify.com/track/07FjCnZHF4XpHyMMFS20rl</a></li>
             </ul>
           </td>
-          <td>
+          <td class="right">
             <div id="embed"></div>
           </td>
         </tr>
