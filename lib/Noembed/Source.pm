@@ -42,7 +42,7 @@ sub filename {
 
 sub render {
   my $self = shift;
-  $self->{render}->($self->filename("html"), @_);
+  $self->{render}->("inner-wrapper.html", $self, @_);
 }
 
 sub build_url {

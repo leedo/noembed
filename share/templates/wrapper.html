@@ -5,9 +5,7 @@
 
 <div class="noembed-embed ">
   <div class="noembed-wrapper">
-    <div class="noembed-embed-inner noembed-<?= lc $provider->filename ?>">
-      <?= Noembed::Util::html($res->{html}) ?>
-    </div>
+    <?= Noembed::Util::html($res->{html}) ?>
     <table class="noembed-meta-info">
       <tr>
         <td class="favicon"><img src="https://noembed.com/favicon/<?= $provider->filename("png") ?>"></td>

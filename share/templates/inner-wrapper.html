@@ -1,0 +1,5 @@
+? my ($provider) = shift;
+
+<div class="noembed-embed-inner noembed-<?= lc $provider->filename ?>">
+  <?= $_mt->render_file($provider->filename("html"), @_) ?>
+</div>
