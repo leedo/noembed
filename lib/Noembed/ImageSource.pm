@@ -29,9 +29,17 @@ sub serialize {
   }
 }
 
+sub filename {
+  my ($self, $ext) = @_;
+  if ($ext eq "html") {
+    return "ImageSource.html";
+  }
+  return $self->SUPER::filename($ext);
+}
+
 sub render {
   my $self = shift;
-  $self->{render}->("ImageSource.html", @_);
+  $self->{render}->("inner-wrapper.html", $self, @_);
 }
 
 1;
