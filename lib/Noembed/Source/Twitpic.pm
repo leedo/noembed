@@ -1,40 +1,37 @@
 package Noembed::Source::Twitpic;
 
 use Web::Scraper;
-use parent 'Noembed::Source';
+use parent 'Noembed::ImageSource';
 
 sub prepare_source {
   my $self = shift;
 
   $self->{scraper} = scraper {
-    process "#media > img", image => '@src';
-    process "#media-caption > p", caption => 'TEXT';
+    process "#media > img", src => '@src';
+    process "#media-caption > p", title => 'TEXT';
   };
 }
 
 sub patterns { 'http://(www\.)?twitpic\.com/.+' }
 sub provider_name { "Twitpic" }
 
-sub serialize {
+sub image_data {
   my ($self, $body) = @_;
 
   my $data = $self->{scraper}->scrape($body);
 
-  unless ($data->{image}) {
+  unless ($data->{src}) {
     die "no image";
   }
 
-  $data->{caption} =~ s/^\s+//ms;
-  $data->{caption} =~ s/\s+$//ms;
+  $data->{title} =~ s/^\s+//ms;
+  $data->{title} =~ s/\s+$//ms;
 
-  if (!$data->{caption}) {
-    ($data->{caption}) = $data->{image} =~ /\/([^\/]+\.(?:jpg|gif|png))/;
+  if (!$data->{title}) {
+    ($data->{title}) = $data->{src} =~ /\/([^\/]+\.(?:jpg|gif|png))/;
   }
 
-  return +{
-    html  => $self->render($data),
-    title => $data->{caption},
-  };
+  return $data;
 }
 
 1;
