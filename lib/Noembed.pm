@@ -129,6 +129,7 @@ sub download {
         $provider->post_download($body, $req, sub {
           $body = shift;
           my $data = $provider->finalize($body, $req);
+          $data->{html} = $self->{render}->("inner-wrapper.html", $provider, $data);
           unless ($req->parameters->{nowrap}) {
             $data->{html} = $self->{render}->("wrapper.html", $provider, $data);
           }

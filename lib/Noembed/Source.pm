@@ -40,11 +40,6 @@ sub filename {
   return $ext ? "$name.$ext" : $name;
 }
 
-sub render {
-  my $self = shift;
-  $self->{render}->("inner-wrapper.html", $self, @_);
-}
-
 sub build_url {
   my ($self, $req) = @_;
   return $req->content_url;

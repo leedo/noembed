@@ -21,10 +21,11 @@ sub serialize {
 
   return +{
     type   => "photo",
+    url    => $req->url,
     title  => $data->{title} || $req->url,
     width  => $data->{width},
     height => $data->{height},
-    url    => $data->{src},
+    media_url => $data->{src},
     html   => $self->render($data, $req->url),
   }
 }
@@ -35,11 +36,6 @@ sub filename {
     return "ImageSource.html";
   }
   return $self->SUPER::filename($ext);
-}
-
-sub render {
-  my $self = shift;
-  $self->{render}->("inner-wrapper.html", $self, @_);
 }
 
 1;
