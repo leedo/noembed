@@ -16,7 +16,10 @@ sub serialize {
     $data->{html} = $self->render($data, $req->url);
   }
 
-  delete $data->{url};
+  if ($data->{type} eq "photo") {
+    $data->{media_url} = delete $data->{url};
+  }
+
   return $data;
 }
 
