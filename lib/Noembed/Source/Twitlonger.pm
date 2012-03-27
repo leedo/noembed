@@ -21,7 +21,7 @@ sub serialize {
   die "no post" unless exists $data->{post};
 
   return {
-    title => "message from $data->{post}{user}",
+    title => "TwitLonger messages by $data->{post}{user}",
     html  => $self->render($data->{post}),
     post  => $data->{post},
   };
