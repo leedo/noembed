@@ -14,7 +14,7 @@ sub prepare_source {
   $self->{credentials} = $self->read_credentials;
 }
 
-sub credentials {
+sub read_credentials {
   my $self = shift;
   my $file = Noembed::share_dir() . "/twitter_cred.json";
   if (! -r $file) {
@@ -27,7 +27,7 @@ sub credentials {
 
 sub oauth_url {
   my ($self, $url) = @_;
-  my $cred = $self->credentials;
+  my $cred = $self->{credentials};
 
   my $req = Net::OAuth::ProtectedResourceRequest->new(
     version => '1.0',
