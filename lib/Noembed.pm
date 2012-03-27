@@ -144,6 +144,7 @@ sub download {
       }
     }
     else {
+      warn "error processing $service: $headers->{Reason}";
       $self->end_lock($req->hash, $req->error($headers->{Reason}));
     }
   };
