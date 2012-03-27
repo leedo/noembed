@@ -90,6 +90,8 @@ sub html {
 sub clean_html {
   my $html = shift;
   my $tree = HTML::TreeBuilder->new_from_content($html);
+  return "" unless $tree;
+
   $tree->ignore_ignorable_whitespace(0);
   $tree = $tree->disembowel;
   $_->delete for $tree->find("script");
