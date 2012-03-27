@@ -89,7 +89,7 @@ sub download_parents {
   my $parent_id = $tweet->{in_reply_to_status_id};
   return $cb->($parents) unless $parent_id;
 
-  my $url = sprintf $self->{tweet_api}, $parent_id;
+  my $url = $self->oauth_url(sprintf $self->{tweet_api}, $parent_id);
 
   Noembed::Util::http_get $url, sub {
     my ($body, $headers) = @_;
