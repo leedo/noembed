@@ -5,7 +5,7 @@
     <a href="https://www.facebook.com/<?= $comment->{from}{id} ?>"><?= $comment->{from}{name} ?></a>
   </span>
   <span class="noembed-comment-timestamp"><?= $comment->{updated_time} ?></span>
-? if ($comment->{likes}{count} > 0) {
+? if (exists $comment->{likes}{count} and $comment->{likes}{count} > 0) {
   <span class="noembed-comment-likes"><?= $comment->{likes}{count} ?></span>
 ? }
 </div>
