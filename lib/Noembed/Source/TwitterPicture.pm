@@ -1,6 +1,7 @@
 package Noembed::Source::TwitterPicture;
 
 use parent 'Noembed::ImageSource';
+use Noembed::Source::Twitter;
 use Noembed::Util;
 use JSON;
 
@@ -8,6 +9,7 @@ sub prepare_source {
   my $self = shift;
   $self->{tweet_api} = "http://api.twitter.com/1/statuses/show/%s.json?include_entities=true";
   $self->{tweet_re} = qr{https?://(?:www\.)?twitter\.com/(?:#!/)?[^/]+/status(?:es)?/(\d+)};
+  $self->{credentials} = Noembed::Source::Twitter::read_credentials();
 }
 
 sub provider_name { "Twitter" }
@@ -23,7 +25,8 @@ sub pre_download {
     Noembed::Util::http_resolve $tco, sub {
       my $tweet_url = shift;
       my ($id) = $tweet_url =~ $self->{tweet_re};
-      $req->content_url(sprintf $self->{tweet_api}, $id);
+      my $url = Noembed::Source::Twitter::oauth_url($self, sprintf($self->{tweet_api}, $id));
+      $req->content_url($url);
       $cb->($req);
     }
   };

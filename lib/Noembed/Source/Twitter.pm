@@ -11,11 +11,10 @@ sub prepare_source {
   my $self = shift;
   $self->{name_re} = qr{(?:^|\W)(@[^\s:]+)};
   $self->{tweet_api} = "http://api.twitter.com/1/statuses/show/%s.json?include_entities=true";
-  $self->{credentials} = $self->read_credentials;
+  $self->{credentials} = read_credentials();
 }
 
 sub read_credentials {
-  my $self = shift;
   my $file = Noembed::share_dir() . "/twitter_cred.json";
   if (! -r $file) {
     die "can not read twitter credentials: $file";
@@ -28,6 +27,7 @@ sub read_credentials {
 sub oauth_url {
   my ($self, $url) = @_;
   my $cred = $self->{credentials};
+  local $Net::OAuth::SKIP_UTF8_DOUBLE_ENCODE_CHECK = 1;
 
   my $req = Net::OAuth::ProtectedResourceRequest->new(
     version => '1.0',
@@ -42,6 +42,7 @@ sub oauth_url {
     token => $cred->{token},
     token_secret => $cred->{token_secret},
   );
+
   $req->sign;
   return $req->to_url;
 }
