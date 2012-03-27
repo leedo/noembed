@@ -1,37 +1,24 @@
 package Noembed::Source::Twitpic;
 
-use Web::Scraper;
 use parent 'Noembed::ImageSource';
+use JSON;
 
-sub prepare_source {
-  my $self = shift;
-
-  $self->{scraper} = scraper {
-    process "#media > img", src => '@src';
-    process "#media-caption > p", title => 'TEXT';
-  };
-}
-
-sub patterns { 'http://(www\.)?twitpic\.com/.+' }
+sub patterns { 'http://(?:www\.)?twitpic\.com/([^/]+)' }
 sub provider_name { "Twitpic" }
 
+sub build_url {
+  my ($self, $req) = @_;
+  "http://api.twitpic.com/2/media/show.json?id=".$req->captures->[0];
+}
+
 sub image_data {
-  my ($self, $body) = @_;
+  my ($self, $body, $req) = @_;
+  my $data = decode_json $body;
 
-  my $data = $self->{scraper}->scrape($body);
-
-  unless ($data->{src}) {
-    die "no image";
+  return {
+    src => "https://twitpic.com/show/large/".$req->captures->[0],
+    title => $data->{message},
   }
-
-  $data->{title} =~ s/^\s+//ms;
-  $data->{title} =~ s/\s+$//ms;
-
-  if (!$data->{title}) {
-    ($data->{title}) = $data->{src} =~ /\/([^\/]+\.(?:jpg|gif|png))/;
-  }
-
-  return $data;
 }
 
 1;
