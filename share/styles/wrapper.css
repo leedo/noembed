@@ -27,6 +27,8 @@
 .noembed-embed .noembed-meta-info td {
   vertical-align: middle;
   line-height: 1em;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 .noembed-embed .noembed-meta-info td:first-child {
