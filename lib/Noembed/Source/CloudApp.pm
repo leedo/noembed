@@ -18,7 +18,9 @@ sub patterns { 'http://cl\.ly/[0-9a-zA-Z]+/?$' }
 
 sub image_data {
   my ($self, $body) = @_;
-  $self->{scraper}->scrape($body);
+  $data = $self->{scraper}->scrape($body);
+  die "no image found" unless $data->{src};
+  return $data;
 }
 
 1;
