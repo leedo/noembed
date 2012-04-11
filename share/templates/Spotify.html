@@ -1,9 +1,3 @@
 ? my ($data) = @_;
 
-<img class="spotify-image" width="180" height="180" src="https://noembed.com/i/<?= $data->{image} ?>"/>
-<span class="spotify-title"><a href="<?= $data->{link} ?>"><?= $data->{title} ?></a></span>
-  by <span class="spotify-artist"><?= $data->{artist} ?></span>
-? if ($data->{type} eq "track") {
-  from <span class="spotify-album"><?= $data->{album} ?></span>
-? }
-
+<iframe src="https://embed.spotify.com/?uri=<?= $data->{link} ?>" width="500" height="80" frameborder="0" allowtransparency="true"></iframe>

@@ -10,8 +10,6 @@ sub prepare_source {
     process 'meta[property="og:title"]', title => '@content';
     process 'meta[property="og:audio"]', link => '@content';
     process '#artist .meta-info', artist => 'RAW';
-    process '#album .meta-info', album => 'RAW';
-    process '#cover-art', image => '@src';
   };
 }
 
@@ -22,7 +20,7 @@ sub serialize {
   my ($self, $body, $req) = @_;
 
   my $data = $self->{scraper}->scrape($body);
-  $data->{$_} = clean_html($data->{$_}) for qw/artist album/;
+  $data->{artist} = clean_html($data->{artist});
   $data->{type} = $req->captures->[0];
 
   return +{
