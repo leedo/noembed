@@ -12,7 +12,7 @@ sub provider_name { "Vimeo" }
 sub options {
   qw/width maxwidth height maxheight byline title
      portrait color autoplay loop xhtml api wmode
-     iframe/
+     iframe player_id/
 }
 
 sub build_url {
