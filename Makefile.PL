@@ -27,6 +27,7 @@ requires 'File::Which';
 requires 'Net::SSLeay';
 requires 'Plack::Middleware::ReverseProxy';
 requires 'Plack::Middleware::CrossOrigin';
+requires 'Net::OAuth::ProtectedResourceRequest';
 
 test_requires 'Test::More' => '0.86';
 

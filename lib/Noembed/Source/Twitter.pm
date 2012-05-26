@@ -17,11 +17,13 @@ sub prepare_source {
 sub read_credentials {
   my $file = Noembed::share_dir() . "/twitter_cred.json";
   if (! -r $file) {
-    die "can not read twitter credentials: $file";
+    warn "can not read twitter credentials: $file";
   }
-  local $/;
-  open my $fh, "<", $file;
-  decode_json join "",  <$fh>;
+  else {
+    local $/;
+    open my $fh, "<", $file;
+    decode_json join "",  <$fh>;
+  }
 }
 
 sub oauth_url {
