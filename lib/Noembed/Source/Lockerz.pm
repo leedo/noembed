@@ -18,6 +18,6 @@ sub image_data {
 }
 
 sub provider_name { 'Lockerz' }
-sub patterns { 'http://lockerz\.com/s/\d+' }
+sub patterns { 'http://lockerz\.com/[sd]/\d+' }
 
 1;
