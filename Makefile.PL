@@ -18,6 +18,7 @@ requires 'Imager';
 requires 'File::ShareDir';
 requires 'Text::MicroTemplate';
 requires 'AnyEvent::HTTP';
+requires 'Try::Tiny';
 requires 'Class::Load';
 requires 'Module::Find';
 requires 'List::MoreUtils';

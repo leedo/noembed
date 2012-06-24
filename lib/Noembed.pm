@@ -5,6 +5,7 @@ use warnings;
 
 use Carp;
 use Module::Find ();
+use Try::Tiny;
 use Class::Load;
 use Text::MicroTemplate::File;
 use File::ShareDir;
@@ -106,15 +107,14 @@ sub register_provider {
     $class = "Noembed::Source::$class";
   }
 
-  my ($loaded, $error) = Class::Load::try_load_class($class);
-  if ($loaded) {
+  try {
+    Class::Load::load_class($class);
     my $provider = $class->new(render => $self->{render});
     push @{ $self->{providers} }, $provider;
     push @{ $self->{shorturls} }, map {qr{$_}} $provider->shorturls;
-  }
-  else {
-    warn "Could not load provider $class: $error";
-  }
+  } catch {
+    warn "Could not load provider $class: $_";
+  };
 }
 
 sub download {
