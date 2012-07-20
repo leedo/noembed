@@ -39,7 +39,7 @@ sub serialize {
   my ($self, $gist) = @_;
 
   return +{
-    title => ($gist->{description} || $gist->{html_url}) . " by $gist->{user}{login}",
+    title => ($gist->{description} || $gist->{html_url}) . ($gist->{user} ? " by $gist->{user}{login}" : ""),
     html => $self->render($gist),
   };
 }
