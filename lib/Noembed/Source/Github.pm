@@ -5,8 +5,8 @@ use JSON;
 
 use parent "Noembed::Source";
 
-sub shorturls { 'http://git.io/[_0-9a-zA-Z]+' }
-sub patterns { 'https?://github.com/([^/]+)/([^/]+)/commit/(.+)' }
+sub shorturls { 'http://git\.io/[_0-9a-zA-Z]+' }
+sub patterns { 'https?://github\.com/([^/]+)/([^/]+)/commit/(.+)' }
 sub provider_name { "Github Commit" }
 
 sub build_url {
