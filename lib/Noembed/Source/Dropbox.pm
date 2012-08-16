@@ -4,6 +4,7 @@ use parent 'Noembed::ImageSource';
 
 sub patterns { 'https?://www\.(dropbox\.com/s/.+\.(?:jpg|png|gif))' }
 sub provider_name { "Dropbox" }
+sub shorturls { 'https?://db\.tt/[a-zA-Z0-9]+' }
 
 sub build_url {
   my ($self, $req) = @_;
