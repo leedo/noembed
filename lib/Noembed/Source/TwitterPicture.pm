@@ -7,7 +7,7 @@ use JSON;
 
 sub prepare_source {
   my $self = shift;
-  $self->{tweet_api} = "http://api.twitter.com/1/statuses/show/%s.json?include_entities=true";
+  $self->{tweet_api} = "http://api.twitter.com/1.1/statuses/show/%s.json?include_entities=true";
   $self->{tweet_re} = qr{https?://(?:www\.)?twitter\.com/(?:#!/)?[^/]+/status(?:es)?/(\d+)};
   $self->{credentials} = Noembed::Source::Twitter::read_credentials();
 }
