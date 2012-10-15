@@ -10,12 +10,10 @@ sub prepare_source {
   my $self = shift;
   $self->{secret} = do {
     my $file = "$ENV{HOME}/.aws_secret";
-    if (-r $file) {
-      open my $fh, '<', $file;
-      local $/;
-      my $json = <$fh>;
-      decode_json $json;
-    }
+    open my $fh, '<', $file or die "can not read aws credentials: $file";
+    local $/;
+    my $json = <$fh>;
+    decode_json $json;
   };
 }
 
