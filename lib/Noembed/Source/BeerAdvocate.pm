@@ -10,12 +10,11 @@ sub prepare_source {
 
   $self->{scraper} = scraper {
     process "td#mainContent > h1", title => 'TEXT';
-    process "td#mainContent > table", html => sub {
+    process "div#baContent > table", html => sub {
       my $e = shift;
 
       for my $a ($e->look_down(_tag => "a", class => "twitter-share-button")) {
         my ($div) = $a->look_up(_tag => "div");
-        $div->left->destroy;
         $div->left->destroy;
         $div->destroy;
       }
