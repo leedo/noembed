@@ -29,7 +29,6 @@ sub prepare_app {
   $self->{render} = sub { $template->render_file(@_)->as_string };
   $self->{providers} = [];
   $self->{shorturls} = [];
-  $self->{locks} = {};
 
   if ($self->{sources} and ref $self->{sources} eq 'ARRAY') {
     $self->register_provider($_) for @{$self->{sources}};
@@ -47,12 +46,7 @@ sub call {
   return $req->error("url parameter is required") unless $req->url;
 
   return sub {
-    my $respond = shift;
-
-    my $working = $self->has_lock($req->hash);
-    $self->add_lock($req, $respond);
-
-    return if $working;
+    $req->callback(shift);
     return $self->handle_url($req);
   };
 }
@@ -80,7 +74,7 @@ sub handle_url {
   $times = 1 unless defined $times;
 
   if ($times > 5) {
-    return $self->end_lock($req->hash, $req->error("Too many redirects"));
+    return $req->error("Too many redirects");
   }
 
   if ($self->is_shorturl($req->url)) {
@@ -97,7 +91,7 @@ sub handle_url {
     });
   }
 
-  $self->end_lock($req->hash, $req->error("no matching providers found"));
+  $req->error("no matching providers found");
 }
 
 sub register_provider {
@@ -133,19 +127,19 @@ sub download {
           unless ($req->parameters->{nowrap}) {
             $data->{html} = $self->{render}->("wrapper.html", $provider, $data);
           }
-          $self->end_lock($req->hash, Noembed::Util::json_res $data);
+          $req->respond(Noembed::Util::json_res $data);
         });
       };
       if ($@) {
         my $error = $@;
         warn "error processing $service: $error\n";
         $error =~ s/at .+?\.pm line.+//;
-        $self->end_lock($req->hash, $req->error($error));
+        $req->error($error);
       }
     }
     else {
       warn "error processing $service: $headers->{Status} $headers->{Reason}";
-      $self->end_lock($req->hash, $req->error($headers->{Reason}));
+      $req->error($headers->{Reason});
     }
   };
 }
@@ -202,33 +196,6 @@ sub css_response {
       "Content-Length" => length($self->{css}) ],
     [$self->{css}]
   ];
-}
-
-sub add_lock {
-  my ($self, $req, $respond) = @_;
-  my $key = $req->hash;
-
-  $self->{locks}{$key} ||= [];
-  push @{$self->{locks}{$key}}, $respond;
-
-  $self->{timers}{$key} ||= AE::timer 30, 0, sub {
-    delete $self->{timers}{$key};
-    warn "timeout for " . $req->url;
-    $self->end_lock($key, $req->error("timeout"));
-  };
-}
-
-sub end_lock {
-  my ($self, $key, $res) = @_;
-
-  delete $self->{timers}{$key};
-  my $locks = delete $self->{locks}{$key};
-  $_->([@$res]) for @$locks;
-}
-
-sub has_lock {
-  my ($self, $key) = @_;
-  exists $self->{locks}{$key} and @{$self->{locks}{$key}};
 }
 
 1;

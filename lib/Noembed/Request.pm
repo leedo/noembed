@@ -8,13 +8,20 @@ use Noembed::Util;
 sub new {
   my ($class, $env) = @_;
   my $self = $class->SUPER::new($env);
-  $self->{hash} = Digest::SHA1::sha1_hex(lc $env->{QUERY_STRING});
   return $self;
 }
 
-sub hash {
-  my $self = shift;
-  return $self->{hash};
+sub callback {
+  my ($self, $cb) = @_;
+  if (defined $cb) {
+    $self->{callback} = $cb;
+  }
+  return $self->{callback};
+}
+
+sub respond {
+  my ($self, $res) = @_;
+  $self->{callback}->($res);
 }
 
 sub url {
@@ -60,10 +67,12 @@ sub pattern {
 sub error {
   my ($self, $message) = @_;
 
-  Noembed::Util::json_res {
+  my $res = Noembed::Util::json_res {
     error => ($message || "unknown error"),
     url   => $self->url,
   }, 'Cache-Control', 'no-cache';
+
+  $self->{callback}->($res);
 }
 
 1;
