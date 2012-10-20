@@ -1,5 +1,6 @@
 before_install:
   - sudo apt-get build-dep libimager-perl
+  - sudo apt-get install python-pygments
 language: perl
 perl:
   - "5.14"

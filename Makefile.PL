@@ -33,6 +33,8 @@ requires 'Plack::Middleware::ReverseProxy';
 requires 'Plack::Middleware::CrossOrigin';
 requires 'Net::OAuth::ProtectedResourceRequest';
 
+requires_external_bin 'pygmentize';
+
 test_requires 'Test::More' => '0.86';
 
 no_index directory => "eg";

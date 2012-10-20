@@ -4,3 +4,4 @@ Makefile
 *.swp
 */.DS_Store
 share/twitter_cred.json
+inc/
