@@ -1,5 +1,5 @@
 before_install:
-  - sudo apt-get install libimager-perl
+  - sudo apt-get install libpng12-0 libgif4 libjpeg8
 language: perl
 perl:
   - "5.14"
