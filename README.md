@@ -54,7 +54,8 @@ Lee Aylward
 
 - Clint Ecker (Path support)
 - Ryan Baumann (Spotify support)
-- Bryce Kerley (Spelling fixes)
+- Bryce Kerley (Spelling fixes, Facebook and Twitter API help)
+- Cameron Johnston (Instagram fix)
 
 # LICENSE
 

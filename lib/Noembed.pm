@@ -264,6 +264,8 @@ Lee Aylward
 
 =item * Bryce Kerley (Spelling fixes, Facebook and Twitter API help)
 
+=item * Cameron Johnston (Instagram fix)
+
 =back
 
 =head1 LICENSE
