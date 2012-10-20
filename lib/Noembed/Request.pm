@@ -8,7 +8,13 @@ use Noembed::Util;
 sub new {
   my ($class, $env) = @_;
   my $self = $class->SUPER::new($env);
+  $self->{hash} = Digest::SHA1::sha1_hex(lc $env->{QUERY_STRING});
   return $self;
+}
+
+sub hash {
+  my $self = shift;
+  return $self->{hash};
 }
 
 sub callback {
