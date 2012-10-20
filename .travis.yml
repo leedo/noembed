@@ -1,5 +1,5 @@
 before_install:
-  - apt-get install libimager-perl
+  - sudo apt-get install libimager-perl
 language: perl
 perl:
   - "5.14"
