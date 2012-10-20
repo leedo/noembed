@@ -11,12 +11,11 @@ use URI::Escape;
 use JSON;
 use HTTP::Request::Common;
 
-my @urls = @ARGV or qw{
+my @urls = qw{
   http://trailers.apple.com/trailers/independent/rampart/
   http://www.asciiartfarts.com/20060409.html
   http://bash.org/?948884
   http://beeradvocate.com/beer/profile/42/3457
-  https://www.facebook.com/LessConf/posts/10150577380768167
   http://www.flickr.com/photos/lidocaineus/6218766021/
   http://www.giantbomb.com/quick-look-saints-row-the-third-gangstas-in-space/17-5729/
   http://www.hulu.com/watch/331283/saturday-night-live-jay-z-and-beyonces-baby
@@ -24,8 +23,6 @@ my @urls = @ARGV or qw{
   http://imgur.com/wRBSP
   http://instagr.am/p/n5mWV/
   https://path.com/p/3xnh1s
-  http://picplz.com/user/marcovgl/pic/kwj1l/
-  http://rapgenius.com/353465
 };
 
 my $orig = \&Noembed::Util::http_get;

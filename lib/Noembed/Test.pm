@@ -22,14 +22,14 @@ sub test_embed {
   my $url    = delete $args{url} or croak "url is required";
   my $output = delete $args{output} or croak "output is required";
 
-  local *Noembed::Util::http_get;
+  local *Noembed::Util::http_get = *Noembed::Util::http_get;
   *Noembed::Util::http_get = \&_local_http_get if $args{local};
 
   my $env = HTTP::Request->new(GET => "/embed?url=".uri_escape($url))->to_psgi;
   my $req = Noembed::Request->new($env);
   my $cv = AE::cv;
 
-  $noembed->add_lock($req, sub {
+  $req->callback(sub {
     my $res = shift;
     my $data = decode_json $res->[2][0];
 
