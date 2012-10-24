@@ -42,11 +42,10 @@ sub prepare_app {
 sub call {
   my ($self, $env) = @_;
 
-  my $req = Noembed::Request->new($env);
-  return $req->error("url parameter is required") unless $req->url;
-
   return sub {
-    $req->callback(shift);
+    my $respond = shift;
+    my $req = Noembed::Request->new($env, $respond);
+    return $req->error("url parameter is required") unless $req->url;
     return $self->handle_url($req);
   };
 }

@@ -6,23 +6,16 @@ use Digest::SHA1;
 use Noembed::Util;
 
 sub new {
-  my ($class, $env) = @_;
+  my ($class, $env, $callback) = @_;
   my $self = $class->SUPER::new($env);
   $self->{hash} = Digest::SHA1::sha1_hex(lc $env->{QUERY_STRING});
+  $self->{callback} = $callback;
   return $self;
 }
 
 sub hash {
   my $self = shift;
   return $self->{hash};
-}
-
-sub callback {
-  my ($self, $cb) = @_;
-  if (defined $cb) {
-    $self->{callback} = $cb;
-  }
-  return $self->{callback};
 }
 
 sub respond {
