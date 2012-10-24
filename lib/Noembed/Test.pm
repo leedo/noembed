@@ -25,10 +25,9 @@ sub test_embed {
   local *Noembed::Util::http_get = \&_local_http_get if $args{local};
 
   my $env = HTTP::Request->new(GET => "/embed?url=".uri_escape($url))->to_psgi;
-  my $req = Noembed::Request->new($env);
   my $cv = AE::cv;
 
-  $req->callback(sub {
+  my $respond = sub {
     my $res = shift;
     my $data = decode_json $res->[2][0];
 
@@ -39,7 +38,9 @@ sub test_embed {
     };
 
     $cv->send;
-  });
+  };
+
+  my $req = Noembed::Request->new($env, $respond);
 
   $noembed->handle_url($req);
   $cv->recv;
