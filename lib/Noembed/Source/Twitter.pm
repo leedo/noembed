@@ -61,12 +61,12 @@ sub expand_entities {
   for my $mention (@{$tweet->{entities}{user_mentions}}) {
     my $name = $mention->{screen_name};
     my $html = "<a target=\"_blank\" href=\"http://twitter.com/$name\">\@$name</a>";
-    $tweet->{text} =~ s/@\Q$name\E/$html/;
+    $tweet->{text} =~ s/@\Q$name\E/$html/g;
   }
 
   for my $url ((@{$tweet->{entities}{urls}}, @{$tweet->{entities}{media}})) {
     my $html = "<a target=\"_blank\" href=\"$url->{expanded_url}\">$url->{display_url}<\/a>";
-    $tweet->{text} =~ s/\Q$url->{url}\E/$html/;
+    $tweet->{text} =~ s/\Q$url->{url}\E/$html/g;
   }
 
   $tweet->{$_} = clean_html($tweet->{$_}) for qw/source text/;
