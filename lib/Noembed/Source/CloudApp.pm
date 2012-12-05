@@ -14,7 +14,7 @@ sub prepare_source {
 }
 
 sub provider_name { 'CloudApp' }
-sub patterns { 'http://cl\.ly/[0-9a-zA-Z]+/?$' }
+sub patterns { 'http://cl\.ly/(?:images/)?[0-9a-zA-Z]+/?$' }
 
 sub image_data {
   my ($self, $body) = @_;
