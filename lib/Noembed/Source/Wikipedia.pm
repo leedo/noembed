@@ -51,13 +51,20 @@ sub extract_text_content {
   my ($self, $el, $stop) = @_;
   my $output;
 
-  $_->destroy for $el->parent->look_down(sub {
-    $_[0]->attr('class') =~ /editsection|tright|tleft|infobox/
-  });
-
   while ($el) {
     # stop once we hit the stop tag
     last if $stop->($el);
+
+    # skip badness
+    if ($el->attr('class') =~ /editsection|tright|tleft|infobox|mainarticle/) {
+      $el = $el->right;
+      next;
+    }
+
+    # strip out badness
+    $_->destroy for $el->look_down(sub {
+      $_[0]->attr('class') =~ /editsection|tright|tleft|infobox|mainarticle/;
+    });
 
     # fix the links
     for my $a ($el->find("a")) {
