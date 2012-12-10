@@ -26,15 +26,13 @@ sub post_download {
   Noembed::Util::http_get $data->{musician}, sub {
     my ($body, $headers) = @_;
     my $artist = $self->{artist_scraper}->scrape($body); 
-    $data->{artist} = clean_html($artist->{name});
+    $data->{artist} = $artist->{name};
     $cb->($data);
   };
 }
 
 sub serialize {
   my ($self, $data, $req) = @_;
-
-  $data->{type} = $req->captures->[0];
 
   return +{
     title => $data->{title} . " by " . $data->{artist},
