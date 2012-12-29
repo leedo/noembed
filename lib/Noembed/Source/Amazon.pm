@@ -18,7 +18,10 @@ sub prepare_source {
 }
 
 sub provider_name { "Amazon" }
-sub patterns { 'http://www\.amazon\.com/(?:.+/)?[gd]p/(?:product/)?(?:tags-on-product/)?([^/]+)', 'http://amzn\.com/([^/]+)' }
+sub patterns {
+  'http://www\.amazon\.com/(?:.+/)?[gd]p/(?:product/)?(?:tags-on-product/)?([a-zA-Z0-9]+)',
+  'http://amzn\.com/([^/]+)'
+}
 
 sub build_url {
   my ($self, $req) = @_;

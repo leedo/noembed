@@ -1,5 +1,7 @@
 package Noembed::Test;
 
+use lib "t/lib";
+
 use Carp;
 use Test::More;
 use Test::Fatal;
@@ -19,8 +21,9 @@ sub test_embed {
   my $noembed = Noembed->new;
   $noembed->prepare_app;
 
-  my $url    = delete $args{url} or croak "url is required";
-  my $output = delete $args{output} or croak "output is required";
+  my $url      = delete $args{url} or croak "url is required";
+  my $callback = delete $args{callback};
+  my $output   = delete $args{output};
 
   local *Noembed::Util::http_get = \&_local_http_get if $args{local};
 
@@ -31,13 +34,18 @@ sub test_embed {
     my $res = shift;
     my $data = decode_json $res->[2][0];
 
-    subtest $url => sub {
-      is $res->[0], 200, "200 status";
-      is $data->{error}, undef, "no error";
-      is_deeply $data, $output, "response matches";
-    };
+    if ($callback) {
+      $callback->($data, $cv);
+    }
+    else {
+      subtest $url => sub {
+        is $res->[0], 200, "200 status";
+        is $data->{error}, undef, "no error";
+        is_deeply $data, $output, "response matches";
+      };
 
-    $cv->send;
+      $cv->send;
+    }
   };
 
   my $req = Noembed::Request->new($env, $respond);
