@@ -20,7 +20,13 @@ sub provider_name { "Monoprice" }
 sub serialize {
   my ($self, $body) = @_;
   my $data = $self->{scraper}->scrape($body);
+
+  for (qw(title image url pricing)) {
+    die "missing $_" unless defined $data->{$_};
+  }
+
   $data->{pricing} = html($data->{pricing});
+
   return +{
     html => $self->render($data),
     title => $data->{title},
