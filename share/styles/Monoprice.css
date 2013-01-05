@@ -1,0 +1,19 @@
+.noembed-monoprice {
+  padding: 10px;
+}
+
+.noembed-monoprice img {
+  float: left;
+  margin-right: 10px;
+  background: #efefef;
+  border: 1px solid #ddd;
+}
+
+.noembed-monoprice h2 {
+  margin: 0 0 10px 0;
+  font-size: 1.2em;
+}
+
+.noembed-monoprice a {
+  text-decoration: none;
+}
