@@ -15,7 +15,7 @@ sub prepare_source {
 sub provider_name { "Twitter" }
 sub patterns {
   'https?://pic\.twitter\.com/.+',
-  'https?://(?:www\.)?twitter\.com/(?:#!/)?[^/]+/status(?:es)?/(\d+)/photo/\d+/?$',
+  'https?://(?:www\.)?twitter\.com/(?:#!/)?[^/]+/status(?:es)?/(\d+)/photo/\d+(?:/large|/)?$',
 }
 
 sub pre_download {
