@@ -8,9 +8,9 @@ sub prepare_source {
   my $self = shift;
 
   $self->{scraper} = scraper {
-    process '#comic > img', title => '@title';
-    process '#comic > img', alt => '@alt';
-    process '#comic > img', src => '@src';
+    process '#comic > img, #comic > a > img', title => '@title';
+    process '#comic > img, #comic > a > img', alt => '@alt';
+    process '#comic > img, #comic > a > img', src => '@src';
   };
 }
 
