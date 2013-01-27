@@ -8,12 +8,12 @@ sub post_download {
   my $data = $self->image_data($body, $req);
   die "No image found" unless $data->{src};
 
-  Noembed::Util::dimensions $data->{src}, $req, sub {
+  $req->dimensions($data->{src}, sub {
     my ($w, $h) = @_;
     $data->{width} = $w;
     $data->{height} = $h;
     $cb->($data);
-  }
+  });
 }
 
 sub serialize {

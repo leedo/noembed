@@ -23,12 +23,12 @@ sub provider_name { "Spotify" }
 sub post_download {
   my ($self, $body, $req, $cb) = @_;
   my $data = $self->{scraper}->scrape($body);
-  Noembed::Util::http_get $data->{musician}, sub {
+  $req->http_get($data->{musician}, sub {
     my ($body, $headers) = @_;
     my $artist = $self->{artist_scraper}->scrape($body); 
     $data->{artist} = $artist->{name};
     $cb->($data);
-  };
+  });
 }
 
 sub serialize {

@@ -11,12 +11,12 @@ sub patterns { 'https?://www\.facebook\.com/([^/]+)/posts/(\d+)' }
 sub pre_download {
   my ($self, $req, $cb) = @_;
   my $profile = "https://graph.facebook.com/".$req->captures->[0];
-  Noembed::Util::http_get $profile, sub {
+  $req->http_get($profile, sub {
     my ($body, $headers) = @_;
     my $data = decode_json $body;
     $req->content_url("https://graph.facebook.com/$data->{id}_".$req->captures->[1]);
     $cb->($req);
-  };
+  });
 }
 
 sub serialize {

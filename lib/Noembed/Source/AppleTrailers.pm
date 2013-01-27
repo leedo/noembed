@@ -27,13 +27,13 @@ sub post_download {
 
   my $url = "http://trailers.apple.com/$path/includes/trailer/large.html";
 
-  Noembed::Util::http_get $url, sub {
+  $req->http_get($url, sub {
     my ($body, $headers) = @_;
     my $src = $self->{scraper}->scrape($body);
     die "can not find movie src" unless $src->{src};
     $data->{src} = $src->{src};
     $callback->($data);
-  };
+  });
 }
 
 sub serialize {

@@ -29,7 +29,7 @@ sub patterns { 'https?://www\.giantbomb\.com/[^/]+/\d+-\d+/?' }
 sub pre_download {
   my ($self, $req, $cb) = @_;
 
-  Noembed::Util::http_get $req->url, sub {
+  $req->http_get($req->url, sub {
     my ($body, $headers) = @_;
     if ($headers->{Status} == 200) {
       my $video = $self->{scraper}->scrape($body);
@@ -38,7 +38,7 @@ sub pre_download {
       $req->content_url($uri);
     }
     $cb->($req);
-  };
+  });
 }
 
 1;

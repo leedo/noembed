@@ -77,16 +77,15 @@ sub handle_url {
   }
 
   if ($self->is_shorturl($req->url)) {
-    return Noembed::Util::http_resolve $req->url, sub {
+    return $req->http_resolve($req->url, sub {
       $req->url(shift);
       $self->handle_url($req, $times + 1);
-    };
+    });
   }
  
   if (my $provider = $self->find_provider($req)) {
     return $provider->pre_download($req, sub {
-      $req = shift;
-      $self->download($provider, $req);
+      $self->download($provider, shift);
     });
   }
 
@@ -114,33 +113,27 @@ sub download {
   my ($self, $provider, $req) = @_;
   my $service = $provider->request_url($req);
 
-  Noembed::Util::http_get $service, sub {
+  $req->http_get($service, sub {
     my ($body, $headers) = @_;
 
     if ($headers->{Status} == 200) {
-      eval {
-        $provider->post_download($body, $req, sub {
-          $body = shift;
-          my $data = $provider->finalize($body, $req);
-          $data->{html} = $self->{render}->("inner-wrapper.html", $provider, $data);
-          unless ($req->parameters->{nowrap}) {
-            $data->{html} = $self->{render}->("wrapper.html", $provider, $data);
-          }
-          $req->respond(Noembed::Util::json_res $data);
-        });
-      };
-      if ($@) {
-        my $error = $@;
-        warn "error processing $service: $error\n";
-        $error =~ s/at .+?\.pm line.+//;
-        $req->error($error);
-      }
+      $provider->post_download($body, $req, sub {
+        my $body = shift;
+        my $data = $provider->finalize($body, $req);
+
+        $data->{html} = $self->{render}->("inner-wrapper.html", $provider, $data);
+        unless ($req->parameters->{nowrap}) {
+          $data->{html} = $self->{render}->("wrapper.html", $provider, $data);
+        }
+
+        $req->respond(Noembed::Util::json_res $data);
+      });
     }
     else {
       warn "error processing $service: $headers->{Status} $headers->{Reason}";
       $req->error($headers->{Reason});
     }
-  };
+  });
 }
 
 sub find_provider {

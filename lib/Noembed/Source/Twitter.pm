@@ -76,28 +76,27 @@ sub expand_entities {
 sub post_download {
   my ($self, $body, $req, $cb) = @_;
   my $tweet = expand_entities from_json $body;
-  $self->download_parents($tweet, [], sub {
+  $self->download_parents($tweet, [], $req, sub {
     $tweet->{parents} = shift;
     $cb->($tweet);
   });
 }
 
 sub download_parents {
-  my $cb = pop;
-  my ($self, $tweet, $parents) = @_;
+  my ($self, $tweet, $parents, $req, $cb) = @_;
   my $parent_id = $tweet->{in_reply_to_status_id};
   return $cb->($parents) unless $parent_id;
 
   my $url = $self->oauth_url(sprintf $self->{tweet_api}, $parent_id);
 
-  Noembed::Util::http_get $url, sub {
+  $req->http_get($url, sub {
     my ($body, $headers) = @_;
     return $cb->($parents) unless $headers->{Status} == 200;;
 
     my $parent = expand_entities decode_json $body;
     push @$parents, $parent;
     $self->download_parents($parent, $parents, $cb);
-  };
+  });
 }
 
 sub serialize {

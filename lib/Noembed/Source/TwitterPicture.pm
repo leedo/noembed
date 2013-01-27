@@ -20,16 +20,16 @@ sub patterns {
 
 sub pre_download {
   my ($self, $req, $cb) = @_;
-  Noembed::Util::http_resolve $req->url, sub {
+  $req->http_resolve($req->url, sub {
     my $tco = shift;
-    Noembed::Util::http_resolve $tco, sub {
+    $req->http_resolve($tco, sub {
       my $tweet_url = shift;
       my ($id) = $tweet_url =~ $self->{tweet_re};
       my $url = Noembed::Source::Twitter::oauth_url($self, sprintf($self->{tweet_api}, $id));
       $req->content_url($url);
       $cb->($req);
-    }
-  };
+    });
+  });
 }
 
 sub image_data {

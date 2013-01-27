@@ -66,12 +66,43 @@ sub pattern {
 sub error {
   my ($self, $message) = @_;
 
+  $message =~ s/at .+?\.pm line.+//;
+
   my $res = Noembed::Util::json_res {
     error => ($message || "unknown error"),
     url   => $self->url,
   }, 'Cache-Control', 'no-cache';
 
   $self->{callback}->($res);
+}
+
+sub http_get {
+  my $cb = pop;
+  my $self = shift;
+
+  Noembed::Util::http_get @_, sub {
+    eval { $cb->(@_) };
+    $self->error($@) if $@;
+  };
+}
+
+sub http_resolve {
+  my $cb = pop;
+  my $self = shift;
+
+  Noembed::Util::http_resolve @_, sub {
+    eval { $cb->(@_) };
+    $self->error($@) if $@;
+  };
+}
+
+sub dimensions {
+  my ($self, $url, $cb) = @_;
+
+  Noembed::Util::dimensions $url, $self, sub {
+    eval { $cb->(@_) };
+    $self->error($@) if $@;
+  };
 }
 
 1;
