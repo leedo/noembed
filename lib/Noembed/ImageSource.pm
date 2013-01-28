@@ -8,6 +8,14 @@ sub post_download {
   my $data = $self->image_data($body, $req);
   die "No image found" unless $data->{src};
 
+  my $maxw = $req->parameters->{maxwidth} || 0;
+  my $maxh = $req->parameters->{maxheight} || 0;
+
+  my $prefix = join "/", "https://noembed.com/i", $maxw, $maxh;
+  $data->{src} = "$prefix/$data->{src}";
+
+  warn $data->{src};
+
   $req->dimensions($data->{src}, sub {
     my ($w, $h) = @_;
     $data->{width} = $w;
@@ -27,7 +35,20 @@ sub serialize {
     height => $data->{height},
     media_url => $data->{src},
     html   => $self->render($data, $req->url),
-  }
+  };
+}
+
+sub finalize {
+  my ($self, $body, $req) = @_;
+
+  return +{
+    title => $req->url,
+    provider_name => $self->provider_name,
+    url => $req->url,
+    type  => "rich",
+    # overrides the above properties
+    %{ $self->serialize($body, $req) },
+  };
 }
 
 sub filename {

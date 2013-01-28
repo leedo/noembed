@@ -1,7 +1,7 @@
 ? my (%args) = @_
 
 ? if ($args{image}) {
-<a href="<?= $args{image} ?>" target="_blank"><img src="https://noembed.com/i/<?= $args{image} ?>"></a>
+<a href="<?= $args{image} ?>" target="_blank"><img src="<?= $args{image} ?>"></a>
 ? } else {
 ?= $args{summary}
 ? }

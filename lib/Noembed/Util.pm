@@ -50,9 +50,6 @@ sub http_resolve {
 sub dimensions {
   my ($url, $req, $cb) = @_;
 
-  my $maxw = $req->parameters->{maxwidth};
-  my $maxh = $req->parameters->{maxheight};
-
   Noembed::Util::http_get $url, sub {
     my ($body, $headers) = @_;
     if ($headers->{Status} == 200) {

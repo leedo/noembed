@@ -1,6 +1,6 @@
 ? my ($info) = @_;
 
-<img src="http://noembed.com/i/<?= $info->{image}{URL} ?>" width="<?= $info->{image}{Width}{content} ?>" height="<?= $info->{image}{Height}{content} ?>">
+<img src="<?= $info->{image}{URL} ?>" width="<?= $info->{image}{Width}{content} ?>" height="<?= $info->{image}{Height}{content} ?>">
 <h2><a target="_blank" href="<?= $info->{url} ?>"><?= $info->{title} ?></a></h2>
 <ul>
 ? my @info = grep {$_} map {$info->{$_}} qw/group price/;

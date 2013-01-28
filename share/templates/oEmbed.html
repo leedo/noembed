@@ -2,7 +2,7 @@
 
 <a href="<?= $url ?>" target="_blank">
 ? if ($data->{type} eq "photo") {
-  <img src="https://noembed.com/i/<?= $data->{url} ?>">
+  <img src="<?= $data->{url} ?>">
 ? } else {
 ?=  ($data->{title} or $url)
 ? }

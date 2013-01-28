@@ -7,7 +7,7 @@
     <div class="tweet_user">
       <div class="tweet_image">
         <a href="http://www.twitter.com/<?= $user->{screen_name} ?>" target="_blank">
-          <img height="24" width="24" src="https://noembed.com/i/<?= $user->{profile_image_url} ?>">
+          <img height="24" width="24" src="<?= $user->{profile_image_url} ?>">
         </a>
       </div>
       <div class="tweet_name">
@@ -27,7 +27,7 @@
   <div class="tweet_user">
     <div class="tweet_image">
       <a href="http://www.twitter.com/<?= $user->{screen_name} ?>" target="_blank">
-        <img height="36" width="36" src="https://noembed.com/i/<?= $user->{profile_image_url} ?>">
+        <img height="36" width="36" src="<?= $user->{profile_image_url} ?>">
       </a>
     </div>
     <div class="tweet_name">

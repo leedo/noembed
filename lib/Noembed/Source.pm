@@ -15,6 +15,7 @@ sub new {
   croak "render is required" unless defined $self->{render};
 
   $self->prepare_source;
+  $self->{image_prefix} = "https://noembed.com/i/";
   $self->{patterns} = [ map {qr{^$_}i} $self->patterns ];
   *{$class.'::html'} = *Noembed::Util::html;
   *{$class.'::clean_html'} = *Noembed::Util::clean_html;
@@ -42,12 +43,43 @@ sub filename {
 
 sub render {
   my $self = shift;
-  $self->{render}->($self->filename("html"), @_);
+  $self->{render}->($self->filename("html"), @_)
 }
 
 sub build_url {
   my ($self, $req) = @_;
   return $req->content_url;
+}
+
+sub rewrite_images {
+  my $output = pop;
+  my ($self, $w, $h) = @_;
+  my $html = "";
+  my $p = HTML::Parser->new(
+    api_version => 3,
+    handlers => {
+      default => [
+        sub {
+          $html .= $_[0];
+        }, "text"
+      ],
+      start => [
+        sub {
+          if ($_[0] eq "img") {
+            $_[1]->{src} = $self->{image_prefix} . $_[1]->{src};
+            my $attr = join " ", map {"$_=\"$_[1]->{$_}\""} keys %{$_[1]};
+            $html .= "<$_[0] $attr>"
+          }
+          else {
+            $html .= $_[2];
+          }
+        }, "tag,attr,text"
+      ]
+    }
+  );
+  $p->parse($output);
+  $p->eof;
+  return $html;
 }
 
 sub request_url {
@@ -104,6 +136,8 @@ sub finalize {
     # overrides the above properties
     %{ $self->serialize($body, $req) },
   };
+
+  $data->{html} = $self->rewrite_images($data->{html});
 
   return $data;
 }

@@ -9,6 +9,7 @@ use Try::Tiny;
 use Class::Load;
 use Text::MicroTemplate::File;
 use File::ShareDir;
+use HTML::Parser;
 
 use Noembed::Util;
 use Noembed::Request;
