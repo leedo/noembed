@@ -1,28 +1,6 @@
 ? my ($id, $tweet) = @_;
 ? my $user = $tweet->{user};
 
-? while (my $tweet = pop @{$tweet->{parents}}) {
-?   my $user = $tweet->{user};
-  <div class="tweet-parent">
-    <div class="tweet_user">
-      <div class="tweet_image">
-        <a href="http://www.twitter.com/<?= $user->{screen_name} ?>" target="_blank">
-          <img height="24" width="24" src="<?= $user->{profile_image_url} ?>">
-        </a>
-      </div>
-      <div class="tweet_name">
-        <a href="http://www.twitter.com/<?= $user->{screen_name} ?>" target="_blank">
-          <span class="tweet_screen_name"><?= $user->{name} ?></span><br>
-          <span class="tweet_real_name"><?= $user->{screen_name} ?></span>
-        </a>
-      </div>
-    </div>
-    <div class="tweet_text">
-      <?= $tweet->{text} ?>
-    </div>
-  </div>
-? }
-
 <div class="tweet_main">
   <div class="tweet_user">
     <div class="tweet_image">

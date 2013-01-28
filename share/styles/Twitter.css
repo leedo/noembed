@@ -9,25 +9,11 @@
 .noembed-twitter a:hover {
   text-decoration: underline;
 }
-.noembed-twitter .tweet-parent {
-  font-size: 12px;
-  border-bottom: 1px solid #ddd;
-  background: #f3f3f3;
-  padding: 10px;
-}
+
 .noembed-twitter .tweet_main {
   padding: 10px;
 }
-.noembed-twitter .tweet-parent p {
-  margin: 0;
-  margin-top: -0.5em;
-  margin-right: 1em;
-  line-height: 1em;
-  display: inline-block;
-  padding: 0 5px;
-  color: #bbb;
-  background-color: #fafafa;
-}
+
 .noembed-twitter div.tweet_image img {
   display: block;
 }
@@ -38,9 +24,6 @@
 .noembed-twitter div.tweet_text {
   clear: both;
   padding: 0.5em 0;
-}
-.noembed-twitter .tweet-parent div.tweet_text {
-  padding-bottom: 0;
 }
 .noembed-twitter .tweet_screen_name {
   font-weight: bold;
