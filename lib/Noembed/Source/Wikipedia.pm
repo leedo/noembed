@@ -50,20 +50,21 @@ sub serialize {
 sub extract_text_content {
   my ($self, $el, $stop) = @_;
   my $output;
+  my $badness = qr{editsection|tright|tleft|infobox|mainarticle|navbox|metadata};
 
   while ($el) {
     # stop once we hit the stop tag
     last if $stop->($el);
 
     # skip badness
-    if ($el->attr('class') =~ /editsection|tright|tleft|infobox|mainarticle/) {
+    if ($el->attr('class') =~ $badness) {
       $el = $el->right;
       next;
     }
 
     # strip out badness
     $_->destroy for $el->look_down(sub {
-      $_[0]->attr('class') =~ /editsection|tright|tleft|infobox|mainarticle/;
+      $_[0]->attr('class') =~ $badness;
     });
 
     # fix the links
