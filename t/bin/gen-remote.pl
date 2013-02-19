@@ -22,6 +22,8 @@ my @urls = qw{
   http://imgur.com/wRBSP
   http://instagr.am/p/n5mWV/
   https://path.com/p/3xnh1s
+  https://gist.github.com/syncsynchalt/2985971
+  http://gist.github.com/2985971
 };
 
 my $orig = \&Noembed::Util::http_get;
