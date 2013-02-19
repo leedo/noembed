@@ -14,8 +14,6 @@ sub post_download {
   my $prefix = join "/", "https://noembed.com/i", $maxw, $maxh;
   $data->{src} = "$prefix/$data->{src}";
 
-  warn $data->{src};
-
   $req->dimensions($data->{src}, sub {
     my ($w, $h) = @_;
     $data->{width} = $w;

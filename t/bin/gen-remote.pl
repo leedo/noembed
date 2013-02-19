@@ -17,7 +17,6 @@ my @urls = qw{
   http://bash.org/?948884
   http://beeradvocate.com/beer/profile/42/3457
   http://www.flickr.com/photos/lidocaineus/6218766021/
-  http://www.giantbomb.com/quick-look-saints-row-the-third-gangstas-in-space/17-5729/
   http://www.hulu.com/watch/331283/saturday-night-live-jay-z-and-beyonces-baby
   http://www.imdb.com/title/tt0032976/
   http://imgur.com/wRBSP
