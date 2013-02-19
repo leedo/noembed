@@ -6,7 +6,7 @@ use JSON;
 use parent 'Noembed::Source';
 
 sub provider_name { "Gist" }
-sub patterns { 'https?://gist\.github\.com/([0-9a-fA-f]+)' }
+sub patterns { 'https?://gist\.github\.com/(?:[-0-9a-zA-Z]+/)?([0-9a-fA-f]+)' }
 
 sub build_url {
   my ($self, $req) = @_;
