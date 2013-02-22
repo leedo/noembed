@@ -22,13 +22,14 @@ sub serialize {
     $html = $self->render(image => $img->attr("src"));
   }
   elsif (my $id = $req->captures->[0]) {
-    my $anchor = $root->look_down(id => $id);
-    my $heading = $anchor->parent;
-    if ($heading) {
-      my $start = $heading->right;
-      $title .= ": " . $heading->as_text;
-      my ($n) = $heading->tag =~ /^h(\d+)$/i;
-      my $stop_tag = qr{^h[1-\Q$n\E]$}i;
+    my $a = $root->look_down(id => $id);
+    if ($a) {
+      my $h = $a->parent;
+      my $start = $h->right;
+      $title .= ": " . $h->as_text;
+      my $tag = $h->tag;
+      my ($n) = $tag =~ /^h(\d+)$/i;
+      my $stop_tag = $n ? qr{^h[1-\Q$n\E]$}i : qr{\Q$tag\E}i;
       $html = $self->extract_text_content($start, sub {
         $_[0]->tag =~ $stop_tag;
       })
