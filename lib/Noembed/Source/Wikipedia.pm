@@ -5,7 +5,7 @@ use List::Util qw/first/;
 
 use parent 'Noembed::Source';
 
-sub patterns { 'https?://[^\.]+\.wikipedia\.org/wiki/[^#]+(?:#(.+))?' }
+sub patterns { 'https?://[^\.]+\.wikipedia\.org/wiki/(?!Talk:)[^#]+(?:#(.+))?' }
 sub provider_name { "Wikipedia" }
 
 sub serialize {
