@@ -16,7 +16,7 @@ sub image_data {
   my ($self, $body, $req) = @_;
 
   my $data = from_json $body;
-  my $image = $data->{gallery}{image};
+  my $image = $data->{data}{image};
 
   return {
     src => "http://i.imgur.com/$image->{hash}$image->{ext}",
