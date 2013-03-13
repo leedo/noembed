@@ -30,7 +30,7 @@ sub serialize {
       my $tag = $h->tag;
       my ($n) = $tag =~ /^h(\d+)$/i;
       my $stop_tag = $n ? qr{^h[1-\Q$n\E]$}i : qr{\Q$tag\E}i;
-      $html = $self->extract_text_content($start, sub {
+      $html = $self->extract_text_content($start, $req->url, sub {
         $_[0]->tag =~ $stop_tag;
       })
     }
@@ -38,7 +38,7 @@ sub serialize {
 
   if (!$html) {
     my $start = first {$_->tag eq "p"} $root->look_down(class => "mw-content-ltr")->content_list;
-    $html = $self->extract_text_content($start, sub {
+    $html = $self->extract_text_content($start, $req->url, sub {
       $_[0]->tag =~ /^(?:h2|h3)$/ or $_[0]->attr("class") eq "toc";
     });
   }
@@ -52,7 +52,7 @@ sub serialize {
 }
 
 sub extract_text_content {
-  my ($self, $el, $stop) = @_;
+  my ($self, $el, $url, $stop) = @_;
   my $output;
   my $badness = qr{editsection|tright|tleft|infobox|mainarticle|navbox|metadata};
 
@@ -73,9 +73,14 @@ sub extract_text_content {
 
     # fix the links
     for my $a ($el->find("a")) {
-      my $href = $a->attr("href");
       $a->attr("target", "_blank");
-      $a->attr("href", "http://www.wikipedia.org/$href");
+      my $href = $a->attr("href");
+      if ($href =~ /^#/) {
+        $a->attr("href", $url . $href);
+      }
+      else {
+        $a->attr("href", "http://www.wikipedia.org/$href");
+      }
     }
 
     $output .= $el->as_HTML;
