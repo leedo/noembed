@@ -75,12 +75,8 @@ sub extract_text_content {
     for my $a ($el->find("a")) {
       $a->attr("target", "_blank");
       my $href = $a->attr("href");
-      if ($href =~ /^#/) {
-        $a->attr("href", $url . $href);
-      }
-      else {
-        $a->attr("href", "http://www.wikipedia.org/$href");
-      }
+      my $prefix = $href =~ /^#/ ? $url : "http://www.wikipedia.org/";
+      $a->attr("href", $prefix . $href);
     }
 
     $output .= $el->as_HTML;
