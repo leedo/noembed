@@ -3,7 +3,7 @@ package Noembed::Source::PostError;
 use parent 'Noembed::Source';
 
 sub provider_name { "Post hook error" }
-sub patterns { 'http://noembed.org/asyncerror' }
+sub patterns { 'http://noembed.org/posterror' }
 
 sub post_download {
   my ($body, $req, $cb) = @_;

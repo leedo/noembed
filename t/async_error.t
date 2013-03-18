@@ -11,11 +11,11 @@ test_embed
   };
 
 test_embed
-  url => "http://noembed.org/preerror",
+  url => "http://noembed.org/posterror",
   callback => sub {
     my ($data, $cv) = @_;
     ok $data->{error} =~ /Device not configured/, "http get error";
-    is $data->{url}, "http://noembed.org/preerror", "url key set";
+    is $data->{url}, "http://noembed.org/posterror", "url key set";
     $cv->send;
   };
 
