@@ -1,13 +1,3 @@
 ? my ($data) = @_;
-? my $flashvars = "vu=$data->{video}&su=$data->{image}";
 
-<object width="526" height="374">
-<param name="movie" value="http://video.ted.com/assets/player/swf/EmbedPlayer.swf"></param>
-<param name="allowFullScreen" value="true" />
-<param name="allowScriptAccess" value="always"/>
-<param name="wmode" value="transparent"></param>
-<param name="bgColor" value="#ffffff"></param>
-<param name="flashvars" value="<?= $flashvars ?>" />
-<embed src="http://video.ted.com/assets/player/swf/EmbedPlayer.swf" pluginspace="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" wmode="transparent" bgColor="#ffffff" width="526" height="374" allowFullScreen="true" allowScriptAccess="always" flashvars="<?= $flashvars ?>"></embed>
-</object>
-
+<iframe src="<?= $data->{url} ?>" width="560" height="315" frameborder="0" scrolling="no" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
