@@ -24,7 +24,7 @@ sub prepare_source {
 
 sub provider_name { "GiantBomb" }
 sub options { qw/maxwidth maxheight autoplay/}
-sub patterns { 'https?://www\.giantbomb\.com/[^/]+/\d+-\d+/?' }
+sub patterns { 'https?://www\.giantbomb\.com/videos/[^/]+/\d+-\d+/?' }
 
 sub pre_download {
   my ($self, $req, $cb) = @_;
