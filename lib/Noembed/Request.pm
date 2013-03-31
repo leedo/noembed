@@ -139,7 +139,7 @@ used in a C<pre_download> hook to modify the URL will be downloaded.
 
 =item pattern
 
-If the requested URL matched any of the loaded L<Sources> this will return
+If the requested URL matched any of the loaded L<Providers> this will return
 the compiled regular expression that it matched.
 
 =item captures

@@ -36,7 +36,7 @@ sub prepare_app {
     delete $self->{sources};
   }
   else {
-    $self->register_provider($_) for Module::Find::findsubmod("Noembed::Source");
+    $self->register_provider($_) for Module::Find::findsubmod("Noembed::Provider");
   }
 }
 
@@ -96,8 +96,8 @@ sub handle_url {
 sub register_provider {
   my ($self, $class) = @_;
 
-  if ($class !~ /^Noembed::Source::/) {
-    $class = "Noembed::Source::$class";
+  if ($class !~ /^Noembed::Provider::/) {
+    $class = "Noembed::Provider::$class";
   }
 
   try {
@@ -229,7 +229,7 @@ about external URLs, which can then be embeded HTML pages. Noembed
 supports a large list of sites and makes it easy to add more.
 
 To add a new site to Noembed create a new class that inherits from
-L<Noembed::Source>, L<Noembed::ImageSource>, or L<Noembed::oEmbedSource>
+L<Noembed::Provider>, L<Noembed::ImageProvider>, or L<Noembed::oEmbedProvider>
 and override the required methods.
 
 =head1 EXAMPLES
@@ -240,7 +240,7 @@ attempts to embed it in the page.
 
 =head1 SEE ALSO
 
-L<Noembed::Source>, L<Noembed::ImageSource>, L<Noembed::oEmbedSource>,
+L<Noembed::Provider>, L<Noembed::ImageProvider>, L<Noembed::oEmbedProvider>,
 L<Noembed::Util>, L<Web::Scraper>
 
 =head1 AUTHOR
