@@ -5,7 +5,6 @@ use JSON ();
 use URI;
 use URI::QueryParam;
 use Scalar::Util qw/blessed/;
-use Exporter;
 use Noembed::Util;
 use HTML::Parser;
 
