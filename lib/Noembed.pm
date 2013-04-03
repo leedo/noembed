@@ -3,13 +3,10 @@ package Noembed;
 use strict;
 use warnings;
 
-use Carp;
 use Module::Find ();
-use Try::Tiny;
 use Class::Load;
 use Text::MicroTemplate::File;
 use File::ShareDir;
-use HTML::Parser;
 
 use Noembed::Util;
 use Noembed::Request;
@@ -100,14 +97,15 @@ sub register_provider {
     $class = "Noembed::Provider::$class";
   }
 
-  try {
-    Class::Load::load_class($class);
-    my $provider = $class->new(render => $self->{render});
-    push @{ $self->{providers} }, $provider;
-    push @{ $self->{shorturls} }, map {qr{$_}} $provider->shorturls;
-  } catch {
+  my ($success, $error) = Class::Load::try_load_class($class);
+  if (!$success) {
     warn "Could not load provider $class: $_";
-  };
+    return;
+  }
+
+  my $provider = $class->new(render => $self->{render});
+  push @{ $self->{providers} }, $provider;
+  push @{ $self->{shorturls} }, map {qr{$_}} $provider->shorturls;
 }
 
 sub download {

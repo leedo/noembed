@@ -7,6 +7,7 @@ use URI::QueryParam;
 use Scalar::Util qw/blessed/;
 use Exporter;
 use Noembed::Util;
+use HTML::Parser;
 
 sub new {
   my ($class, %args) = @_;
