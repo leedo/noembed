@@ -9,7 +9,7 @@ sub prepare_provider {
   my $base = "http://beeradvocate.com";
 
   $self->{scraper} = scraper {
-    process "td#mainContent > h1", title => 'TEXT';
+    process 'meta[property="og:title"]', title => '@content';
     process "div#baContent > table", html => sub {
       my $e = shift;
 
@@ -41,6 +41,7 @@ sub patterns { 'http://(?:www\.)?beeradvocate\.com/beer/profile/\d+/\d+' }
 sub serialize {
   my ($self, $body) = @_;
   my $data = $self->{scraper}->scrape($body);
+  $data->{title} =~ s/ - BeerAdvocate$//;
   $data->{html} =~ s/<br[^>]*>\s*Displayed[^\.]+\.//s;
   +{
     title => $data->{title},
