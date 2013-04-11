@@ -1,32 +1,3 @@
-package Noembed::Provider::TwitterCard;
-
-sub providers {
-  my ($class, @args) = @_;
-
-  my @cards = (
-    ["The Onion", 'http://www\.theonion\.com/articles/[^/]+/?'],
-    ["Ars Technica", 'http://arstechnica\.com/[^/]+/\d+/\d+/[^/]+/?'],
-  );
-
-  my @providers;
-
-  for my $card (@cards) {
-    my ($name, @patterns) = @$card;
-
-    my $package = $name;
-    $package =~ s/[^a-zA-Z]//g;
-    $package = "Noembed::Provider::$package";
-
-    *{"$package\::provider_name"}     = sub { $name };
-    *{"$package\::patterns"} = sub { @patterns };
-    @{"$package\::ISA"} = "Noembed::TwitterCardProvider";
-
-    push @providers, $package->new(@args);
-  }
-
-  return @providers;
-}
-
 package Noembed::TwitterCardProvider;
 
 use Web::Scraper;

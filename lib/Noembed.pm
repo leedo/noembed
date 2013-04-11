@@ -103,9 +103,9 @@ sub register_provider {
     return;
   }
 
-  my @providers = $class->providers(render => $self->{render});
-  push @{ $self->{providers} }, @providers;
-  push @{ $self->{shorturls} }, map {qr{$_}} map {$_->shorturls} @providers;
+  my $provider = $class->new(render => $self->{render});
+  push @{ $self->{providers} }, $provider;
+  push @{ $self->{shorturls} }, map {qr{$_}} $provider->shorturls;
 }
 
 sub download {
