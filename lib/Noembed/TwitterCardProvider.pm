@@ -17,7 +17,8 @@ sub prepare_provider {
 
 sub filename {
   my ($self, $ext) = @_;
-  return "TwitterCard.$ext" if $ext and $ext eq "html";
+  return "TwitterCard" unless $ext;
+  return "TwitterCard.$ext" if $ext ne "png";
   return $self->SUPER::filename($ext);
 }
 

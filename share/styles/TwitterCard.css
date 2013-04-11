@@ -1,0 +1,25 @@
+.noembed-twittercard {
+  padding: 10px;
+}
+
+.noembed-twittercard img {
+  float: right;
+  margin-left: 10px;
+  background: #efefef;
+  border: 1px solid #ddd;
+}
+
+.noembed-twittercard h2 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.noembed-twittercard a {
+  text-decoration: none;
+}
+
+.noembed-twittercard p {
+  margin: 0;
+  padding: 0;
+  margin-top: 0.8em;
+}
