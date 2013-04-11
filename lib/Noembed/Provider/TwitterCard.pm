@@ -5,6 +5,7 @@ sub providers {
 
   my @cards = (
     ["The Onion", 'http://www\.theonion\.com/articles/[^/]+/?'],
+    ["Ars Technica", 'http://arstechnica\.com/[^/]+/\d+/\d+/[^/]+/?'],
   );
 
   my @providers;
