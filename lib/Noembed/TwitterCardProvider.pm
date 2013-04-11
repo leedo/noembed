@@ -17,7 +17,8 @@ sub prepare_provider {
 
 sub filename {
   my ($self, $ext) = @_;
-  return $ext ? "TwitterCard.$ext" : "TwitterCard";
+  return "TwitterCard.$ext" if $ext and $ext eq "html";
+  return $self->SUPER::filename($ext);
 }
 
 sub serialize {

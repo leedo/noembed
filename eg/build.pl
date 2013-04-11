@@ -28,6 +28,6 @@ for my $module (@modules) {
 for my $type (keys %providers) {
   say "<h3>$type</h3>";
   say "<ul>";
-  say "<li>$_</li>" for @{$providers{$type}};
+  say "<li>$_</li>" for sort @{$providers{$type}};
   say "</ul>"; 
 }
