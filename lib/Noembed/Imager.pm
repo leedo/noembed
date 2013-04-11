@@ -14,8 +14,7 @@ sub worker {
     my $data = shift;
     my ($width, $height);
     eval {
-      my $image = Imager->new;
-      $image->read(data => $data);
+      my $image = Imager->new(data => $data);
       $width = $image->getwidth;
       $height = $image->getheight;
     };
