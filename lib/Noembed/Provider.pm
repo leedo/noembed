@@ -8,6 +8,11 @@ use Scalar::Util qw/blessed/;
 use Noembed::Util;
 use HTML::Parser;
 
+sub providers {
+  my $class = shift;
+  return $class->new(@_);
+}
+
 sub new {
   my ($class, %args) = @_;
 
