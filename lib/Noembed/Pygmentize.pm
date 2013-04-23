@@ -1,7 +1,9 @@
 package Noembed::Pygmentize;
 
-use AnyEvent::Worker;
 use File::Which qw/which/;
+use IPC::Run3;
+use List::MoreUtils qw/any/;
+use Encode;
 
 sub new {
   my ($class, %args) = @_;
@@ -15,38 +17,20 @@ sub new {
 }
 
 sub colorize {
-  my $cb = pop;
   my ($self, $text, %opts) = @_;
 
   $opts{lexer}   = $self->{lexer}   unless defined $opts{lexer};
   $opts{format}  = $self->{format}  unless defined $opts{format};
   $opts{options} = $self->{options} unless defined $opts{options};
 
-  $self->worker->do(colorize => $text, %opts, sub {
-    if ($@) {
-      warn $@;
-      return $cb->("<pre>$text</pre>");
-    }
-    $cb->($_[1]);
-  });
-}
+  my $html = eval { $self->run_pygmentize($text, %opts) };
 
-sub worker {
-  my $self = shift;
-  $self->{worker} ||= AnyEvent::Worker->new(
-    ['Noembed::Pygmentize::Worker' => $self->{bin}]);
-}
+  if ($@) {
+    warn $@;
+    return $cb->("<pre>$text</pre>");
+  }
 
-
-package Noembed::Pygmentize::Worker;
-
-use IPC::Run3;
-use List::MoreUtils qw/any/;
-use Encode;
-
-sub new {
-  my ($class, $bin) = @_;
-  bless { bin => $bin }, $class;
+  return $html;
 }
 
 sub find_lexer {
@@ -104,7 +88,7 @@ sub build_lexers {
   return \@lexers;
 }
 
-sub colorize {
+sub run_pygmentize {
   my ($self, $text, %opts) = @_;
   my($out, $err);
 

@@ -5,12 +5,12 @@ use JSON ();
 use AnyEvent::HTTP ();
 use Text::MicroTemplate ();
 use HTML::TreeBuilder;
+use AnyEvent::Fork::Pool;
 
-use Noembed::Pygmentize;
-use Noembed::Imager;
-
-my $pygment = Noembed::Pygmentize->new;
-my $imager = Noembed::Imager->new;
+my $worker = AnyEvent::Fork
+  ->new
+  ->require("Noembed::Worker")
+  ->AnyEvent::Fork::Pool::run("Noembed::Worker::run");
 
 sub http_get {
   my $cb = pop;
@@ -53,7 +53,7 @@ sub dimensions {
   Noembed::Util::http_get $url, sub {
     my ($body, $headers) = @_;
     if ($headers->{Status} == 200) {
-      $imager->dimensions($body, sub {
+      $worker->(dimensions => $body, sub {
         my ($w, $h) = @_;
 
         if ($maxh and $h > $maxh) {
@@ -77,7 +77,7 @@ sub dimensions {
 sub colorize {
   my $cb = pop;
   my ($text, %options) = @_;
-  $pygment->colorize($text, %options, $cb);
+  $worker->(colorize => $text, %options, $cb);
 }
 
 sub html {
