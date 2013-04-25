@@ -6,16 +6,16 @@ use Imager;
 our $pyg = Noembed::Pygmentize->new;
 
 sub run {
+  my @ret = eval { _run(@_) };
+  return $@ ? (0, $@) : (1, @ret);
+}
+
+sub _run {
   my $job = shift;
 
   if ($job eq "dimensions") {
-    my ($width, $height);
-    eval {
-      my $image = Imager->new(data => $data);
-      $width = $image->getwidth;
-      $height = $image->getheight;
-    };
-    return ($width, $height);
+    my $image = Imager->new(data => $_[0]);
+    return ($image->getwidth, $image->getheight);
   }
 
   elsif ($job eq "colorize") {

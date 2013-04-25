@@ -50,12 +50,17 @@ sub http_resolve {
 sub dimensions {
   my ($url, $req, $cb) = @_;
 
+  my $maxw = $req->parameters->{maxwidth};
+  my $maxh = $req->parameters->{maxheight};
+
   Noembed::Util::http_get $url, sub {
     my ($body, $headers) = @_;
     if ($headers->{Status} == 200) {
       $worker->(dimensions => $body, sub {
-        my ($w, $h) = @_;
+        my $success = shift;
+        die shift unless $success;
 
+        my ($w, $h) = @_;
         if ($maxh and $h > $maxh) {
           $w = $w * ($maxh / $h);
           $h = $maxh;
@@ -64,7 +69,6 @@ sub dimensions {
           $h = $h * ($maxw / $w);
           $w = $maxw;
         }
-
         $cb->(int($w), int($h));
       });
     }
@@ -77,7 +81,11 @@ sub dimensions {
 sub colorize {
   my $cb = pop;
   my ($text, %options) = @_;
-  $worker->(colorize => $text, %options, $cb);
+  $worker->(colorize => $text, %options, sub {
+    my $success = shift;
+    die shift unless $success;
+    $cb->(shift);
+  });
 }
 
 sub html {
