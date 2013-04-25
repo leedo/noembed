@@ -25,12 +25,13 @@ sub post_download {
   for my $file (@{$commit->{files}}) {
     $cv->begin;
 
-    Noembed::Util::colorize $file->{patch},
+    $req->colorize($file->{patch},
       lexer => "diff",
       sub {
         $file->{patch} = html($_[0]);
         $cv->end;
-      };
+      }
+    );
   }
 
   $cv->cb(sub {$cb->($commit)});

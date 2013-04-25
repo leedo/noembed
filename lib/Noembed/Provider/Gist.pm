@@ -23,13 +23,14 @@ sub post_download {
   for my $file (values %{$gist->{files}}) {
     $cv->begin;
 
-    Noembed::Util::colorize $file->{content},
+    $req->colorize($file->{content},
       language => lc $file->{language},
       filename => lc $file->{filename},
       sub {
         $file->{content} = html($_[0]);
         $cv->end;
-      };
+      }
+    );
   }
 
   $cv->cb(sub {$cb->($gist)});

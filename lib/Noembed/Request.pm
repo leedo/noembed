@@ -105,6 +105,16 @@ sub dimensions {
   };
 }
 
+sub colorize {
+  my $cb = pop;
+  my ($self, $text, %options) = @_;
+
+  Noembed::Util::colorize $text, $self, %options, sub {
+    eval { $cb->(@_) };
+    $self->error($@) if $@;
+  }
+}
+
 1;
 
 =pod
