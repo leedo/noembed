@@ -10,6 +10,7 @@ sub new {
   my $self = $class->SUPER::new($env);
   $self->{hash} = Digest::SHA1::sha1_hex(lc $env->{QUERY_STRING});
   $self->{callback} = $callback;
+  $self->{t} = AE::timer 10, 0, sub {$self->error("Request timed out")};
   return $self;
 }
 
@@ -20,6 +21,14 @@ sub hash {
 
 sub respond {
   my ($self, $res) = @_;
+
+  if ($self->{sent}) {
+    warn "sending on already closed request: " . $self->url;
+    return;
+  }
+
+  delete $self->{t};
+  $self->{sent} = 1;
   $self->{callback}->($res);
 }
 
@@ -73,7 +82,7 @@ sub error {
     url   => $self->url,
   }, 'Cache-Control', 'no-cache';
 
-  $self->{callback}->($res);
+  $self->respond->($res);
 }
 
 sub http_get {
