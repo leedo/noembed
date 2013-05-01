@@ -4,8 +4,14 @@ use Noembed::Pygmentize;
 use Imager;
 
 our $pyg = Noembed::Pygmentize->new;
+my $counter = 0;
 
 sub run {
+  if ($counter++ > 250) {
+    AnyEvent::Fork::Pool::retire();
+    $counter = 0;
+  }
+
   my @ret = eval { _run(@_) };
   return $@ ? (0, $@) : (1, @ret);
 }
