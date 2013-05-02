@@ -82,7 +82,7 @@ sub error {
     url   => $self->url,
   }, 'Cache-Control', 'no-cache';
 
-  $self->respond->($res);
+  $self->respond($res);
 }
 
 sub http_get {
