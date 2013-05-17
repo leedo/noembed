@@ -103,7 +103,11 @@ sub register_provider {
     return;
   }
 
-  my $provider = $class->new(render => $self->{render});
+  my $provider = eval { $class->new(render => $self->{render}) };
+  if ($@) {
+    warn "Could not initialize provider $class, disabling: $@";
+    return;
+  }
   push @{ $self->{providers} }, $provider;
   push @{ $self->{shorturls} }, map {qr{$_}} $provider->shorturls;
 }
