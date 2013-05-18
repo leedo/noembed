@@ -2,6 +2,7 @@ package Noembed::Request;
 
 use parent 'Plack::Request';
 
+use Scalar::Util qw/weaken/;
 use Digest::SHA1;
 use Noembed::Util;
 
@@ -10,7 +11,12 @@ sub new {
   my $self = $class->SUPER::new($env);
   $self->{hash} = Digest::SHA1::sha1_hex(lc $env->{QUERY_STRING});
   $self->{callback} = $callback;
-  $self->{t} = AE::timer 10, 0, sub {$self->error("Request timed out")};
+
+  my $weak = $self;
+  weaken $weak;
+
+  $self->{t} = AE::timer 10, 0, sub {$weak->error("Request timed out")};
+
   return $self;
 }
 
@@ -89,6 +95,7 @@ sub http_get {
   my $cb = pop;
   my $self = shift;
 
+  weaken $self;
   Noembed::Util::http_get @_, sub {
     eval { $cb->(@_) };
     $self->error($@) if $@;
@@ -99,6 +106,7 @@ sub http_resolve {
   my $cb = pop;
   my $self = shift;
 
+  weaken $self;
   Noembed::Util::http_resolve @_, sub {
     eval { $cb->(@_) };
     $self->error($@) if $@;
@@ -108,6 +116,7 @@ sub http_resolve {
 sub dimensions {
   my ($self, $url, $cb) = @_;
 
+  weaken $self;
   Noembed::Util::dimensions $url, $self, sub {
     eval { $cb->(@_) };
     $self->error($@) if $@;
@@ -118,6 +127,7 @@ sub colorize {
   my $cb = pop;
   my ($self, $text, %options) = @_;
 
+  weaken $self;
   Noembed::Util::colorize $text, $self, %options, sub {
     eval { $cb->(@_) };
     $self->error($@) if $@;
