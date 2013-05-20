@@ -5,12 +5,20 @@ use JSON ();
 use AnyEvent::HTTP ();
 use Text::MicroTemplate ();
 use HTML::TreeBuilder;
-use AnyEvent::Fork::Pool;
+use constant IS_EV => (AnyEvent::detect() eq 'AnyEvent::Impl::EV');
+use if IS_EV, 'AnyEvent::Fork::Pool';
+use if !IS_EV, 'Noembed::Worker';
 
 my $worker = AnyEvent::Fork
   ->new
   ->require("Noembed::Worker")
-  ->AnyEvent::Fork::Pool::run("Noembed::Worker::run");
+  ->AnyEvent::Fork::Pool::run("Noembed::Worker::run") if IS_EV;
+
+# Non-EV loop: Use a synchronous worker
+$worker ||= sub {
+    my $cb = pop;
+    $cb->(Noembed::Worker::_run(@_));
+};
 
 sub http_get {
   my $cb = pop;
