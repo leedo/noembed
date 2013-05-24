@@ -36,6 +36,7 @@ sub serialize {
   +{
     title => $data->{title},
     html => $self->render($data),
+    (defined $data->{image} ? image => $data->{image} : ()),
   };
 }
 
