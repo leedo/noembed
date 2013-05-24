@@ -66,7 +66,10 @@ sub dimensions {
     if ($headers->{Status} == 200) {
       $worker->(dimensions => $body, sub {
         my $success = shift;
-        return $req->error(shift) unless $success;
+        if (!$success) {
+          undef $cb;
+          return $req->error(shift);
+        }
 
         my ($w, $h) = @_;
         if ($maxh and $h > $maxh) {
@@ -91,7 +94,10 @@ sub colorize {
   my ($text, $req, %options) = @_;
   $worker->(colorize => $text, %options, sub {
     my $success = shift;
-    return $req->error(shift) unless $success;
+    if (!$success) {
+      undef $cb;
+      return $req->error(shift);
+    }
     $cb->(shift);
   });
 }
