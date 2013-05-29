@@ -8,7 +8,6 @@ use JSON;
 sub prepare_provider {
   my $self = shift;
   $self->{tweet_api} = "http://api.twitter.com/1.1/statuses/show/%s.json?include_entities=true";
-  $self->{tweet_re} = qr{https?://(?:www\.)?twitter\.com/(?:#!/)?[^/]+/status(?:es)?/(\d+)};
   $self->{credentials} = Noembed::Provider::Twitter::read_credentials();
 }
 
@@ -18,18 +17,9 @@ sub patterns {
   'https?://(?:www\.)?twitter\.com/(?:#!/)?[^/]+/status(?:es)?/(\d+)/photo/\d+(?:/large|/)?$',
 }
 
-sub pre_download {
+sub build_url {
   my ($self, $req, $cb) = @_;
-  $req->http_resolve($req->url, sub {
-    my $tco = shift;
-    $req->http_resolve($tco, sub {
-      my $tweet_url = shift;
-      my ($id) = $tweet_url =~ $self->{tweet_re};
-      my $url = Noembed::Provider::Twitter::oauth_url($self, sprintf($self->{tweet_api}, $id));
-      $req->content_url($url);
-      $cb->($req);
-    });
-  });
+  Noembed::Provider::Twitter::oauth_url($self, sprintf($self->{tweet_api}, $req->captures->[0]));
 }
 
 sub image_data {
