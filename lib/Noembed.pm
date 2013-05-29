@@ -76,6 +76,10 @@ sub handle_url {
 
   if ($self->is_shorturl($req->url)) {
     return $req->http_resolve($req->url, sub {
+      my $url = shift;
+      if ($req->url eq $url) {
+        return $req->error("Invalid short URL");
+      }
       $req->url(shift);
       $self->handle_url($req, $times + 1);
     });
