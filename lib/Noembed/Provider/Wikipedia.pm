@@ -11,7 +11,7 @@ sub provider_name { "Wikipedia" }
 sub serialize {
   my ($self, $body, $req) = @_;
 
-  my $root = HTML::TreeBuilder->new_from_content($body)->elementify;
+  my $root = HTML::TreeBuilder->new_from_content(\$body)->elementify;
 
   my $title = $root->look_down(id => "firstHeading")->as_text;
   my $html;
