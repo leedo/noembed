@@ -137,7 +137,7 @@ sub download {
       });
     }
     else {
-      warn "error processing $service: $headers->{Status} $headers->{Reason}";
+      warn "error processing " . $req->url. ": $headers->{Status} $headers->{Reason}";
       $req->error($headers->{Reason});
     }
   });
