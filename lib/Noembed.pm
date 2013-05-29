@@ -80,7 +80,7 @@ sub handle_url {
       if ($req->url eq $url) {
         return $req->error("Invalid short URL");
       }
-      $req->url(shift);
+      $req->url($url);
       $self->handle_url($req, $times + 1);
     });
   }
