@@ -13,8 +13,8 @@ sub prepare_provider {
 }
 
 sub provider_name { "Twitter" }
+sub shorturls { 'https?://pic\.twitter\.com/.+' }
 sub patterns {
-  'https?://pic\.twitter\.com/.+',
   'https?://(?:www\.)?twitter\.com/(?:#!/)?[^/]+/status(?:es)?/(\d+)/photo/\d+(?:/large|/)?$',
 }
 
