@@ -72,6 +72,7 @@ Must return a string with the site's oEmbed endpoint. e.g. C<http://soundcloud.c
 =head1 SEE ALSO
 
 L<Noembed::Provider::SoundCloud>, L<Noembed::Provider::Flickr>, L<Noembed::Provider::Hulu>,
-L<Noembed::Provider::Qik>, L<Noembed::Provider::SlideShare>, L<Noembed::Provider::Viddler>
+L<Noembed::Provider::Qik>, L<Noembed::Provider::SlideShare>, L<Noembed::Provider::Viddler>,
+L<Noembed::Provider::ADN>
 
 =cut
