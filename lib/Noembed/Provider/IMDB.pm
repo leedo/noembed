@@ -40,7 +40,6 @@ sub post_download {
       $config->{images}{poster_sizes}[0],
       $movie->{poster_path},
     ))->as_string;
-    $movie->{url} = $req->url;
     $cb->($movie);
   });
 }
@@ -49,10 +48,11 @@ sub serialize {
   my ($self, $movie, $req) = @_;
 
   ($movie->{year}) = split "-", $movie->{release_date};
+  $movie->{url} = $req->url;
 
   return +{
     title => "$movie->{name} ($movie->{year})",
-    html => $self->render($movie, $poster),
+    html => $self->render($movie),
   };
 }
 
