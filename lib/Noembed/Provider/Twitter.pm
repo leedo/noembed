@@ -10,7 +10,7 @@ use parent 'Noembed::Provider';
 sub prepare_provider {
   my $self = shift;
   $self->{name_re} = qr{(?:^|\W)(@[^\s:]+)};
-  $self->{tweet_api} = "http://api.twitter.com/1.1/statuses/show/%s.json?include_entities=true";
+  $self->{tweet_api} = "https://api.twitter.com/1.1/statuses/show/%s.json?include_entities=true";
   $self->{credentials} = read_credentials();
 }
 
