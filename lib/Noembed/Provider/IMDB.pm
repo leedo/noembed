@@ -51,7 +51,7 @@ sub serialize {
   $movie->{url} = $req->url;
 
   return +{
-    title => "$movie->{name} ($movie->{year})",
+    title => "$movie->{title} ($movie->{year})",
     html => $self->render($movie),
   };
 }
