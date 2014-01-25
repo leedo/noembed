@@ -14,6 +14,7 @@ sub prepare_provider {
     process 'meta[name="twitter:description"]', description => '@content';
     process 'meta[property="og:description"]', og_description => '@content';
     process 'meta[name="twitter:image"]', image => '@content';
+    process 'meta[name="twitter:image:src"]', "image:src" => '@content';
     process 'meta[property="og:image"]', og_image => '@content';
     process 'meta[name="twitter:card"]', card => '@content';
   };
@@ -41,8 +42,15 @@ sub serialize {
     }
   }
 
+  for (qw{image image:src og_image}) {
+    if (defined $data->{$_}) {
+      $data->{image} = $data->{$_};
+      last;
+    }
+  }
+
   die "only support summary Twitter card type"
-    unless $data->{card} eq "summary";
+    unless $data->{card} =~ /^summary/;
 
   +{
     html => $self->render($data),
