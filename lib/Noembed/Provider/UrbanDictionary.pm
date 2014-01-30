@@ -7,7 +7,7 @@ use parent 'Noembed::Provider';
 sub prepare_provider {
   my $self = shift;
   $self->{scraper} = scraper {
-    process "td.word", "words[]" => "TEXT";
+    process "div.word", "words[]" => "TEXT";
     process "div.definition", "definitions[]" => "HTML";
   };
 }

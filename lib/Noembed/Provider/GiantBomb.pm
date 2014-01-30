@@ -15,7 +15,7 @@ use parent 'Noembed::Provider';
 sub prepare_provider {
   my $self = shift;
   $self->{scraper} = scraper {
-    process "div.player", video => sub {
+    process "div[data-video]", video => sub {
       my $el = shift;
       from_json decode_entities $el->attr("data-video");
     };
@@ -34,7 +34,7 @@ sub pre_download {
     if ($headers->{Status} == 200) {
       my $video = $self->{scraper}->scrape($body);
       my $uri = URI->new("http://www.youtube.com/oembed/");
-      $uri->query_param("url", "http://www.youtube.com/watch?v=$video->{video}{youtube_id}");
+      $uri->query_param("url", "http://www.youtube.com/watch?v=$video->{video}{youtubeID}");
       $req->content_url($uri);
     }
     $cb->($req);

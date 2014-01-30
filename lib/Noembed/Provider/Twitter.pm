@@ -10,7 +10,7 @@ use parent 'Noembed::Provider';
 sub prepare_provider {
   my $self = shift;
   $self->{name_re} = qr{(?:^|\W)(@[^\s:]+)};
-  $self->{tweet_api} = "http://api.twitter.com/1.1/statuses/show/%s.json?include_entities=true";
+  $self->{tweet_api} = "https://api.twitter.com/1.1/statuses/show/%s.json?include_entities=true";
   $self->{credentials} = read_credentials();
 }
 
@@ -45,8 +45,8 @@ sub oauth_url {
   return $req->to_url;
 }
 
-sub shorturls { 'http://t\.co/[a-zA-Z0-9]+' }
-sub patterns { 'https?://(?:www\.)?twitter\.com/(?:#!/)?[^/]+/status(?:es)?/(\d+)/?$' }
+sub shorturls { 'https?://t\.co/[a-zA-Z0-9]+' }
+sub patterns { 'https?://(?:www|mobile\.)?twitter\.com/(?:#!/)?[^/]+/status(?:es)?/(\d+)/?$' }
 sub provider_name { "Twitter" }
 
 sub build_url {

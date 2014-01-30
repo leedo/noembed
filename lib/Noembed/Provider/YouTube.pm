@@ -19,6 +19,7 @@ sub build_url {
 
   my $id = $req->captures->[0];
   $uri->query_param("url", "http://www.youtube.com/watch?v=$id");
+  $uri->query_param("scheme", "https");
 
   return $uri;
 }
