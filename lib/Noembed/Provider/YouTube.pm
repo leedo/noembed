@@ -32,7 +32,7 @@ sub serialize {
   my $uri = URI->new($src);
 
   # tack on start parameter if timecode was in original URL
-  if (my @t = $req->url =~ /[&#\?]a?t=(?:(\d+)m)?(\d+)s?/) {
+  if (my @t = $req->url =~ /[&#?]a?t=(?:(\d+)m)?(\d+)s?/) {
     $data->{title} = "$data->{title} (skip to $t[0]:$t[1])";
     my $seconds = pop @t;
     if (@t) {
