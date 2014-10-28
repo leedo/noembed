@@ -33,8 +33,8 @@ sub pre_download {
     my ($body, $headers) = @_;
     if ($headers->{Status} == 200) {
       my $video = $self->{scraper}->scrape($body);
-      my $uri = URI->new("http://www.youtube.com/oembed/");
-      $uri->query_param("url", "http://www.youtube.com/watch?v=$video->{video}{youtubeID}");
+      my $uri = URI->new("https://www.youtube.com/oembed/");
+      $uri->query_param("url", "https://www.youtube.com/watch?v=$video->{video}{youtubeID}");
       $req->content_url($uri);
     }
     $cb->($req);
