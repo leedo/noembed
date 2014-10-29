@@ -33,11 +33,11 @@ sub serialize {
 
   # tack on start parameter if timecode was in original URL
   if (my @t = $req->url =~ /[&#?]a?t=(?:(\d+)m)?(\d+)s?/) {
-    $data->{title} = "$data->{title} (skip to $t[0]:$t[1])";
     my $seconds = pop @t;
     if (@t) {
       $seconds += $t[0] * 60;
     }
+    $data->{title} = "$data->{title} (skip to $t[1]s)";
     $uri->query_param(start => $seconds);
   }
 
