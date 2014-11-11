@@ -37,7 +37,7 @@ sub serialize {
     if (@t) {
       $seconds += $t[0] * 60;
     }
-    $data->{title} = "$data->{title} (skip to $t[1]s)";
+    $data->{title} = "$data->{title} (skip to ".$seconds."s)";
     $uri->query_param(start => $seconds);
   }
 
