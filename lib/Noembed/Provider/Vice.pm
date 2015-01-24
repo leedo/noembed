@@ -3,6 +3,6 @@ package Noembed::Provider::Vice;
 use parent 'Noembed::TwitterCardProvider';
 
 sub provider_name { "VICE" }
-sub patterns { 'http://(?:www\.)?vice\.com/[^/]+/?' }
+sub patterns { 'https?://(?:www\.)?vice\.com/[^/]+/?' }
 
 1;
