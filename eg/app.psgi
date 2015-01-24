@@ -6,6 +6,26 @@ use Plack::Util;
 use Noembed;
 
 my $noembed = Noembed->new;
+my $cors = sub {
+  my $app = shift;
+  sub {
+    my $env = shift;
+    my $res = $app->($env);
+    Plack::Util::response_cb($res, sub {
+      my $res = shift;
+      if (!Plack::Util::header_exists($res->[1], "Access-Control-Allow-Origin")) {
+        Plack::Util::header_push($res->[1], "Access-Control-Allow-Origin", "*");
+      }
+      if (!Plack::Util::header_exists($res->[1], "Access-Control-Allow-Methods")) {
+        Plack::Util::header_push($res->[1], "Access-Control-Allow-Methods", "GET");
+      }
+      if (!Plack::Util::header_exists($res->[1], "Access-Control-Allow-Headers")) {
+        Plack::Util::header_push($res->[1], "Access-Control-Allow-Headers", "Origin, Accept, Content-Type");
+      }
+      return;
+    });
+  };
+};
 
 builder {
   enable ReverseProxy;
@@ -17,13 +37,13 @@ builder {
   mount "/docs"  => Plack::App::File->new(root => "docs/")->to_app;
 
   mount "/providers" => builder {
-    enable 'CrossOrigin', origins => '*', methods => '*', headers => '*';
+    enable $cors;
     enable JSONP;
     sub { $noembed->providers_response };
   };
 
   mount "/embed" => builder {
-    enable 'CrossOrigin', origins => '*', methods => '*', headers => '*';
+    enable $cors;
     enable JSONP;
     $noembed->to_app;
   };

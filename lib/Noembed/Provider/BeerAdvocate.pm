@@ -21,13 +21,17 @@ sub prepare_provider {
 
       for my $a ($e->find("a")) {
         my $href = $a->attr("href");
-        $a->attr(href => $base.$href);
+        if ($href !~ m{^(https?:)?//}) {
+          $a->attr(href => $base.$href);
+        }
         $a->attr(target => "_blank");
       }
 
       for my $img ($e->find("img")) {
         my $src = $img->attr("src");
-        $img->attr(src => $base.$src);
+        if ($src !~ m{^(https?:)?//}) {
+          $img->attr(src => $base.$src);
+        }
       }
 
       clean_html($e->as_HTML);

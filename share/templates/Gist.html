@@ -3,7 +3,7 @@
 ? if ($gist->{description}) {
   <h2 class="gist-description">
     <? if ($gist->{user}{login}) { ?>
-      <a href="<?= $gist->{user}{url} ?>" class="gist-user" target="_blank"><?= $gist->{user}{login} ?></a>
+      <a href="<?= $gist->{user}{html_url} ?>" class="gist-user" target="_blank"><?= $gist->{user}{login} ?></a>
     <? } ?>
     <a href="<?= $gist->{html_url} ?>" target="_blank"><?= $gist->{description} ?></a>
   </h2>
