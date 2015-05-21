@@ -8,7 +8,7 @@ use parent 'Noembed::Provider';
 
 sub patterns {
   'https?://www\.nooledge\.com/\!/Vid/.+',
-  'https?://v\.nldg\.me/([a-zA-Z0-9_-\.]+)'
+  'https?://v\.nldg\.me/([a-zA-Z0-9_-.]+)'
 }
 
 sub provider_name { "Nooledge" }
