@@ -3,6 +3,7 @@ package Noembed::Util;
 use Encode;
 use JSON ();
 use AnyEvent::HTTP ();
+use AnyEvent::Fork;
 use Text::MicroTemplate ();
 use HTML::TreeBuilder;
 use constant IS_EV => (AnyEvent::detect() eq 'AnyEvent::Impl::EV');
