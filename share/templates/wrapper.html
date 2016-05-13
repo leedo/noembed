@@ -5,10 +5,9 @@
 
 <div class="noembed-embed ">
   <div class="noembed-wrapper">
-    <?= Noembed::Util::html($res->{html}) ?>
+    <?= Noembed::Util->html($res->{html}) ?>
     <table class="noembed-meta-info">
       <tr>
-        <td class="favicon"><img src="https://noembed.com/favicon/<?= $provider->filename("png") ?>"></td>
         <td><?= $provider->provider_name ?></td>
         <td align="right">
           <a title="<?= $res->{url} ?>" href="<?= $res->{url} ?>"><?= $truncated ?></a>

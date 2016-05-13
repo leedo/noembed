@@ -21,7 +21,7 @@ sub serialize {
   my ($self, $body, $req) = @_;
 
   my $data = $self->{scraper}->scrape($body);
-  $data->{url} = $req->content_url;
+  $data->{url} = $req->url;
   $data->{url} =~ s/www\.ted\.com/embed\.ted\.com/;
 
   return {

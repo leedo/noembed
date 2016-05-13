@@ -20,19 +20,14 @@ sub prepare_provider {
 sub patterns { 'https?://open\.spotify\.com/(track|album)/([0-9a-zA-Z]{22})' }
 sub provider_name { "Spotify" }
 
-sub post_download {
-  my ($self, $body, $req, $cb) = @_;
-  my $data = $self->{scraper}->scrape($body);
-  $req->http_get($data->{musician}, sub {
-    my ($body, $headers) = @_;
-    my $artist = $self->{artist_scraper}->scrape($body); 
-    $data->{artist} = $artist->{name};
-    $cb->($data);
-  });
-}
-
 sub serialize {
-  my ($self, $data, $req) = @_;
+  my ($self, $body, $req) = @_;
+
+  my $data = $self->{scraper}->scrape($body);
+
+  my $res = Noembed::Util->http_get($data->{musician});
+  my $artist = $self->{artist_scraper}->scrape($res->decoded_content); 
+  $data->{artist} = $artist->{name};
 
   return +{
     title => $data->{title} . " by " . $data->{artist},

@@ -15,25 +15,13 @@ sub new {
   croak "render is required" unless defined $self->{render};
 
   $self->prepare_provider;
-  $self->{image_prefix} = "https://noembed.com/i/";
+
   $self->{patterns} = [ map {qr{^$_}i} $self->patterns ];
-  *{$class.'::html'} = *Noembed::Util::html;
-  *{$class.'::clean_html'} = *Noembed::Util::clean_html;
 
   return $self;
 }
 
 sub prepare_provider { }
-
-sub pre_download {
-  my ($self, $req, $cb) = @_;
-  $cb->($req);
-}
-
-sub post_download {
-  my ($self, $body, $req, $cb) = @_;
-  $cb->($body);
-}
 
 sub filename {
   my ($self, $ext) = @_;
@@ -48,7 +36,7 @@ sub render {
 
 sub build_url {
   my ($self, $req) = @_;
-  return $req->content_url;
+  return $req->url;
 }
 
 sub rewrite_images {
@@ -126,7 +114,7 @@ sub matches {
 }
 
 sub finalize {
-  my ($self, $body, $req) = @_;
+  my ($self, $req, $res) = @_;
 
   my $data = {
     title => $req->url,
@@ -134,7 +122,7 @@ sub finalize {
     url => $req->url,
     type  => "rich",
     # overrides the above properties
-    %{ $self->serialize($body, $req) },
+    %{ $self->serialize($res->decoded_content, $req) },
   };
 
   $data->{html} = $self->rewrite_images($data->{html});
@@ -143,162 +131,3 @@ sub finalize {
 }
 
 1;
-
-=pod
-
-=head1 NAME
-
-Noembed::Provider - a base class for embeddable Noembed sources
-
-=head1 DESCRIPTION
-
-This is a base class that is meant to be extended to create Noembed
-sources.  There are a few methods that need to be overridden for
-it to be usable.
-
-=head1 METHODS
-
-=head2 REQUIRED
-
-=over 4
-
-=item patterns
-
-Must return a list of strings that can be compiled into valid regular
-expressions. e.g. C<"http://www\.google\.com/.+">
-
-=item provider_name
-
-Must return the name of the provider. e.g. C<Google>
-
-=item serialize ($body, $req)
-
-Receives the downloaded content and embed request. This must
-return a hash reference containing C<html> and C<title> keys.
-Additional key/value pairs will be included in the JSON response
-to the client.
-
-=back
-
-=head2 OPTIONAL
-
-=over 4
-
-=item prepare_provider
-
-A convenience method called when noembed starts. Use it to set up
-your source (e.g. build a C<Web::Scraper> attribute.)
-
-=item build_url ($req)
-
-This method should return the URL to be downloaded. It can return
-either a string or URI object. By default it returns the URL provided
-in the embed request.
-
-=item shorturls
-
-Like C<patterns>, this must return a list of strings that can be
-compiled into valid regular expressions. If a URL matches one of
-these patterns Noembed will resolve it and handle new URL.
-
-=item options
-
-Can return a list of parameter names that will be included with the
-final content URL request. One useful example of this is in C<autoplay>
-option for L<Noembed::Provider::YouTube|YouTube>.
-
-=back
-
-=head2 HOOKS
-
-=over 4
-
-=item pre_download ($req, $callback)
-
-Use this hook to run asynchronous code before the content URL is
-downloaded. This can be useful if you need to make additional HTTP
-requests to determine the final content url. Note: you B<must> call
-the callback, or the client request will hang indefinitely.
-
-In this example from L<Noembed::Provider::Facebook> source the user's
-ID is required to build the final URL.  C<Noembed::Util::http_get>
-is used to fetch the user's profile info.
-
-  sub pre_download {
-    my ($self, $req, $cb) = @_;
-    my $profile = "https://graph.facebook.com/".$req->captures->[0];
-
-    Noembed::Util::http_get $profile, sub {
-      my ($body, $headers) = @_;
-      my $data = decode_json $body;
-      $req->content_url("https://graph.facebook.com/$data->{id}_".$req->captures->[1]);
-      $cb->($req);
-    };
-  }
-
-=item post_download ($body, $req, $callback)
-
-Use this hook to run asynchronous code after the content is downloaded,
-but before the serialize method is called.
-
-This example from L<Noembed::Provider::Gist> uses C<Noembed::Util::colorize>
-to asynchronously syntax highlight the returned files. The provided
-callback is run only after all the files have been highlighted.
-
-  sub post_download {
-    my ($self, $body, $req, $cb) = @_;
-    my $gist = from_json $body;
-    my $cv = AE::cv;
-
-    for my $file (values %{$gist->{files}}) {
-      $cv->begin;
-
-      Noembed::Util::colorize $file->{content},
-        language => lc $file->{language},
-        filename => lc $file->{filename},
-        sub {
-          my $colorized = shift;
-          $file->{content} = html($colorized);
-          $cv->end;
-        };
-    }
-
-    $cv->cb(sub {$cb->($gist)});
-  }
-
-=back
-
-=head1 HTML TEMPLATES AND STYLESHEETS
-
-This class also provides a render method. This method will search
-for a template in C<./share/templates/> that matches the name of
-the class (e.g. C<Google.pm> -> C<Google.html>). The render method
-will pass arguments onto the template. See L<Text::MicroTemplate>
-for template basics.
-
-  package Noembed::Provider::Dictionary;
-
-  ...
-
-  sub serialize {
-    my ($self, $content) = @_;
-    my $data = from_json $content;
-
-    # render ./share/templates/Dictionary.html template,
-    # passing in $data
-    return {
-      html  => $self->render($data),
-      title => $data->{title},
-    };
-  }
-
-If you create a similarly named stylesheet (C<Google.pm> ->
-C<Google.css>) in C<./share/styles/>, it will automatically be
-included in the C</noembed.css> file.
-
-=head1 SEE ALSO
-
-L<Noembed::Provider::Gist>, L<Noembed::Provider::Facebook>,
-L<Noembed::Provider::Wikipedia>
-
-=cut

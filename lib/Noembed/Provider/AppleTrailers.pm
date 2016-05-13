@@ -16,8 +16,8 @@ sub prepare_provider {
 sub provider_name { "iTunes Movie Trailers" }
 sub patterns { 'http://trailers\.apple\.com/trailers/[^/]+/[^/]+' }
 
-sub post_download {
-  my ($self, $body, $req, $callback) = @_;
+sub serialize {
+  my ($self, $body, $req) = @_;
 
   my $data = $self->{scraper}->scrape($body);
   die "can not find title" unless $data->{title};
@@ -25,19 +25,13 @@ sub post_download {
   my ($path) = $body =~ /trailerURL\s*=\s*'([^']+)'/;
   die "can not find path" unless $path;
 
+  my $res = Noembed::Util->http_get($url);
+  my $src = $self->{scraper}->scrape($res->decoded_content);
+  die "can not find movie src" unless $src->{src};
+  $data->{src} = $src->{src};
+
   my $url = "http://trailers.apple.com/$path/includes/trailer/large.html";
 
-  $req->http_get($url, sub {
-    my ($body, $headers) = @_;
-    my $src = $self->{scraper}->scrape($body);
-    die "can not find movie src" unless $src->{src};
-    $data->{src} = $src->{src};
-    $callback->($data);
-  });
-}
-
-sub serialize {
-  my ($self, $data, $req) = @_;
   my ($title) = $data->{title} =~ /(.+) - Movie Trailers/;
   return {
     title => $title,

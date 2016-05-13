@@ -49,7 +49,7 @@ sub serialize {
     title  => $item->{ItemAttributes}{Title},
     price  => $item->{OfferSummary}{LowestNewPrice}{FormattedPrice},
     group  => $item->{ItemAttributes}{ProductGroup},
-    review => clean_html($item->{EditorialReviews}{EditorialReview}[0]{Content}),
+    review => Noembed::Util->clean_html($item->{EditorialReviews}{EditorialReview}[0]{Content}),
     image  => $item->{ImageSets}{ImageSet}[0]{TinyImage},
     url    => $item->{DetailPageURL},
   };

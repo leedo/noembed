@@ -1,6 +1,5 @@
 package Noembed::Provider::Github;
 
-use AnyEvent;
 use JSON;
 
 use parent "Noembed::Provider";
@@ -15,32 +14,20 @@ sub build_url {
   return "https://api.github.com/repos/$user/$repo/commits/$hash";
 }
 
-sub post_download {
-  my ($self, $body, $req, $cb) = @_;
+sub serialize {
+  my ($self, $body, $req) = @_;
+
   my $commit = from_json $body;
-  my $cv = AE::cv;
 
   die "no files" unless @{$commit->{files}};
 
   for my $file (@{$commit->{files}}) {
-    $cv->begin;
-
-    $req->colorize($file->{patch},
-      lexer => "diff",
-      sub {
-        $file->{patch} = html($_[0]);
-        $cv->end;
-      }
-    );
+    my $colorized = Noembed::Util->colorize($file->{patch});
+    $file->{patch} = Noembed::Util->html($colorized);
   }
 
-  $cv->cb(sub {$cb->($commit)});
-}
-
-sub serialize {
-my ($self, $commit) = @_;
-
   my $message = (split "\n", $commit->{commit}{message})[0];
+
   return +{
     html => $self->render($commit),
     title => "$message by $commit->{commit}{author}{name}",

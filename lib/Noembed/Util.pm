@@ -1,112 +1,73 @@
 package Noembed::Util;
 
 use Encode;
-use JSON ();
-use AnyEvent::HTTP ();
+use JSON::XS ();
+use LWP::UserAgent;
 use Text::MicroTemplate ();
 use HTML::TreeBuilder;
-use constant IS_EV => (AnyEvent::detect() eq 'AnyEvent::Impl::EV');
-use if IS_EV, 'AnyEvent::Fork::Pool';
-use if !IS_EV, 'Noembed::Worker';
+use Noembed::Pygmentize;
 
-my $worker = AnyEvent::Fork
-  ->new
-  ->require("Noembed::Worker")
-  ->AnyEvent::Fork::Pool::run("Noembed::Worker::run") if IS_EV;
-
-# Non-EV loop: Use a synchronous worker
-$worker ||= sub {
-    my $cb = pop;
-    $cb->(Noembed::Worker::_run(@_));
-};
+my $pygmentize = Noembed::Pygmentize->new;
+my $ua = LWP::UserAgent->new(
+  agent => "Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/419.3 (KHTML, like Gecko) Safari/419.3"
+);
 
 sub http_get {
-  my $cb = pop;
-  my ($url, @options) = @_;
+  my ($class, $url, @options) = @_;
 
-  die "no callback" unless $cb;
+  my $res = $ua->get($url);
 
-  AnyEvent::HTTP::http_request get => $url,
-    persistent => 0,
-    keepalive  => 0,
-    timeout    => 15,
-    @options,
-    sub {
-      my ($body, $headers) = @_;
-
-      if ($headers->{'content-type'} =~ /^text\//i) {
-        $body = decode("utf8", $body);
-      }
-      $cb->($body, $headers);
-    };
+  return $res;
 }
 
 sub http_resolve {
-  my ($url, $cb) = @_;
+  my ($class, $url, $cb) = @_;
 
-  Noembed::Util::http_get $url, recurse => 0, sub {
-    my ($body, $headers) = @_;
+  my $res = Noembed::Util->http_get($url);
 
-    if ($headers->{location}) {
-      $url = $headers->{location};
-    }
+  if ($res->header("location")) {
+    $url = $res->header->("location");
+  }
 
-    $cb->($url);
-  };
+  return $url;
 }
 
 sub dimensions {
-  my ($url, $req, $cb) = @_;
+  my ($class, $url, $req) = @_;
 
   my $maxw = $req->parameters->{maxwidth};
   my $maxh = $req->parameters->{maxheight};
 
-  Noembed::Util::http_get $url, sub {
-    my ($body, $headers) = @_;
-    if ($headers->{Status} == 200) {
-      $worker->(dimensions => $body, sub {
-        my $success = shift;
-        if (!$success) {
-          undef $cb;
-          return $req->error(shift);
-        }
+  my $res = Noembed::Util->http_get($url);
 
-        my ($w, $h) = @_;
-        if ($maxh and $h > $maxh) {
-          $w = $w * ($maxh / $h);
-          $h = $maxh;
-        }
-        if ($maxw and $w > $maxw) {
-          $h = $h * ($maxw / $w);
-          $w = $maxw;
-        }
-        $cb->(int($w), int($h));
-      });
+  if ($res->code == 200) {
+    my $image = Imager->new(data => $res->content);
+    my ($w, $h) = ($image->getwidth, $image->getheight);
+
+    if ($maxh and $h > $maxh) {
+      $w = $w * ($maxh / $h);
+      $h = $maxh;
     }
-    else {
-      $cb->("", "");
+    if ($maxw and $w > $maxw) {
+      $h = $h * ($maxw / $w);
+      $w = $maxw;
     }
-  };
+    return(int($w), int($h));
+  }
 }
 
 sub colorize {
-  my $cb = pop;
-  my ($text, $req, %options) = @_;
-  $worker->(colorize => $text, %options, sub {
-    my $success = shift;
-    if (!$success) {
-      undef $cb;
-      return $req->error(shift);
-    }
-    $cb->(shift);
-  });
+  my ($class, $text, %options) = @_;
+  return Noembed::Util->html($pygmentize->colorize($text, %options));
 }
 
 sub html {
-  Text::MicroTemplate::encoded_string($_[0]);
+  my $class = shift;
+  Text::MicroTemplate::encoded_string(shift);
 }
 
 sub clean_html {
+  my $class = shift;
   my $html = shift;
   my $tree = HTML::TreeBuilder->new_from_content(\$html);
   return "" unless $tree;
@@ -125,96 +86,7 @@ sub clean_html {
   $html = $tree->as_HTML;
   $tree->delete;
 
-  html($html);
-}
-
-sub json_res {
-  my ($data, @headers) = @_;
-  my $body = JSON::encode_json $data;
-
-  [
-    200,
-    [
-      @headers,
-      'Content-Type', 'text/javascript; charset=utf-8',
-      'Content-Length', length $body
-    ],
-    [$body]
-  ];
+  Noembed::Util->html($html);
 }
 
 1;
-
-=pod
-
-=head1 NAME
-
-Noembed::Util - useful functions for Noembed
-
-=head1 DESCRIPTION
-
-This package includes a number of functions that are used throughout L<Noembed>.
-Many of these are asynchronous and accept a callback as the last argument.
-
-=head1 FUNCTIONS
-
-=over 4
-
-=item http_get ($url, %options, $callback)
-
-Download a URL and call the callback when it is completed. See
-L<AnyEvent::HTTP> for a list of options.
-
-  Noembed::Util::http_get $url, sub {
-    my ($body, $headers) = @_;
-    if ($headers->{Status} == 200) {
-      ... do some work.
-    }
-  };
-
-=item http_resolve ($url, $callback)
-
-Determine what location, if any, a URL redirects to.
-
-  Noembed::Util::http_resolve "http://bit.ly/abcd", sub {
-    my $resolved = shift;
-    ... do some work.
-  };
-
-=item colorize ($text, %options, $callback)
-
-Syntax highlight a block of text. Valid options include: C<language>,
-C<filename>. See L<Noembed::Pygmentize> for more options.
-
-=item dimensions ($image_url, [$request,] $callback)
-
-Download an image url and determine the height and width. If a
-L<Noembed::Request> object is included this will check for the
-C<maxwidth> and C<maxheight> parameters and scale down the dimensions
-based on these limits.
-
-=item html ($text)
-
-Returns a version of C<$text> that will not be automatically escaped 
-when used inside a template.
-
-=item clean_html ($text)
-
-Similar to the C<html> function, but strips out any potential
-scripts.  That includes C<script> tags, event handlers such as
-C<onclick> or C<href="javascript:...">. B<Currently, this does not
-preserve all white space.>
-
-=item json_res ($hashref or $arrayref)
-
-Accepts either a hash or array reference and returns a valid PSGI
-response. The response will have a C<text/javascript> Content-Type
-and the correct Content-Length set.
-
-=back
-
-=head1 SEE ALSO
-
-L<Noembed::Pygmentize>, L<Noembed::Imager>
-
-=cut

@@ -1,5 +1,5 @@
 ? my $provider = shift;
 
 <div class="noembed-embed-inner noembed-<?= lc $provider->filename ?>">
-  <?= Noembed::Util::html($_[0]->{html}) ?>
+  <?= Noembed::Util->html($_[0]->{html}) ?>
 </div>

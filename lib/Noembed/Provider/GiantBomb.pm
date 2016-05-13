@@ -26,19 +26,19 @@ sub provider_name { "GiantBomb" }
 sub options { qw/maxwidth maxheight autoplay/}
 sub patterns { 'https?://www\.giantbomb\.com/videos/[^/]+/\d+-\d+/?' }
 
-sub pre_download {
-  my ($self, $req, $cb) = @_;
+sub build_url {
+  my ($self, $req) = @_;
 
-  $req->http_get($req->url, sub {
-    my ($body, $headers) = @_;
-    if ($headers->{Status} == 200) {
-      my $video = $self->{scraper}->scrape($body);
-      my $uri = URI->new("https://www.youtube.com/oembed/");
-      $uri->query_param("url", "https://www.youtube.com/watch?v=$video->{video}{youtubeID}");
-      $req->content_url($uri);
-    }
-    $cb->($req);
-  });
+  my $res = Noembed::Util->http_get($req->url);
+
+  if ($res->code == 200) {
+    my $video = $self->{scraper}->scrape($res->decoded_content);
+    my $uri = URI->new("https://www.youtube.com/oembed/");
+    $uri->query_param("url", "https://www.youtube.com/watch?v=$video->{video}{youtubeID}");
+    return $uri;
+  }
+
+  return $req->url;
 }
 
 1;

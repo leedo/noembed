@@ -8,7 +8,7 @@ use JSON;
 sub prepare_provider {
   my $self = shift;
   $self->{tweet_api} = "http://api.twitter.com/1.1/statuses/show/%s.json?include_entities=true";
-  $self->{credentials} = Noembed::Provider::Twitter::read_credentials();
+  $self->{credentials} = Noembed::Provider::Twitter::read_credentials($self);
 }
 
 sub provider_name { "Twitter" }

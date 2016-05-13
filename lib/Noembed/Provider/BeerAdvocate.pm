@@ -34,7 +34,7 @@ sub prepare_provider {
         }
       }
 
-      clean_html($e->as_HTML);
+      Noembed::Util->clean_html($e->as_HTML);
     };
   };
 }

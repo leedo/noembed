@@ -83,7 +83,7 @@ sub extract_text_content {
     $el = $el->right;
   }
 
-  return $self->render(summary => clean_html($output));
+  return $self->render(summary => Noembed::Util->clean_html($output));
 }
 
 1;

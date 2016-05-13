@@ -1,6 +1,5 @@
 package Noembed::Provider::Gist;
 
-use AnyEvent;
 use JSON;
 
 use parent 'Noembed::Provider';
@@ -13,31 +12,19 @@ sub build_url {
   return "https://api.github.com/gists/".$req->captures->[0];
 }
 
-sub post_download {
-  my ($self, $body, $req, $cb) = @_;
+sub serialize {
+  my ($self, $body, $req) = @_;
+
   my $gist = from_json $body;
-  my $cv = AE::cv;
 
   die "no files" unless %{$gist->{files}};
 
   for my $file (values %{$gist->{files}}) {
-    $cv->begin;
-
-    $req->colorize($file->{content},
+    $file->{content} = Noembed::Util->colorize($file->{content},
       language => lc $file->{language},
       filename => lc $file->{filename},
-      sub {
-        $file->{content} = html($_[0]);
-        $cv->end;
-      }
     );
   }
-
-  $cv->cb(sub {$cb->($gist)});
-}
-
-sub serialize {
-  my ($self, $gist) = @_;
 
   return +{
     title => ($gist->{description} || $gist->{html_url}) . ($gist->{user} ? " by $gist->{user}{login}" : ""),

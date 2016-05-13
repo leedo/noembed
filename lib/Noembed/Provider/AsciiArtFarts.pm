@@ -19,7 +19,7 @@ sub provider_name { "ASCII Art Farts" }
 sub serialize {
   my ($self, $body) = @_;
   my $data = $self->{scraper}->scrape($body);
-  $data->{art} = html($data->{art});
+  $data->{art} = Noembed::Util->html($data->{art});
   return +{
     html => $self->render($data),
     title => $data->{title},

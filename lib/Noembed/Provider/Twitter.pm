@@ -1,7 +1,6 @@
 package Noembed::Provider::Twitter;
 
 use JSON;
-use AnyEvent;
 use Net::OAuth::ProtectedResourceRequest;
 use Digest::SHA1;
 
@@ -11,11 +10,12 @@ sub prepare_provider {
   my $self = shift;
   $self->{name_re} = qr{(?:^|\W)(@[^\s:]+)};
   $self->{tweet_api} = "https://api.twitter.com/1.1/statuses/show/%s.json?include_entities=true";
-  $self->{credentials} = read_credentials();
+  $self->{credentials} = $self->read_credentials;
 }
 
 sub read_credentials {
-  my $file = Noembed::share_dir() . "/twitter_cred.json";
+  my $self = shift;
+  my $file = $self->{share_dir} . "/twitter_cred.json";
   local $/;
   open(my $fh, "<", $file)
     or die "can not read twitter credentials: $file";
@@ -69,7 +69,7 @@ sub expand_entities {
     $tweet->{text} =~ s/\Q$url->{url}\E/$html/g;
   }
 
-  $tweet->{$_} = clean_html($tweet->{$_}) for qw/source text/;
+  $tweet->{$_} = Noembed::Util->clean_html($tweet->{$_}) for qw/source text/;
   return $tweet;
 }
 

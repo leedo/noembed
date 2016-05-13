@@ -24,7 +24,7 @@ sub serialize {
 
   return +{
     title => "Quote #$number",
-    html => $self->render(html($data->{quote})),
+    html => $self->render(Noembed::Util->html($data->{quote})),
   };
 }
 

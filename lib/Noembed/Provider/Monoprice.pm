@@ -25,7 +25,7 @@ sub serialize {
     die "missing $_" unless defined $data->{$_};
   }
 
-  $data->{pricing} = html($data->{pricing});
+  $data->{pricing} = Noembed::Util->html($data->{pricing});
 
   return +{
     html => $self->render($data),

@@ -1,29 +1,24 @@
 package Noembed::ImageProvider;
 
+use Noembed::Util;
+
 use parent 'Noembed::Provider';
 
-sub post_download {
-  my ($self, $body, $req, $cb) = @_;
+sub serialize {
+  my ($self, $body) = @_;
 
-  my $data = $self->image_data($body, $req);
+  my $data = $self->image_data($body);
   die "No image found" unless $data->{src};
 
   my $maxw = $req->parameters->{maxwidth} || 0;
   my $maxh = $req->parameters->{maxheight} || 0;
 
-  my $prefix = join "/", "https://noembed.com/i", $maxw, $maxh;
+  my $prefix = join "/", $self->{image_prefix}, $maxw, $maxh;
   $data->{src} = "$prefix/$data->{src}";
 
-  $req->dimensions($data->{src}, sub {
-    my ($w, $h) = @_;
-    $data->{width} = $w;
-    $data->{height} = $h;
-    $cb->($data);
-  });
-}
-
-sub serialize {
-  my ($self, $data, $req) = @_;
+  my ($w, $h) = $req->dimensions($data->{src});
+  $data->{width} = $w;
+  $data->{height} = $h;
 
   return +{
     type   => "photo",
@@ -36,17 +31,9 @@ sub serialize {
   };
 }
 
-sub finalize {
-  my ($self, $body, $req) = @_;
-
-  return +{
-    title => $req->url,
-    provider_name => $self->provider_name,
-    url => $req->url,
-    type  => "rich",
-    # overrides the above properties
-    %{ $self->serialize($body, $req) },
-  };
+sub rewrite_images {
+  my ($self, $html) = @_;
+  return $html;
 }
 
 sub filename {
