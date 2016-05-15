@@ -16,3 +16,10 @@ requires "Digest::SHA1";
 requires "Plack::Middleware::ReverseProxy";
 requires "LWP::Protocol::https";
 requires "Imager";
+
+on 'test' => sub {
+  requires "Test::Fatal";
+  requires "Test::More";
+  requires "URI::Escape";
+  requires "HTTP::Message::PSGI";
+};
