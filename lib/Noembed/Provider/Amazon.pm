@@ -9,7 +9,7 @@ use JSON;
 sub prepare_provider {
   my $self = shift;
   $self->{secret} = do {
-    my $file = "$ENV{HOME}/.aws_secret";
+    my $file = $self->{share_dir} . "/aws_cred.json";
     open my $fh, '<', $file or die "can not read aws credentials: $file";
     local $/;
     my $json = <$fh>;
