@@ -83,8 +83,15 @@ sub handle_url {
   die "url parameter is required" unless $req->url;
 
   if ($self->is_shorturl($req->url)) {
-    my $url = Noembed::Util->resolve_shorturl($req->url);
-    $req->url($url);
+    my $redirect = $last_url = $req->url;
+    my $redirects = 0;
+
+    do {
+      $last_url = $redirect;
+      $redirect = Noembed::Util->http_resolve($redirect);
+    } while ($redirects++ < 7 and $last_url ne $redirect);
+
+    $req->url($redirect);
   }
  
   if (my $provider = $self->find_provider($req)) {

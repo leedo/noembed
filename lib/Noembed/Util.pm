@@ -10,24 +10,32 @@ use Imager;
 
 my $pygmentize = Noembed::Pygmentize->new;
 my $ua = LWP::UserAgent->new(
-  agent => "Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/419.3 (KHTML, like Gecko) Safari/419.3"
+  agent => "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36",
 );
 
 sub http_get {
-  my ($class, $url, @options) = @_;
+  my ($class, $url) = @_;
 
+  $ua->requests_redirectable(["GET"]);
   my $res = $ua->get($url);
 
   return $res;
 }
 
 sub http_resolve {
-  my ($class, $url, $cb) = @_;
+  my ($class, $url) = @_;
 
-  my $res = Noembed::Util->http_get($url);
+  my $uri = URI->new($url);
+
+  $ua->requests_redirectable(undef);
+  my $res = $ua->head($url);
 
   if ($res->header("location")) {
-    $url = $res->header->("location");
+    $url = $res->header("location");
+    if ($url !~ m{^https?://}) {
+      $uri->path_query($url);
+      $url = $uri->as_string;
+    }
   }
 
   return $url;
