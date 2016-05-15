@@ -453,6 +453,49 @@ DISTRIBUTIONS
       IPC::Signal 1.00
     requirements:
       ExtUtils::MakeMaker 0
+  Imager-1.005
+    pathname: T/TO/TONYC/Imager-1.005.tar.gz
+    provides:
+      Imager 1.005
+      Imager::Color 1.012
+      Imager::Color::Float 1.005
+      Imager::Color::Table 1.003
+      Imager::CountColor 0.02
+      Imager::Expr 1.006
+      Imager::Expr::Assem 1.003
+      Imager::Expr::Infix 1.006
+      Imager::Expr::Postfix 1.006
+      Imager::ExtUtils 1.002
+      Imager::FORMATS 1.005
+      Imager::File::CUR undef
+      Imager::File::ICO 0.05
+      Imager::File::SGI 0.03
+      Imager::Fill 1.012
+      Imager::Filter::DynTest 0.02
+      Imager::Filter::Flines 0.03
+      Imager::Filter::Mandelbrot 0.04
+      Imager::Font 1.038
+      Imager::Font::BBox 1.006
+      Imager::Font::FreeType2 1.020
+      Imager::Font::Image undef
+      Imager::Font::Test 1.0001
+      Imager::Font::Truetype 1.012
+      Imager::Font::Type1 1.012
+      Imager::Font::Wrap 1.004
+      Imager::Fountain 1.007
+      Imager::IO 1.005
+      Imager::Matrix2d 1.012
+      Imager::Preprocess 1.001
+      Imager::Probe 1.005
+      Imager::Regops undef
+      Imager::Test 1.003
+      Imager::Test::OverUtf8 1.003
+      Imager::Transform 1.006
+    requirements:
+      ExtUtils::MakeMaker 0
+      Scalar::Util 1
+      Test::More 0.99
+      XSLoader 0
   JSON-XS-3.02
     pathname: M/ML/MLEHMANN/JSON-XS-3.02.tar.gz
     provides:

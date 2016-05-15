@@ -6,6 +6,7 @@ use LWP::UserAgent;
 use Text::MicroTemplate ();
 use HTML::TreeBuilder;
 use Noembed::Pygmentize;
+use Imager;
 
 my $pygmentize = Noembed::Pygmentize->new;
 my $ua = LWP::UserAgent->new(

@@ -5,7 +5,7 @@ use Noembed::Util;
 use parent 'Noembed::Provider';
 
 sub serialize {
-  my ($self, $body) = @_;
+  my ($self, $body, $req) = @_;
 
   my $data = $self->image_data($body);
   die "No image found" unless $data->{src};
@@ -16,7 +16,7 @@ sub serialize {
   my $prefix = join "/", $self->{image_prefix}, $maxw, $maxh;
   $data->{src} = "$prefix/$data->{src}";
 
-  my ($w, $h) = $req->dimensions($data->{src});
+  my ($w, $h) = Noembed::Util->dimensions($data->{src}, $req);
   $data->{width} = $w;
   $data->{height} = $h;
 

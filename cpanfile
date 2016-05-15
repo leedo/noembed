@@ -15,3 +15,4 @@ requires "Net::OAuth::ProtectedResourceRequest";
 requires "Digest::SHA1";
 requires "Plack::Middleware::ReverseProxy";
 requires "LWP::Protocol::https";
+requires "Imager";
