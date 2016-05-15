@@ -88,7 +88,7 @@ sub clean_html {
   $tree->look_down(sub {
     my $elem = shift;
     my %attr = $elem->all_external_attr;
-    $elem->attr($_, undef) for grep {/^on/i or $attr{$_} =~ /^javascript:/i} keys %attr;
+    $elem->attr($_, undef) for grep {/^on/i or $attr{$_} =~ /^javascript:/i} sort keys %attr;
     return ();
   });
 

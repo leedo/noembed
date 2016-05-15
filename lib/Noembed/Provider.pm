@@ -55,7 +55,7 @@ sub rewrite_images {
         sub {
           if ($_[0] eq "img") {
             $_[1]->{src} = $self->{image_prefix} . $_[1]->{src};
-            my $attr = join " ", map {"$_=\"$_[1]->{$_}\""} keys %{$_[1]};
+            my $attr = join " ", map {"$_=\"$_[1]->{$_}\""} sort keys %{$_[1]};
             $html .= "<$_[0] $attr>"
           }
           else {

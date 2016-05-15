@@ -3,8 +3,8 @@
 use strict;
 use warnings;
 
-use Noembed;
 use Noembed::Util;
+use File::Path qw/make_path/;
 use Digest::SHA1 qw/sha1_hex/;
 use Plack::Test;
 use URI::Escape;
@@ -28,38 +28,56 @@ my @urls = qw{
 
 my $orig = \&Noembed::Util::http_get;
 local *Noembed::Util::http_get = sub {
-  my $cb = pop;
-  my $url = shift;
+  my ($class, $url) = @_;
   my $hash = sha1_hex $url;
 
-  $orig->($url, @_, sub {
-    my ($body, $headers) = @_;
-    open my $fh, ">", "t/data/requests/$hash";
-    print $fh encode_json [ $body, $headers ];
-    $cb->($body, $headers)
-  });
+  my $res = $orig->($class, $url);
+  make_path "t/data/responses/$hash";
+
+  open my $head_fh, ">", "t/data/responses/$hash/head" or die $!;
+  print $head_fh encode_json [
+    $res->code,
+    $res->message,
+    [ $res->flatten ],
+  ];
+
+  open my $body_fh, ">", "t/data/responses/$hash/body" or die $!;
+  binmode($body_fh);
+  print $body_fh $res->content;
+
+  return $res;
 };
 
 local $ENV{PLACK_SERVER} = 'Twiggy';
 local $Plack::Test::Impl = 'Server';
 
-my $app = Noembed->new->to_app;
+my $app = do "bin/noembed.psgi";
 
 test_psgi $app, sub {
   my $cb = shift;
 
   for my $url (@urls) {
-    print "generating test - $url\n";
+    print "==\ngenerating test - $url\n";
 
-    my $res = $cb->(GET "/?url=" . uri_escape($url));
+    my $res = $cb->(GET "/embed?url=" . uri_escape($url));
 
-    next unless $res->code == 200;
+    if ($res->code != 200) {
+      warn $res->status_line;
+      next;
+    }
 
-    my $data = decode_json $res->content;
+    my $data = decode_json $res->decoded_content;
+
+    if (defined $data->{error}) {
+      warn $data->{error};
+      next;
+    }
+
     my $provider = lc $data->{provider_name};
     $provider =~ s/ /_/g;
 
-    open my $test, ">:utf8", "t/data/$provider.t";
+    open my $test, ">", "t/data/$provider.t";
+    binmode($test);
     print $test $url, "\n", $res->content;
   }
 };

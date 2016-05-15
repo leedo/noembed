@@ -22,4 +22,5 @@ on 'test' => sub {
   requires "Test::More";
   requires "URI::Escape";
   requires "HTTP::Message::PSGI";
+  requires "File::Path";
 };

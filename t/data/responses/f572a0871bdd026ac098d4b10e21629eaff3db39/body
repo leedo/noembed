@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html class="ie ie6" xml:lang="en-US" lang="en-US"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7" xml:lang="en-US" lang="en-US"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8" xml:lang="en-US" lang="en-US"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9" xml:lang="en-US" lang="en-US"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="" xml:lang="en-US" lang="en-US"> <!--<![endif]-->
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="pics-label" content='(pics-1.1 "http://www.icra.org/ratingsv02.html" l gen true for "http://www.apple.com" r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true for "http://www.apple.com" r (n 0 s 0 v 0 l 0))' />
+<meta name="Author" content="Apple Inc." />
+<meta name="viewport" content="width=device-height" />
+
+	<title>Rampart - Movie Trailers - iTunes</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+	<meta name="omni_page" content="Movie Trailers - Rampart" />
+	<meta name="Category" content="downloads,trailers" />
+	<meta property="og:title" content="Rampart - Movie Trailers - iTunes" />
+	<meta property="og:description" content="Los Angeles, 1999. Officer Dave Brown (two-time Academy Award(R) nominee Woody Harrelson) is a Vietnam vet and a Rampart Precinct cop, dedicated to doing &quot;the people's dirty work&quot; and asserting his own code of justice, often blurring the lines between right and wrong to maintain his action-hero state of mind.  When he gets caught on tape beating a suspect, he finds himself in a personal and emotional downward spiral as the consequences of his past sins and his refusal to change his ways in light of a department-wide corruption scandal seal his fate.  Brown internalizes his fear, anguish and paranoia as his world, complete with two ex-wives who are sisters, two daughters, an aging mentor dispensing bad advice, investigators galore, and a series of seemingly random women, starts making less and less sense.  In the end, what is left is a human being stripped of all his pretense, machismo, chauvinism, arrogance, sexism, homophobia, racism, aggression, misanthropy; but is it enough to redeem him as a man?" />
+	<meta property="og:image" content="https://trailers.apple.com/trailers/independent/rampart/images/poster-large.jpg?lastmod=1" />
+	<meta name="Description" content="Los Angeles, 1999. Officer Dave Brown (two-time Academy Award(R) nominee Woody Harrelson) is a Vietnam vet and a Rampart Precinct cop, dedicated to doing &quot;the people's dirty work&quot; and asserting his own code of justice, often blurring the lines between right and wrong to maintain his action-hero state of mind.  When he gets caught on tape beating a suspect, he finds himself in a personal and emotional downward spiral as the consequences of his past sins and his refusal to change his ways in light of a department-wide corruption scandal seal his fate.  Brown internalizes his fear, anguish and paranoia as his world, complete with two ex-wives who are sisters, two daughters, an aging mentor dispensing bad advice, investigators galore, and a series of seemingly random women, starts making less and less sense.  In the end, what is left is a human being stripped of all his pretense, machismo, chauvinism, arrogance, sexism, homophobia, racism, aggression, misanthropy; but is it enough to redeem him as a man?" />
+	<meta name="apple-itunes-app" content="app-id=471966214, app-argument=movietrailers://movie/detail/4640">
+
+	<!-- Global Styles -->
+<link rel="stylesheet" href="https://trailers.apple.com/trailers/global/v4/styles/site.css" type="text/css" />
+<link rel="stylesheet" href="https://cdn.apple-mapkit.com/mk/2.1.2/mapkit.css">
+<script src="https://cdn.apple-mapkit.com/mk/2.1.2/mapkit.js"></script>
+	
+	<script type="text/javascript" charset="utf-8">
+		var FilmId     = '4640';
+    </script>
+
+</head>
+
+<body class="body-black">
+
+	<div id="metrics">
+    	<div id="top">
+<!-- SiteCatalyst code version: H.8. Copyright 1997-2006 Omniture, Inc. -->
+<script type="text/javascript">
+/* RSID: */
+var s_account="appleglobal,appleustrailers"
+</script>
+<script type="text/javascript" src="https://www.apple.com/metrics/scripts/s_code_h.js"></script>
+<script type="text/javascript">
+s.pageName=AC.Tracking.pageName()+" (us)";
+s.channel="www.us.trailers"
+var cookieVal = s.c_r('trailers_viewType');
+if(cookieVal && cookieVal.match(/text/i)){
+	s.prop3 = 'list view';
+} else if(cookieVal && cookieVal.match(/poster/i)){
+	s.prop3 = 'poster view';
+} else {
+	s.prop3 = 'default view';
+}
+
+s.linkInternalFilters="javascript:,trailers.apple.com/"
+/************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
+var s_code=s.t();if(s_code)document.write(s_code)</script>
+<!-- End SiteCatalyst code version: H.8. -->
+</div>
+
+	</div>
+
+	<noscript><div id="nojs">Please enable JavaScript to view this page properly.</div></noscript>
+<!--[if lt IE 9]>
+<div id="ie6-message">
+	<h2>You are currently using an outdated browser.</h2>
+	<p>Please upgrade to a <a href="http://www.apple.com/safari/">modern browser</a> to fully experience this site.<p>
+</div>
+<![endif]-->
+
+	<header id="header-wrapper" class="top-wrapper"></header>
+
+	<div id="main-wrapper"></div>
+
+	<footer id="globalfooter">
+		<!-- Footer goes here -->
+
+	</footer>
+
+	<script data-main="/trailers/global/v4/scripts/main" src="/trailers/global/v4/scripts/libs/requirejs/require.js?cache=12"></script>
+
+
+</body>
+</html>

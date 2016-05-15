@@ -51,18 +51,21 @@ sub _local_http_get {
   my ($class, $url) = @_;
   my $hash = sha1_hex $url;
 
-  unless (-e "t/data/requests/$hash") {
+  unless (-e "t/data/responses/$hash") {
     return HTTP::Response->new(
       404, "no local copy of this request! use t/bin/gen-tests.pl"
     );
   }
 
-  open my $fh, "<", "t/data/requests/$hash";
-  local $/;
-  my $body = <$fh>;
-  my $body = decode_json $body;
+  open my $head_fh, "<", "t/data/responses/$hash/head";
+  my $head = decode_json join "\n", <$head_fh>;
 
-  return HTTP::Response->new(200, $body);
+  local $/;
+  open my $body_fh, "<", "t/data/responses/$hash/body";
+  binmode($body_fh);
+  my $body = <$body_fh>;
+
+  return HTTP::Response->new(@$head, $body);
 }
 
 1;
