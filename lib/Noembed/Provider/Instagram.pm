@@ -18,7 +18,7 @@ sub image_data {
   $self->{scraper}->scrape($body);
 }
 
-sub patterns { 'https?://instagr(?:\.am|am\.com)/p/.+' }
+sub patterns { 'https?://(?:www\.)?instagr(?:\.am|am\.com)/p/.+' }
 sub provider_name { "Instagram" }
 
 1;
