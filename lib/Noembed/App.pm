@@ -114,8 +114,8 @@ sub download {
     unless ($req->parameters->{nowrap}) {
       $data->{html} = $self->render->("wrapper.html", $provider, $data);
     }
-
-    return json_res($data);
+    my @headers = ("Surrogate-Key", $provider->surrogate_key);
+    return json_res($data, @headers);
   }
   else {
     warn "error processing " . $req->url. " : ". $res->status_line;

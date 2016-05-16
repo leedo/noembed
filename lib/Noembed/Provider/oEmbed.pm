@@ -25,7 +25,7 @@ sub oembed_url {
 sub prepare_provider {
   my $self = shift;
   my $ua = LWP::UserAgent->new;
-  my $res = $ua->get("http://oembed.com/providers.jsons");
+  my $res = $ua->get("http://oembed.com/providers.json");
   my $providers;
 
   if ($res->code == 200) {

@@ -23,6 +23,13 @@ sub new {
 
 sub prepare_provider { }
 
+sub surrogate_key {
+  my $self = shift;
+  my $class = ref($self);
+  $class =~ s/^.*:://g;
+  return lc $class;
+}
+
 sub filename {
   my ($self, $ext) = @_;
   my ($name) = ref($self) =~ /:([^:]+)$/;
