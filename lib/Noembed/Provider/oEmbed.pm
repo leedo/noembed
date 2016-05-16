@@ -46,7 +46,8 @@ sub prepare_provider {
     for my $endpoint (@{ $provider->{endpoints} }) {
       $endpoint->{url} =~ s/\{format\}/json/;
       for my $scheme (@{ $endpoint->{schemes} }) {
-        $scheme =~ s/\*/[^\/]+/g;
+        $scheme =~ s/\*/.+/g;
+        $scheme =~ s/^https?:/https?:/;
         push @PROVIDERS, [qr{$scheme}, $scheme, $endpoint->{url}];
       }
     }
