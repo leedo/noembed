@@ -55,10 +55,14 @@ sub extract_text_content {
   my ($self, $el, $url, $stop) = @_;
   my $output;
   my $badness = qr{editsection|tright|tleft|infobox|mainarticle|navbox|metadata};
+  my $paragraphs = 0;
 
   while ($el) {
     # stop once we hit the stop tag
     last if $stop->($el);
+
+    $paragraphs++ if $el->tag eq "p";
+    last if $paragraphs > 3;
 
     # skip badness
     if ($el->attr('class') =~ $badness) {
