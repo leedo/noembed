@@ -66,7 +66,7 @@ test_psgi $app, sub {
       next;
     }
 
-    my $data = decode_json $res->decoded_content;
+    my $data = decode_json $res->content;
 
     if (defined $data->{error}) {
       warn $data->{error};

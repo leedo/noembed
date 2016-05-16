@@ -8,7 +8,7 @@
     <?= Noembed::Util->html($res->{html}) ?>
     <table class="noembed-meta-info">
       <tr>
-        <td><?= $provider->provider_name ?></td>
+        <td><?= $res->{provider_name} ?></td>
         <td align="right">
           <a title="<?= $res->{url} ?>" href="<?= $res->{url} ?>"><?= $truncated ?></a>
         </td>

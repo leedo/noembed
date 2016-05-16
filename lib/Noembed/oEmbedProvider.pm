@@ -38,7 +38,7 @@ sub oembed_url {
 
 sub build_url {
   my ($self, $req) = @_;
-  my $uri = URI->new($self->oembed_url);
+  my $uri = URI->new($self->oembed_url($req));
   $uri->query_param("url", $req->url);
   $uri->query_param("format", "json");
   return $uri;
