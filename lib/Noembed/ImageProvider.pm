@@ -7,7 +7,7 @@ use parent 'Noembed::Provider';
 sub serialize {
   my ($self, $body, $req) = @_;
 
-  my $data = $self->image_data($body);
+  my $data = $self->image_data($body, $req);
   die "No image found" unless $data->{src};
 
   my $maxw = $req->parameters->{maxwidth} || 0;
