@@ -46,7 +46,7 @@ sub oauth_url {
 }
 
 sub shorturls { 'https?://t\.co/[a-zA-Z0-9]+' }
-sub patterns { 'https?://(?:www|mobile\.)?twitter\.com/(?:#!/)?[^/]+/status(?:es)?/(\d+)/?$' }
+sub patterns { 'https?://(?:www|mobile\.)?twitter\.com/(?:#!/)?[^/]+/status(?:es)?/(\d+)' }
 sub provider_name { "Twitter" }
 
 sub build_url {
