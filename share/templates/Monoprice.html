@@ -1,6 +1,6 @@
 ? my $info = shift;
 
-<h2><a target="_blank" href="<?= $info->{url} ?>"><?= $info->{title} ?></a></h2>
-<img src="<?= $info->{image} ?>">
+<h2 style="margin:0 0 10px 0; font-size:1.2em;"><a style="text-decoration: none" target="_blank" href="<?= $info->{url} ?>"><?= $info->{title} ?></a></h2>
+<img src="<?= $info->{image} ?>" style="float:left;margin-right:10px;background:#efefef;border:1px solid #ddd">
 
 ?= $info->{pricing}

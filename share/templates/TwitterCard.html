@@ -1,5 +1,5 @@
 ? my $data = shift;
 
-<? if ($data->{image}) { ?><img src="<?= $data->{image} ?>" width="50" height="50"><? } ?>
-<h2><a href="<?= $data->{url} ?>"><?= $data->{title} ?></a></h2>
-<p><?= $data->{description} ?></p>
+<? if ($data->{image}) { ?><img style="float:right;margin:10px;background:#efefef;border:1px solid #ddd;" src="<?= $data->{image} ?>" width="50" height="50"><? } ?>
+<h2 style="margin:0;font-size:1.2em"><a href="<?= $data->{url} ?>"><?= $data->{title} ?></a></h2>
+<p style="margin:0;padding:0;margin-top:0.8em"><?= $data->{description} ?></p>

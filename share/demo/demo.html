@@ -1,13 +1,12 @@
 <html>
   <head>
     <title>Noembed demo</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js" type="text/javascript"></script>
-    <link type="text/css" href="/noembed.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js" type="text/javascript"></script>
     <script type="text/javascript">
-      document.observe("dom:loaded", function() {
+      $(document).ready(function() {
         var request = null;
         var embed = function() {
-          var url = $('url').value;
+          var url = $('#url').val();
 
           if (!url) {
             alert("Need url!");
@@ -16,62 +15,64 @@
 
           var query = { url : url.trim() };
 
-          if ($('maxwidth').value) {
-            query['maxwidth'] = $('maxwidth').value;
+          if ($('#maxwidth').val()) {
+            query['maxwidth'] = $('#maxwidth').val();
           }
-          if ($('maxheight').value) {
-            query['maxheight'] = $('maxheight').value;
+          if ($('#maxheight').val()) {
+            query['maxheight'] = $('#maxheight').val();
           }
-          if ($('nowrap').checked) {
+          if ($('#nowrap').get(0).checked) {
             query['nowrap'] = "on";
           }
 
-          window.history.pushState({}, "", "/demo?"+Object.toQueryString(query));
+          //window.history.pushState({}, "", "/demo?"+Object.toQueryString(query));
 
-          $('embed').update("<span class='status'>embeding "+url+"&hellip;</span>");
+          $('#embed').html("<span class='status'>embeding "+url+"&hellip;</span>");
 
           // cancel any existing request
           if (request && request.transport) request.transport.abort();
 
-          request = new Ajax.Request("embed", {
-            method: "get",
-            parameters: query,
-            onSuccess: function(transport) {
-              var data = transport.responseText.evalJSON();
-              if (data.html) {
-                $('embed').update(data.html);
+          request = $.ajax({
+            url: "embed",
+            type: "GET",
+            data: query,
+            dataType: "json",
+            success: function(res) {
+              if (res.html) {
+                $('#embed').html(res.html);
               }
               else {
-                var error = "<span class='status error'>"+(data.error || "Unknown error. :-(")+"</span>";
-                $('embed').update(error);
+                var error = "<span class='status error'>"+(res.error || "Unknown error. :-(")+"</span>";
+                $('#embed').html(error);
               }
             },
-            onFailure: function() {
-              $('embed').update('Error connecting to noembed server. :-(');
+            error: function() {
+              $('#embed').html('Error connecting to noembed server. :-(');
             }
           });
         };
 
-        $('request').observe("submit", function(e) {
-          e.stop();
+        $('#request').on("submit", function(e) {
+          e.preventDefault();
           embed();
         });
 
-        $('url').observe('keydown', function(e) {
-          if (e.keyIdentifier == "Enter") {
-            e.stop();
+        $('#url').on('keydown', function(e) {
+          if (e.which == 13) {
+            e.preventDefault();
             embed();
           }
         });
 
-        $('examples').on('click', 'li a', function(e, a) {
-          e.stop();
-          $('url').setValue(a.href);
+        $('#examples').on('click', 'li a', function(e) {
+          e.preventDefault();
+          $('#url').val(this.href);
           embed();
         });
 
+        /*
         window.onpopstate = function(e) {
-          e.stop();
+          e.preventDefault();
           var query = window.location.search.toQueryParams();
 
           ['url', 'maxwidth', 'maxheight', 'nowrap'].each(function(field) {
@@ -83,6 +84,7 @@
         };
 
         window.onload = window.onpopstate;
+        */
       });
     </script>
     <style type="text/css">

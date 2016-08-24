@@ -110,10 +110,6 @@ sub download {
   if ($res->code == 200) {
     my $data = $provider->finalize($req, $res);
 
-    $data->{html} = $self->render->("inner-wrapper.html", $provider, $data);
-    unless ($req->parameters->{nowrap}) {
-      $data->{html} = $self->render->("wrapper.html", $provider, $data);
-    }
     my @headers = ("Surrogate-Key", $provider->surrogate_key);
     return json_res($data, @headers);
   }
@@ -146,28 +142,6 @@ sub json_res{
       'Content-Length', length $body
     ],
     [$body]
-  ];
-}
-
-sub css_response {
-  my ($self, $env) = @_;
-  my $css = join "\n", map {
-    my $file = $self->config->{share_dir} . "/styles/" . $_;
-    if (-r $file) {
-      open my $fh, "<", $file;
-      local $/;
-      <$fh>;
-    }
-    else {
-      "";
-    }
-  } "wrapper.css", map {$_->filename("css")} @{$self->{providers}};
-
-  return [
-    200,
-    [ "Content-Type" => "text/css",
-      "Content-Length" => length($css) ],
-    [$css]
   ];
 }
 

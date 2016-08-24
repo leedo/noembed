@@ -1,12 +1,12 @@
 ? my ($info) = @_;
 
-<img src="<?= $info->{image}{URL} ?>" width="<?= $info->{image}{Width}{content} ?>" height="<?= $info->{image}{Height}{content} ?>">
-<h2><a target="_blank" href="<?= $info->{url} ?>"><?= $info->{title} ?></a></h2>
-<ul>
+<img style="float:left; margin-right: 10px; background: #efefef; border: 1px solid #ddd;" src="<?= $info->{image}{URL} ?>" width="<?= $info->{image}{Width}{content} ?>" height="<?= $info->{image}{Height}{content} ?>">
+<h2 style="margin:0;font-size:1.2em"><a style="text-decoration: none" target="_blank" href="<?= $info->{url} ?>"><?= $info->{title} ?></a></h2>
+<ul style="overflow:hidden; padding:0; margin: 0; margin-top: 0.2em">
 ? my @info = grep {$_} map {$info->{$_}} qw/group price/;
 ? for my $field (@info) {
-  <li><?= $field ?></li>
+  <li style="inline-block;padding:0;margin:0;margin-right:5px;color:#bbb;font-weight:bold;font-size:0.8em"><?= $field ?></li>
 ? }
 </ul>
 
-<p><?= $info->{review} ?></p>
+<p style="margin:0;padding:0;margin-top:0.8em"><?= $info->{review} ?></p>

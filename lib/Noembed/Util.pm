@@ -5,10 +5,8 @@ use JSON::XS ();
 use LWP::UserAgent;
 use Text::MicroTemplate ();
 use HTML::TreeBuilder;
-use Noembed::Pygmentize;
 use Imager;
 
-my $pygmentize = Noembed::Pygmentize->new;
 my $ua = LWP::UserAgent->new(
   agent => "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36",
 );
@@ -63,11 +61,6 @@ sub dimensions {
     }
     return(int($w), int($h));
   }
-}
-
-sub colorize {
-  my ($class, $text, %options) = @_;
-  return Noembed::Util->html($pygmentize->colorize($text, %options));
 }
 
 sub html {

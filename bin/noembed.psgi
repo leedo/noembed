@@ -15,7 +15,6 @@ builder {
 
   mount "/"      => Plack::App::File->new(file => $config->{share_dir} . "/demo/index.html")->to_app;
   mount "/demo"  => Plack::App::File->new(file => $config->{share_dir} . "/demo/demo.html")->to_app;
-  mount "/noembed.css" => sub { $noembed->css_response };
   mount "/favicon.ico" => sub { [404, ["Content-Type", "text/plain"], ["not found"]] };
 
   mount "/providers" => builder {
