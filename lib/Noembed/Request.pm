@@ -1,5 +1,7 @@
 package Noembed::Request;
 
+use Digest::SHA1;
+
 use parent 'Plack::Request';
 
 sub new {
