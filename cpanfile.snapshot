@@ -10,6 +10,17 @@ DISTRIBUTIONS
       POSIX::strftime::Compiler 0.30
       Time::Local 0
       perl 5.008001
+  Cache-Memcached-1.30
+    pathname: D/DO/DORMANDO/Cache-Memcached-1.30.tar.gz
+    provides:
+      Cache::Memcached 1.30
+      Cache::Memcached::GetParser undef
+    requirements:
+      Encode 0
+      ExtUtils::MakeMaker 0
+      Storable 0
+      String::CRC32 0
+      Time::HiRes 0
   Canary-Stability-2011
     pathname: M/ML/MLEHMANN/Canary-Stability-2011.tar.gz
     provides:
@@ -496,6 +507,15 @@ DISTRIBUTIONS
       Scalar::Util 1
       Test::More 0.99
       XSLoader 0
+  JSON-2.90
+    pathname: M/MA/MAKAMAKA/JSON-2.90.tar.gz
+    provides:
+      JSON 2.90
+      JSON::Backend::PP 2.90
+      JSON::Boolean 2.90
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test::More 0
   JSON-XS-3.02
     pathname: M/ML/MLEHMANN/JSON-XS-3.02.tar.gz
     provides:
@@ -658,6 +678,13 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 0
       Test 0
       perl 5.006
+  Net-CIDR-Lite-0.21
+    pathname: D/DO/DOUGW/Net-CIDR-Lite-0.21.tar.gz
+    provides:
+      Net::CIDR::Lite 0.21
+      Net::CIDR::Lite::Span 0.21
+    requirements:
+      ExtUtils::MakeMaker 0
   Net-HTTP-6.09
     pathname: E/ET/ETHER/Net-HTTP-6.09.tar.gz
     provides:
@@ -778,6 +805,21 @@ DISTRIBUTIONS
       Test::Requires 0
       Test::SharedFork 0
       perl 5.008001
+  Parallel-Scoreboard-0.07
+    pathname: K/KA/KAZUHO/Parallel-Scoreboard-0.07.tar.gz
+    provides:
+      Parallel::Scoreboard 0.07
+      Parallel::Scoreboard::PSGI::App undef
+      Parallel::Scoreboard::PSGI::App::JSON undef
+    requirements:
+      Class::Accessor::Lite 0.05
+      ExtUtils::MakeMaker 6.36
+      File::Temp 0
+      Filter::Util::Call 0
+      HTML::Entities 0
+      JSON 0
+      Test::More 0
+      Test::Warn 0
   Params-Util-1.07
     pathname: A/AD/ADAMK/Params-Util-1.07.tar.gz
     provides:
@@ -899,6 +941,23 @@ DISTRIBUTIONS
       Test::More 0
       parent 0
       perl 5.008001
+  Plack-Middleware-ServerStatus-Lite-0.34
+    pathname: K/KA/KAZEBURO/Plack-Middleware-ServerStatus-Lite-0.34.tar.gz
+    provides:
+      Plack::Middleware::ServerStatus::Lite 0.34
+    requirements:
+      CPAN::Meta 0
+      CPAN::Meta::Prereqs 0
+      ExtUtils::CBuilder 0
+      Getopt::Long 2.38
+      JSON 2.53
+      Module::Build 0.38
+      Net::CIDR::Lite 0
+      Parallel::Scoreboard 0.03
+      Plack::Middleware 0
+      Pod::Usage 0
+      Try::Tiny 0.09
+      parent 0
   Proc-Wait3-0.05
     pathname: C/CT/CTILMES/Proc-Wait3-0.05.tar.gz
     provides:
@@ -965,6 +1024,12 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 6.30
       IO::File 1.14
+  String-CRC32-1.5
+    pathname: S/SO/SOENKE/String-CRC32-1.5.tar.gz
+    provides:
+      String::CRC32 1.5
+    requirements:
+      ExtUtils::MakeMaker 0
   Sub-Install-0.928
     pathname: R/RJ/RJBS/Sub-Install-0.928.tar.gz
     provides:

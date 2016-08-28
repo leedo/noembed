@@ -16,6 +16,8 @@ requires "Digest::SHA1";
 requires "Plack::Middleware::ReverseProxy";
 requires "LWP::Protocol::https";
 requires "Imager";
+requires "Plack::Middleware::ServerStatus::Lite";
+requires "Cache::Memcached";
 
 on 'test' => sub {
   requires "Test::Fatal";

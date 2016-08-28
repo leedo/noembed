@@ -4,6 +4,8 @@ use Module::Find ();
 use Class::Load;
 use Text::MicroTemplate::File;
 use JSON::XS;
+use Cache::Memcached;
+use Storable qw(freeze thaw);
 
 use Noembed::Util;
 use Noembed::Request;
@@ -13,6 +15,10 @@ sub new {
   my ($class, $config) = @_;
   my $self = bless {
     config    => $config,
+    cache     => Cache::Memcached->new(
+      servers => ["127.0.0.1:11211"],
+      debubg  => 0,
+    ),
     providers => [],
     shorturls => [],
   }, $class;
@@ -21,6 +27,8 @@ sub new {
 
   return $self;
 }
+
+sub cache { $_[0]->{cache} }
 
 sub render {
   my $self = shift;
@@ -104,14 +112,19 @@ sub handle_url {
 sub download {
   my ($self, $provider, $req) = @_;
   my $url = $provider->request_url($req);
+  my $res;
 
-  my $res = Noembed::Util->http_get($url);
+  if (my $cache = $self->cache->get($url)) {
+    $res = thaw($cache);
+  }
+  else {
+    $res = Noembed::Util->http_get($url);
+    $self->cache->set($url, freeze($res));
+  }
 
   if ($res->code == 200) {
     my $data = $provider->finalize($req, $res);
-
-    my @headers = ("Surrogate-Key", $provider->surrogate_key);
-    return json_res($data, @headers);
+    return json_res($data);
   }
   else {
     warn "error processing " . $req->url. " : ". $res->status_line;

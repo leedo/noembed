@@ -13,6 +13,12 @@ builder {
   enable_if { $_[0]->{REMOTE_ADDR} eq '127.0.0.1' } 
           "Plack::Middleware::ReverseProxy";
 
+	enable "Plack::Middleware::ServerStatus::Lite",
+		path => '/server-status',
+    allow => [ '127.0.0.1' ],
+    counter_file => '/tmp/counter_file',
+    scoreboard => '/tmp/scoreboard';
+
   mount "/"      => Plack::App::File->new(file => $config->{share_dir} . "/demo/index.html")->to_app;
   mount "/demo"  => Plack::App::File->new(file => $config->{share_dir} . "/demo/demo.html")->to_app;
   mount "/favicon.ico" => sub { [404, ["Content-Type", "text/plain"], ["not found"]] };

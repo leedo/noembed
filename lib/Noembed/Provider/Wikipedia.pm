@@ -62,7 +62,7 @@ sub extract_text_content {
     last if $stop->($el);
 
     $paragraphs++ if $el->tag eq "p";
-    last if $paragraphs > 3;
+    last if $paragraphs > 1;
 
     # skip badness
     if ($el->attr('class') =~ $badness) {
