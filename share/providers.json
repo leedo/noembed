@@ -1055,6 +1055,19 @@
         ]
     },
     {
+        "provider_name": "Spreaker",
+        "provider_url": "https:\/\/www.spreaker.com\/",
+        "endpoints": [
+            {
+                "schemes": [
+                    "http:\/\/www.spreaker.com\/*",
+                    "https:\/\/www.spreaker.com\/*"
+                ],
+                "url": "https:\/\/api.spreaker.com\/oembed"
+            }
+        ]
+    },
+    {
         "provider_name": "Streamable",
         "provider_url": "https:\/\/streamable.com\/",
         "endpoints": [
