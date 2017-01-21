@@ -18,15 +18,19 @@ sub prepare_provider {
 }
 
 sub provider_name { "Amazon" }
+sub shorturls {
+  'https?://a\.co/[^/]+',
+  'https?://amzn\.to/[^/]+',
+}
 sub patterns {
-  'http://www\.amazon\.com/(?:.+/)?[gd]p/(?:product/)?(?:tags-on-product/)?([a-zA-Z0-9]+)',
-  'http://amzn\.com/([^/]+)'
+  'https?://(?:www\.)?amazon\.com/(?:.+/)?[gd]p/(?:product/)?(?:tags-on-product/)?([a-zA-Z0-9]+)',
+  'https?://amzn\.com/(?:[gd]p/)?([^/]+)',
 }
 
 sub build_url {
   my ($self, $req) = @_;
   my $asin = $req->captures->[0];
-  my $u = URI::Amazon::APA->new('http://webservices.amazon.com/onca/xml');
+  my $u = URI::Amazon::APA->new('https://webservices.amazon.com/onca/xml');
   $u->query_form(
     Service => 'AWSECommerceService',
     AssociateTag => 'usealiceorg-20',
