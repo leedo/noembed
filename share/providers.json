@@ -767,9 +767,12 @@
         "endpoints": [
             {
                 "schemes": [
-                    "http:\/\/*.polldaddy.com\/s\/*",
-                    "http:\/\/*.polldaddy.com\/poll\/*",
-                    "http:\/\/*.polldaddy.com\/ratings\/*"
+                    "http:\/\/polldaddy.com\/s\/*",
+                    "http:\/\/polldaddy.com\/poll\/*",
+                    "http:\/\/polldaddy.com\/ratings\/*",
+                    "https:\/\/polldaddy.com\/s\/*",
+                    "https:\/\/polldaddy.com\/poll\/*",
+                    "https:\/\/polldaddy.com\/ratings\/*"
                 ],
                 "url": "http:\/\/polldaddy.com\/oembed\/"
             }
