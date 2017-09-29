@@ -7,13 +7,22 @@ use Text::MicroTemplate ();
 use HTML::TreeBuilder;
 use Imager;
 
-my $ua = LWP::UserAgent->new(
-  agent => "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36",
-);
+my $ua;
+
+sub get_ua {
+  $ua ||= LWP::UserAgent->new(
+    timeout    => 5,
+    keep_alive => 32,
+    agent      => "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36",
+  );
+  $ua->ssl_opts(timeout => 5, Timeout => 5);
+  $ua;
+}
 
 sub http_get {
   my ($class, $url) = @_;
 
+  my $ua = get_ua();
   $ua->requests_redirectable(["GET"]);
   my $res = $ua->get($url);
 
@@ -25,6 +34,7 @@ sub http_resolve {
 
   my $uri = URI->new($url);
 
+  my $ua = get_ua();
   $ua->requests_redirectable(undef);
   my $res = $ua->head($url);
 

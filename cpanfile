@@ -11,7 +11,7 @@ requires "IPC::Run3";
 requires "Web::Scraper";
 requires "XML::Simple";
 requires "URI::Amazon::APA";
-requires "Net::OAuth::ProtectedResourceRequest";
+requires "Net::OAuth";
 requires "Digest::SHA1";
 requires "Plack::Middleware::ReverseProxy";
 requires "LWP::Protocol::https";
@@ -23,6 +23,5 @@ on 'test' => sub {
   requires "Test::Fatal";
   requires "Test::More";
   requires "URI::Escape";
-  requires "HTTP::Message::PSGI";
   requires "File::Path";
 };

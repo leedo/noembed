@@ -15,10 +15,6 @@ sub new {
   my ($class, $config) = @_;
   my $self = bless {
     config    => $config,
-    cache     => Cache::Memcached->new(
-      servers => ["127.0.0.1:11211"],
-      debubg  => 0,
-    ),
     providers => [],
     shorturls => [],
   }, $class;
@@ -28,7 +24,15 @@ sub new {
   return $self;
 }
 
-sub cache { $_[0]->{cache} }
+sub cache {
+  my $self = shift;
+
+  $self->{cache} ||= Cache::Memcached->new(
+    servers => ["127.0.0.1:11211"],
+    debug   => 0,
+  );
+  $self->{cache};
+}
 
 sub render {
   my $self = shift;
@@ -115,6 +119,7 @@ sub download {
   my $res;
 
   if (my $cache = $self->cache->get($url)) {
+    warn "cache hit for $url";
     $res = thaw($cache);
   }
   else {
@@ -124,7 +129,21 @@ sub download {
 
   if ($res->code == 200) {
     my $data = $provider->finalize($req, $res);
-    return json_res($data);
+    return json_res(
+      $data,
+      "surrogate-key" => lc $provider->provider_name,
+      "surrogate-control" => 60 * 60 * 24 * 100,
+    );
+  }
+  elsif ($res->code =~ /^40[0-9]$/) {
+    return json_res(
+      {
+        error => $res->status_line,
+        url   => $req->url,
+      },
+      "surrogate-key" => lc $provider->provider_name,
+      "surrogate-control" => 60 * 30,
+    );
   }
   else {
     warn "error processing " . $req->url. " : ". $res->status_line;
@@ -167,7 +186,7 @@ sub providers_response {
     }
   } @{$self->{providers}} ];
 
-  return json_res($providers);
+  return json_res($providers, "surrogate-key" => "providers");
 }
 
 sub is_shorturl {

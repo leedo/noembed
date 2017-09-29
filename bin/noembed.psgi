@@ -5,6 +5,7 @@ use Plack::Util;
 use Noembed::Request;
 use Noembed::App;
 use Noembed::Config;
+use Noembed::JSONP;
 
 my $config = Noembed::Config->new("config.json");
 my $noembed = Noembed::App->new($config);
@@ -29,7 +30,7 @@ builder {
   };
 
   mount "/embed" => builder {
-    enable JSONP;
+    enable "+Noembed::JSONP";
     sub {
       my $env = shift;
       my $req = Noembed::Request->new($env);
