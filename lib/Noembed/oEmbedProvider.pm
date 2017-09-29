@@ -10,7 +10,7 @@ sub options { qw/maxwidth maxheight/ };
 
 sub serialize {
   my ($self, $body, $req) = @_;
-  my $data = from_json $body;
+  my $data = decode_json $body;
 
   if (!$data->{html}) {
     $data->{html} = $self->render($data, $req->url);
