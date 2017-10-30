@@ -1310,4 +1310,14 @@
             }
         ]
     }
+    {
+        "provider_name": "HookTube",
+        "provider_url": "http:\/\/www.hooktube.com\/",
+        "endpoints": [
+            {
+                "url": "http:\/\/www.hooktube.com\/oembed",
+                "discovery": true
+            }
+        ]
+    }
 ]
