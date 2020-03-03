@@ -546,6 +546,19 @@
         ]
     },
     {
+        "provider_name": "iHeartRadio",
+        "provider_url": "https:\/\/www.iheart.com\/",
+        "endpoints": [
+            {
+                "schemes": [
+                    "http:\/\/www.iheart.com\/*",
+                    "https:\/\/www.iheart.com\/*"
+                ],
+                "url": "https:\/\/www.iheart.com\/oembed"
+            }
+        ]
+    },
+    {
         "provider_name": "Infogram",
         "provider_url": "https:\/\/infogr.am\/",
         "endpoints": [
