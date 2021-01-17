@@ -71,12 +71,9 @@
         "endpoints": [
             {
                 "schemes": [
-                    "http:\/\/audiomack.com\/song\/*",
-                    "https:\/\/audiomack.com\/song\/*",
-                    "http:\/\/audiomack.com\/album\/*",
-                    "https:\/\/audiomack.com\/album\/*",
-                    "http:\/\/audiomack.com\/playlist\/*",
-                    "https:\/\/audiomack.com\/playlist\/*"
+                    "https:\/\/audiomack.com\/*\/song\/*",
+                    "https:\/\/audiomack.com\/*\/album\/*",
+                    "https:\/\/audiomack.com\/*\/playlist\/*"
                 ],
                 "url": "https:\/\/audiomack.com\/oembed"
             }
