@@ -17,7 +17,7 @@ requires "Plack::Middleware::ReverseProxy";
 requires "LWP::Protocol::https";
 requires "Imager";
 requires "Plack::Middleware::ServerStatus::Lite";
-requires "Cache::Memcached";
+requires "Cache::Memcached::Fast";
 requires "Mozilla::CA";
 
 on 'test' => sub {

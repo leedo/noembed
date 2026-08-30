@@ -4,7 +4,7 @@ use Module::Find ();
 use Class::Load;
 use Text::MicroTemplate::File;
 use JSON::XS;
-use Cache::Memcached;
+use Cache::Memcached::Fast;
 use Storable qw(freeze thaw);
 
 use Noembed::Util;
@@ -27,7 +27,7 @@ sub new {
 sub cache {
   my $self = shift;
 
-  $self->{cache} ||= Cache::Memcached->new(
+  $self->{cache} ||= Cache::Memcached::Fast->new(
     servers => ["127.0.0.1:11211"],
     debug   => 0,
   );

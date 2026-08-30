@@ -10,17 +10,14 @@ DISTRIBUTIONS
       POSIX::strftime::Compiler 0.30
       Time::Local 0
       perl 5.008001
-  Cache-Memcached-1.30
-    pathname: D/DO/DORMANDO/Cache-Memcached-1.30.tar.gz
+  Cache-Memcached-Fast-0.28
+    pathname: R/RA/RAZ/Cache-Memcached-Fast-0.28.tar.gz
     provides:
-      Cache::Memcached 1.30
-      Cache::Memcached::GetParser undef
+      Cache::Memcached::Fast 0.28
     requirements:
-      Encode 0
+      Carp 1.25
       ExtUtils::MakeMaker 0
-      Storable 0
-      String::CRC32 0
-      Time::HiRes 0
+      XSLoader 0.14
   Canary-Stability-2013
     pathname: M/ML/MLEHMANN/Canary-Stability-2013.tar.gz
     provides:
@@ -151,17 +148,6 @@ DISTRIBUTIONS
     requirements:
       Devel::StackTrace 0
       ExtUtils::MakeMaker 0
-  Digest-HMAC-1.05
-    pathname: A/AR/ARODLAND/Digest-HMAC-1.05.tar.gz
-    provides:
-      Digest::HMAC 1.05
-      Digest::HMAC_MD5 1.05
-      Digest::HMAC_SHA1 1.05
-    requirements:
-      Digest::MD5 2
-      Digest::SHA 1
-      ExtUtils::MakeMaker 0
-      perl 5.008001
   Digest-SHA1-2.13
     pathname: G/GA/GAAS/Digest-SHA1-2.13.tar.gz
     provides:
@@ -384,23 +370,6 @@ DISTRIBUTIONS
       locale 0
       perl 5.008001
       strict 0
-  HTTP-Daemon-6.17
-    pathname: O/OA/OALDERS/HTTP-Daemon-6.17.tar.gz
-    provides:
-      HTTP::Daemon 6.17
-    requirements:
-      Carp 0
-      HTTP::Date 6
-      HTTP::Request 6
-      HTTP::Response 6
-      HTTP::Status 6
-      IO::Socket::IP 0.32
-      LWP::MediaTypes 6
-      Module::Build::Tiny 0.034
-      Socket 0
-      perl 5.006
-      strict 0
-      warnings 0
   HTTP-Date-6.08
     pathname: O/OA/OALDERS/HTTP-Date-6.08.tar.gz
     provides:
@@ -773,6 +742,12 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       perl 5.006000
+  Mozilla-CA-20260813
+    pathname: L/LW/LWP/Mozilla-CA-20260813.tar.gz
+    provides:
+      Mozilla::CA 20260813
+    requirements:
+      ExtUtils::MakeMaker 0
   Net-CIDR-Lite-0.24
     pathname: S/ST/STIGTSP/Net-CIDR-Lite-0.24.tar.gz
     provides:
@@ -1130,12 +1105,6 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 6.30
       IO::File 1.14
-  String-CRC32-2.100
-    pathname: L/LE/LEEJO/String-CRC32-2.100.tar.gz
-    provides:
-      String::CRC32 2.100
-    requirements:
-      ExtUtils::MakeMaker 0
   Sub-Install-0.929
     pathname: R/RJ/RJBS/Sub-Install-0.929.tar.gz
     provides:
