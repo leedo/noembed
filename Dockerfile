@@ -13,7 +13,7 @@ RUN apt-get update && apt-get -y install \
     zlib1g-dev \
     perl \
     cpanminus \
-    libexpat-dev \
+    libexpat1-dev \
     && rm -rf /var/lib/apt/lists/*
 
 RUN cpanm -nq Perl::Build
@@ -39,7 +39,7 @@ ENV PATH="/opt/perl-${PERL_VERSION}/bin:${PATH}"
 
 RUN apt-get update && apt-get -y install \
     libssl3t64 \
-    libexpat \
+    libexpat1 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY . /opt/noembed
