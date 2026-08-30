@@ -18,6 +18,7 @@ requires "LWP::Protocol::https";
 requires "Imager";
 requires "Plack::Middleware::ServerStatus::Lite";
 requires "Cache::Memcached";
+requires "Mozilla::CA";
 
 on 'test' => sub {
   requires "Test::Fatal";
