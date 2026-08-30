@@ -119,7 +119,6 @@ sub download {
   my $res;
 
   if (my $cache = $self->cache->get($url)) {
-    warn "cache hit for $url";
     $res = thaw($cache);
   }
   else {
