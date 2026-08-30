@@ -46,4 +46,4 @@ COPY . /opt/noembed
 COPY --from=builder /opt/noembed/local /opt/noembed/local
 COPY --from=builder /opt/perl-${PERL_VERSION} /opt/perl-${PERL_VERSION}
 
-CMD ["perl", "-Ilocal/lib/perl5", "local/bin/plackup", "--server", "Starlet", "-Ilib", "--max-workers", "15", "--listen", ":5006", "bin/noembed.psgi"]
+CMD ["perl", "-Ilocal/lib/perl5", "local/bin/plackup", "-E", "prod", "--server", "Starlet", "-Ilib", "--max-workers", "15", "--listen", ":5006", "bin/noembed.psgi"]
