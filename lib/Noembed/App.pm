@@ -28,7 +28,7 @@ sub cache {
   my $self = shift;
 
   $self->{cache} ||= Cache::Memcached::Fast->new(
-    servers => [ address => { "127.0.0.1:11211" } ],
+    servers => [ { address => "127.0.0.1:11211" } ],
     debug   => 0,
   );
   $self->{cache};
