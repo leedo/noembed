@@ -28,8 +28,10 @@ sub cache {
   my $self = shift;
 
   $self->{cache} ||= Cache::Memcached::Fast->new(
-    servers => [ { address => "127.0.0.1:11211" } ],
-    debug   => 0,
+    {
+      servers => ["127.0.0.1:11211"],
+      debug   => 0,
+    }
   );
   $self->{cache};
 }
@@ -153,7 +155,7 @@ sub download {
 sub error_res{
   my ($message, $req) = @_;
 
-  $message =~ s/at .+?\.pm line.+//;
+  #$message =~ s/at .+?\.pm line.+//;
 
   return json_res({
     error => ($message || "unknown error"),
