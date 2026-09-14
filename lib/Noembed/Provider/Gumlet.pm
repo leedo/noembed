@@ -13,7 +13,7 @@ sub patterns {
 sub provider_name { "Gumlet" }
 
 sub options {
-  qw/autoplay loop background audio_track_language caption_language/
+  qw/autoplay loop background watermark_text audio_track_language caption_language/
 }
 
 sub build_url {
