@@ -13,9 +13,7 @@ sub patterns {
 sub provider_name { "Gumlet" }
 
 sub options {
-  qw/maxwidth maxheight autoplay loop playsinline
-     player_color thumbnail background start_high_res
-     disable_player_controls audio_track_language caption_language/
+  qw/autoplay loop background audio_track_language caption_language/
 }
 
 sub build_url {
