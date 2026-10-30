@@ -46,6 +46,8 @@ COPY . /opt/noembed
 COPY --from=builder /opt/noembed/local /opt/noembed/local
 COPY --from=builder /opt/perl-${PERL_VERSION} /opt/perl-${PERL_VERSION}
 
-# LISTEN sets the address, e.g. 127.0.0.1:5006; sh fills it in and exec
-# keeps plackup as PID 1, so it gets docker's stop signal.
-CMD ["sh", "-c", "exec perl -Ilocal/lib/perl5 local/bin/plackup -E prod --server Starlet -Ilib --max-workers 15 --listen \"${LISTEN:-:5006}\" bin/noembed.psgi"]
+# The address to listen on; override it with docker run -e LISTEN=...
+ENV LISTEN=:5006
+# Shell form, so $LISTEN is filled in when the container starts; exec keeps
+# plackup as PID 1, so it gets docker's stop signal.
+CMD exec perl -Ilocal/lib/perl5 local/bin/plackup -E prod --server Starlet -Ilib --max-workers 15 --listen "$LISTEN" bin/noembed.psgi
